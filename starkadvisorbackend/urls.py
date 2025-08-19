@@ -17,11 +17,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.urls import include, path
-from rest_framework.documentation import include_docs_urls
 from debug_toolbar.toolbar import debug_toolbar_urls
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("__debug__/", include(debug_toolbar_urls())),
-    path("docs/", include_docs_urls(title="StarkAdvisor API"))
+     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
+    path("api/docs/", SpectacularSwaggerView.as_view(url_name="schema")),
+    path("api/", include("news.urls"))
 ]

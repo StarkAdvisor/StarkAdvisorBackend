@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     "debug_toolbar",
     "rest_framework",
     "users",
-    "scraper"
+    "news"
 ]
 
 INTERNAL_IPS = [
@@ -130,3 +130,7 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+REST_FRAMEWORK = {
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
