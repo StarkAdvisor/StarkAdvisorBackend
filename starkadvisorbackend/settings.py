@@ -11,9 +11,13 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import environ
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+env = environ.Env()
+environ.Env.read_env()  # lee el archivo .env
 
 
 # Quick-start development settings - unsuitable for production
@@ -134,3 +138,17 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
+
+# settings.py
+
+MONGO_DB = {
+    "NAME": env("MONGO_NAME", default="starkadvisor"),
+    "HOST": env("MONGO_HOST", default="localhost"),
+    "PORT": env.int("MONGO_PORT", default=27017),
+    "URI": env("MONGO_URI", default=None)  # opcional, para Atlas
+}
+
+
+
+
+FINANCIAL_NEWS_SOURCES = env.list("FINANCIAL_NEWS_SOURCES", default=[])

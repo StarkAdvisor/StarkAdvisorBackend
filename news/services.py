@@ -1,28 +1,34 @@
 from datetime import datetime
 from transformers import pipeline
-from .scraping import NewsScraper
+
+from news import repository
+from starkadvisorbackend import settings
 
 sentiment_analyzer = pipeline("sentiment-analysis")
 
 
-def get_news_with_sentiment(query: str, start_date: datetime, end_date: datetime, 
-                            financial_business_news_domains=None, max_articles: int = 25):
+from datetime import datetime
+from transformers import pipeline
+from .scraping import NewsScraper
+
+# Cargar el modelo de análisis de sentimiento (una sola vez)
+sentiment_analyzer = pipeline("sentiment-analysis")
+
+
+def scrape_news(query: str, start_date: datetime, end_date: datetime,
+                financial_business_news_domains=None, max_articles: int = 25):
     
     if financial_business_news_domains is None:
-        financial_business_news_domains = [
-            "economictimes.indiatimes.com", "business-standard.com", "financialexpress.com", 
-            "livemint.com", "thehindubusinessline.com", "moneycontrol.com", "bloombergquint.com", 
-            "cnbctv18.com", "businesstoday.in", "forbesindia.com", "reuters.com", "bloomberg.com", 
-            "ft.com", "wsj.com", "cnbc.com", "marketwatch.com", "investing.com", "finance.yahoo.com", 
-            "seekingalpha.com", "businessinsider.com"
-        ]
-   
-   
+        financial_business_news_domains = settings.FINANCIAL_NEWS_SOURCES
+
     scraper = NewsScraper(financial_business_news_domains, max_articles=max_articles)
     results = scraper.scrape(query, start_date, end_date)
+    return results
 
-    # Agregar análisis de sentimiento a cada noticia
-    for article in results:
+
+def add_sentiment_analysis(articles: list):
+   
+    for article in articles:
         if "description" in article and article["description"]:
             sentiment = sentiment_analyzer(article["description"][:512])[0]  # limitar longitud
             article["sentiment"] = {
@@ -31,5 +37,21 @@ def get_news_with_sentiment(query: str, start_date: datetime, end_date: datetime
             }
         else:
             article["sentiment"] = {"label": "NEUTRAL", "score": 0.0}
+    return articles
 
-    return results
+
+def get_news_with_sentiment(query: str, start_date: datetime, end_date: datetime,
+                            financial_business_news_domains=None, max_articles: int = 25):
+   
+    articles = scrape_news(query, start_date, end_date,
+                           financial_business_news_domains, max_articles)
+    return add_sentiment_analysis(articles)
+
+def save_scraped_news(news_list):
+  
+    repository.ensure_indexes()
+    return repository.insert_many_news(news_list)
+
+def fetch_news(category, source=None, start_date=None, end_date=None, limit=20):
+
+    return repository.get_news(category, source, start_date, end_date, limit)
