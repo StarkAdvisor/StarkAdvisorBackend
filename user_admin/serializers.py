@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.password_validation import validate_password
+from django.contrib.auth import authenticate
 from django.core.exceptions import ValidationError
 from .models import CustomUser
 
@@ -23,12 +24,13 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         model = CustomUser
         fields = (
             'id', 'username', 'email', 'first_name', 'last_name',
-            'phone_number', 'date_of_birth', 'password', 'password_confirm'
+            'phone_number', 'date_of_birth', 'risk_profile', 'password', 'password_confirm'
         )
         extra_kwargs = {
             'email': {'required': True},
             'first_name': {'required': True},
             'last_name': {'required': True},
+            'risk_profile': {'required': True},
         }
 
     def validate_email(self, value):
@@ -70,23 +72,83 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
             last_name=validated_data['last_name'],
             phone_number=validated_data.get('phone_number', ''),
             date_of_birth=validated_data.get('date_of_birth', None),
+            risk_profile=validated_data['risk_profile'],
         )
         return user
+
+class LoginSerializer(serializers.Serializer):
+    """
+    Serializer para inicio de sesión
+    """
+    email = serializers.EmailField(required=True)
+    password = serializers.CharField(
+        required=True,
+        style={'input_type': 'password'},
+        trim_whitespace=False
+    )
+
+    def validate(self, attrs):
+        """Validar credenciales de usuario"""
+        email = attrs.get('email')
+        password = attrs.get('password')
+
+        if email and password:
+            # Intentar autenticar con email
+            user = authenticate(
+                request=self.context.get('request'),
+                username=email,  # Django usará email como username
+                password=password
+            )
+
+            if not user:
+                # Verificar si el usuario existe
+                try:
+                    user_exists = CustomUser.objects.get(email=email)
+                    if not user_exists.is_active:
+                        raise serializers.ValidationError(
+                            'La cuenta de usuario está deshabilitada.'
+                        )
+                    else:
+                        raise serializers.ValidationError(
+                            'Credenciales incorrectas.'
+                        )
+                except CustomUser.DoesNotExist:
+                    raise serializers.ValidationError(
+                        'No existe una cuenta con este correo electrónico.'
+                    )
+
+            if not user.is_active:
+                raise serializers.ValidationError(
+                    'La cuenta de usuario está deshabilitada.'
+                )
+
+            attrs['user'] = user
+            return attrs
+        else:
+            raise serializers.ValidationError(
+                'Debe proporcionar email y contraseña.'
+            )
 
 class UserSerializer(serializers.ModelSerializer):
     """
     Serializer para mostrar información del usuario
     """
     full_name = serializers.CharField(source='get_full_name', read_only=True)
+    risk_profile_info = serializers.SerializerMethodField()
 
     class Meta:
         model = CustomUser
         fields = (
             'id', 'username', 'email', 'first_name', 'last_name', 'full_name',
             'phone_number', 'date_of_birth', 'profile_picture', 'is_verified',
-            'is_active', 'date_joined', 'created_at', 'updated_at'
+            'risk_profile', 'risk_profile_info', 'is_active', 'date_joined', 
+            'created_at', 'updated_at'
         )
         read_only_fields = ('id', 'date_joined', 'created_at', 'updated_at')
+    
+    def get_risk_profile_info(self, obj):
+        """Obtener información detallada del perfil de riesgo"""
+        return obj.get_risk_profile_display_info()
 
 class UserUpdateSerializer(serializers.ModelSerializer):
     """
@@ -96,7 +158,7 @@ class UserUpdateSerializer(serializers.ModelSerializer):
         model = CustomUser
         fields = (
             'first_name', 'last_name', 'phone_number', 
-            'date_of_birth', 'profile_picture'
+            'date_of_birth', 'profile_picture', 'risk_profile'
         )
 
 class PasswordChangeSerializer(serializers.Serializer):

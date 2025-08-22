@@ -30,8 +30,22 @@ class CustomUser(AbstractUser):
         verbose_name='Foto de Perfil'
     )
     
+    # Choices para perfil de riesgo
+    RISK_PROFILE_CHOICES = [
+        ('conservative', 'Conservador'),
+        ('moderate', 'Moderado'),
+        ('aggressive', 'Arriesgado'),
+    ]
+    
     # Campos adicionales
     is_verified = models.BooleanField(default=False, verbose_name='Verificado')
+    risk_profile = models.CharField(
+        max_length=12,
+        choices=RISK_PROFILE_CHOICES,
+        default='moderate',
+        verbose_name='Perfil de Riesgo',
+        help_text='Selecciona tu perfil de inversión según tu tolerancia al riesgo'
+    )
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Fecha de Creacion')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='Última Actualizacion')
     
@@ -52,3 +66,24 @@ class CustomUser(AbstractUser):
     
     def get_short_name(self):
         return self.first_name
+    
+    def get_risk_profile_display_info(self):
+        """Retorna información detallada del perfil de riesgo"""
+        risk_info = {
+            'conservative': {
+                'name': 'Conservador',
+                'description': 'Prefiere inversiones seguras con bajo riesgo y retornos estables.',
+                'characteristics': ['Bajo riesgo', 'Retornos estables', 'Capital protegido']
+            },
+            'moderate': {
+                'name': 'Moderado', 
+                'description': 'Busca un equilibrio entre riesgo y retorno.',
+                'characteristics': ['Riesgo medio', 'Diversificación', 'Crecimiento moderado']
+            },
+            'aggressive': {
+                'name': 'Arriesgado',
+                'description': 'Busca altos retornos y está dispuesto a asumir mayores riesgos.',
+                'characteristics': ['Alto riesgo', 'Altos retornos potenciales', 'Volatilidad']
+            }
+        }
+        return risk_info.get(self.risk_profile, risk_info['moderate'])
