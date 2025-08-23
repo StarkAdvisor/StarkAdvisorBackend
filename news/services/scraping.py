@@ -7,6 +7,10 @@ import random
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 from math import ceil
+from datetime import datetime
+
+from news.serializers import NewsSerializer
+
 
 
 
@@ -18,11 +22,49 @@ class NewsScraper:
     # Entidades para buscar en google
 
     USER_AGENTS = [
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36",
-        "Mozilla/5.0 (Linux; Android 10; SM-A505F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.0.0 Mobile Safari/537.36"
+    # Windows - Chrome
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.5993.117 Safari/537.36",
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0",
+
+    # Windows - Edge
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.2210.91",
+
+    # macOS - Safari
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Safari/605.1.15",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.6 Safari/605.1.15",
+
+    # macOS - Chrome
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.6045.199 Safari/537.36",
+
+    # Linux - Chrome
+    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.6099.109 Safari/537.36",
+
+    # Linux - Firefox
+    "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:121.0) Gecko/20100101 Firefox/121.0",
+
+    # Android - Chrome Mobile
+    "Mozilla/5.0 (Linux; Android 13; Pixel 7 Pro) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.6099.144 Mobile Safari/537.36",
+    "Mozilla/5.0 (Linux; Android 12; SM-G991B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.5993.80 Mobile Safari/537.36",
+    "Mozilla/5.0 (Linux; Android 11; Mi 11 Lite) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.5938.92 Mobile Safari/537.36",
+
+    # iPhone - Safari
+    "Mozilla/5.0 (iPhone; CPU iPhone OS 17_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Mobile/15E148 Safari/604.1",
+    "Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1",
+
+    # iPad - Safari
+    "Mozilla/5.0 (iPad; CPU OS 17_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Mobile/15E148 Safari/604.1",
+    "Mozilla/5.0 (iPad; CPU OS 16_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.5 Mobile/15E148 Safari/604.1",
     ]
 
+    # Lista de proxies gratuitos (ejemplo, puedes cargar desde un txt)
+    proxy = [
+        "http://51.79.50.22:9300",
+        "http://103.152.5.70:8080",
+        "http://190.61.88.147:8080",
+    ]
+
+    
     # Dominios para buscar
     financial_business_news_domains = [
         "economictimes.indiatimes.com",
@@ -37,6 +79,10 @@ class NewsScraper:
         "date": "div.rbYSKb",
         "source": "div.NUnG9d"
     }
+
+    def get_random_proxy():
+        return {"http": random.choice(proxy), "https": random.choice(proxy)}
+
 
 
     # Fominios, maximo de articulos a traer y maximo de intentos sin rechazar la peticion
@@ -208,19 +254,22 @@ class NewsScraper:
             print(f"Failed to extract {selector}: {e}")
             return None
 
-    def scrape(self, query: str, start_date: datetime, end_date: datetime) -> List[Dict[str, Optional[str]]]:
+
+
+
+    def scrape(self, query: str, start_date: datetime, end_date: datetime):
         """
         Scrape Google News articles based on the query and date range.
         """
         all_articles = []
-
         empty_page_count = 0
+
         for page in range(self.max_pages):
             if len(all_articles) >= self.max_articles:
                 print(f"Reached article limit ({self.max_articles}). Stopping.")
                 break
 
-            time.sleep(self.get_random_delay())
+            time.sleep(random.uniform(3, 7))
             url = self.construct_url(query, start_date, end_date, page)
 
             retries = 0
@@ -239,18 +288,35 @@ class NewsScraper:
                         print("CAPTCHA detected. Stopping scraping.")
                         return all_articles
 
-                    articles = self.extract_articles(response.text)
-                    if not articles:
+                    raw_articles = self.extract_articles(response.text)
+
+                    if not raw_articles:
                         empty_page_count += 1
                         print(f"No articles found on page {page + 1}. Empty count: {empty_page_count}")
-                        if empty_page_count >= 2:  # Stop if two consecutive pages are empty
+                        if empty_page_count >= 2:
                             print("No more articles found. Stopping.")
                             return all_articles
                     else:
-                        empty_page_count = 0  # Reset if we find articles
+                        empty_page_count = 0
 
-                    all_articles.extend(articles)
-                    print(f"Page {page + 1}: Added {len(articles)} articles")
+                    for raw in raw_articles:
+
+                        try:
+                            article = NewsSerializer(
+                                title=raw["title"],
+                                url=raw["url"],
+                                source= raw["source"],
+                                date=raw["date"],
+                                description=raw["description"],
+                                category=query,
+                                sentiment=None,
+                                scraped_at=datetime.now()
+                            )
+                            all_articles.append(article.model_dump())  # JSON dict limpio
+                        except Exception as e:
+                            print(f"Error validating article: {e}")
+
+                    print(f"Page {page + 1}: Added {len(raw_articles)} articles")
                     break
 
                 except requests.exceptions.RequestException as e:
@@ -263,4 +329,3 @@ class NewsScraper:
                         return all_articles
 
         return all_articles[:self.max_articles]
-    

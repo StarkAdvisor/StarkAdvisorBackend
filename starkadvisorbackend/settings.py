@@ -157,7 +157,7 @@ MONGO_DB = {
     "NAME": env("MONGO_NAME", default="starkadvisor"),
     "HOST": env("MONGO_HOST", default="localhost"),
     "PORT": env.int("MONGO_PORT", default=27017),
-    "URI": env("MONGO_URI", default=None)  # opcional, para Atlas
+    "URI": env("MONGO_URI", default=None)  
 }
 
 FINANCIAL_NEWS_SOURCES = env.list("FINANCIAL_NEWS_SOURCES", default=[])
