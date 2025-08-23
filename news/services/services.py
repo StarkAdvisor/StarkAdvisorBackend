@@ -4,11 +4,7 @@ from transformers import pipeline
 from news import repository
 from starkadvisorbackend import settings
 
-sentiment_analyzer = pipeline("sentiment-analysis")
-
-
 from datetime import datetime
-from transformers import pipeline
 from .scraping import NewsScraper
 
 # Cargar el modelo de análisis de sentimiento (una sola vez)
@@ -55,3 +51,7 @@ def save_scraped_news(news_list):
 def fetch_news(category, source=None, start_date=None, end_date=None, limit=20):
 
     return repository.get_news(category, source, start_date, end_date, limit)
+
+def get_all_sources():
+
+    return repository.get_unique_sources()
