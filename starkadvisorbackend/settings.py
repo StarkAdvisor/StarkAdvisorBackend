@@ -38,12 +38,18 @@ INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
+    'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "debug_toolbar",
     "rest_framework",
+    "rest_framework.authtoken",
+    "user_admin",
     "news"
 ]
+
+# Custom User Model
+AUTH_USER_MODEL = 'user_admin.CustomUser'
 
 INTERNAL_IPS = [
     # ...
@@ -134,8 +140,15 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Django REST Framework Configuration
 REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
 }
 
 # settings.py
@@ -146,8 +159,5 @@ MONGO_DB = {
     "PORT": env.int("MONGO_PORT", default=27017),
     "URI": env("MONGO_URI", default=None)  
 }
-
-
-
 
 FINANCIAL_NEWS_SOURCES = env.list("FINANCIAL_NEWS_SOURCES", default=[])

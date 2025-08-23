@@ -1,0 +1,41 @@
+# 🐳 Docker Compose para DESARROLLO LOCAL
+version: '3.8'
+
+services:
+  # PostgreSQL local
+  postgres:
+    image: postgres:15
+    container_name: postgres-starkadvisor
+    environment:
+      POSTGRES_DB: starkadvisor
+      POSTGRES_USER: starkuser
+      POSTGRES_PASSWORD: starkpass123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  # Redis local
+  redis:
+    image: redis:latest
+    container_name: redis-server
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+
+  # Django app (opcional para desarrollo)
+  # web:
+  #   build: .
+  #   ports:
+  #     - "8000:8000"
+  #   environment:
+  #     - DJANGO_ENVIRONMENT=local
+  #   depends_on:
+  #     - postgres
+  #     - redis
+  #   volumes:
+  #     - .:/app
+
+volumes:
+  postgres_data:

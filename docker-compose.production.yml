@@ -1,0 +1,24 @@
+# ☁️ Docker Compose para PRODUCCIÓN (ejemplo)
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - DJANGO_ENVIRONMENT=production
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_HOST=${DB_HOST}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+    env_file:
+      - .env
+    restart: unless-stopped
+
+# Nota: En producción real usarás servicios cloud como:
+# - AWS RDS para PostgreSQL
+# - AWS ElastiCache para Redis
+# - AWS ECS/EKS para el contenedor Django
