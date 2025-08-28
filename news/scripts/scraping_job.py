@@ -6,8 +6,8 @@ django.setup()
 import time
 from datetime import datetime, timedelta
 
-from news import repository
-from news.services.services import get_news_with_sentiment, save_scraped_news
+from news.repository.repository import NewsRepository
+from news.services.news_service import NewsService
 
 
 
@@ -24,7 +24,8 @@ topics = [
 
 MAX_ARTICLES = 100
 MAX_RETRIES = 3
-
+service = NewsService()
+repository = NewsRepository()
 
 def get_last_scraped_date():
     metadata = repository.get_metadata("last_scraped_date")
@@ -45,7 +46,7 @@ def run_scraper():
         retries = 0
         articles = []
         while retries < MAX_RETRIES and not articles:
-            articles = get_news_with_sentiment(
+            articles = service.get_news_with_sentiment(
                 category,
                 start_date=last_scraped + timedelta(days=1),
                 end_date=today,
@@ -58,7 +59,7 @@ def run_scraper():
 
         if articles:
             print(f" Guardando {len(articles)} artículos en DB para {category}")
-            save_scraped_news(articles)
+            service.save_scraped_news(articles)
         else:
             print(f" No se pudo obtener artículos para {category} después de {MAX_RETRIES} intentos")
 

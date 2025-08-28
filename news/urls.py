@@ -1,7 +1,7 @@
 from django.urls import path
-from .views import get_news, get_sources
+from .views import NewsView, SourcesView
 
 urlpatterns = [
-    path("news/sources/", get_sources, name="get-sources"),
-    path("news/", get_news, name="get-news"),
+    path("news/sources/",SourcesView.as_view(), name="get-sources"), 
+    path("news/",NewsView.as_view() , name="get-news"),
 ]
