@@ -56,15 +56,7 @@ class NewsScraper:
     "Mozilla/5.0 (iPad; CPU OS 17_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Mobile/15E148 Safari/604.1",
     "Mozilla/5.0 (iPad; CPU OS 16_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.5 Mobile/15E148 Safari/604.1",
     ]
-
-    # Lista de proxies gratuitos (ejemplo, puedes cargar desde un txt)
-    proxy = [
-        "http://51.79.50.22:9300",
-        "http://103.152.5.70:8080",
-        "http://190.61.88.147:8080",
-    ]
-
-    
+  
     # Dominios para buscar
     financial_business_news_domains = [
         "economictimes.indiatimes.com",
@@ -79,10 +71,6 @@ class NewsScraper:
         "date": "div.rbYSKb",
         "source": "div.NUnG9d"
     }
-
-    def get_random_proxy():
-        return {"http": random.choice(proxy), "https": random.choice(proxy)}
-
 
 
     # Fominios, maximo de articulos a traer y maximo de intentos sin rechazar la peticion
