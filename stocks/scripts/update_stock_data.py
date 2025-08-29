@@ -10,11 +10,11 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "starkadvisorbackend.settings")
 django.setup()
 
 from stocks.repository.stock_repository import StockRepository
-from stocks.service.stock_data_fetcher import StockDataFetcher
+from stocks.clients.yahoo_finance_client import YahooFinanceClient
 from stocks.models import StockPrice
 
 class StockUpdater:
-    def __init__(self, fetcher: StockDataFetcher, repo: StockRepository):
+    def __init__(self, fetcher: YahooFinanceClient, repo: StockRepository):
         self.fetcher = fetcher
         self.repo = repo
 
@@ -31,7 +31,7 @@ class StockUpdater:
 if __name__ == "__main__":
     # universo inicial
     universe = ["AAPL", "MSFT", "GOOGL", "AMZN", "SPY"]
-    stock_fetcher = StockDataFetcher()
+    stock_fetcher = YahooFinanceClient()
     stock_repo = StockRepository()
     stock_updater = StockUpdater(stock_fetcher, stock_repo)
     # ejemplo: traer últimos 5 años

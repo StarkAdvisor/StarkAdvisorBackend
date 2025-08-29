@@ -2,9 +2,6 @@ from datetime import datetime
 from pymongo import ASCENDING
 from mongo_client import get_mongo_client
 
-from datetime import datetime
-from pymongo import ASCENDING
-
 class NewsRepository:
     def __init__(self):
         self.db = get_mongo_client()
@@ -17,6 +14,18 @@ class NewsRepository:
         self.collection.create_index([("source", ASCENDING)])
         self.collection.create_index([("category", ASCENDING)])
         self.metadata_collection.create_index("key", unique=True)
+
+    def get_news(self, category: str = None, source: str = None, start_date=None, end_date=None, limit=20):
+        query = {}
+        if category:
+            query["category"] = category
+        if source:
+            query["source"] = source
+        if start_date and end_date:
+            query["date"] = {"$gte": start_date, "$lte": end_date}
+        
+        return list(self.collection.find(query).sort("date", -1).limit(limit))
+
 
     def get_unique_sources(self):
         return self.collection.distinct("source")
@@ -46,13 +55,3 @@ class NewsRepository:
             upsert=True
         )
 
-    def get_news(self, category: str = None, source: str = None, start_date=None, end_date=None, limit=20):
-        query = {}
-        if category:
-            query["category"] = category
-        if source:
-            query["source"] = source
-        if start_date and end_date:
-            query["date"] = {"$gte": start_date, "$lte": end_date}
-        
-        return list(self.collection.find(query).sort("date", -1).limit(limit))
