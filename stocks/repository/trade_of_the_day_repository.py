@@ -1,0 +1,38 @@
+from datetime import datetime, date
+from pymongo import ASCENDING
+from mongo_client import get_mongo_client  
+
+class TradeOfTheDayRepository:
+    def __init__(self):
+        self.db = get_mongo_client()
+        self.collection = self.db.trade_of_the_day
+        self.ensure_indexes()
+
+    def ensure_indexes(self):
+       
+        self.collection.create_index([("date", ASCENDING)], unique=True)
+
+    def save_trades(self, trades: list[dict]):
+        for trade in trades:
+            trade["date"] = datetime.combine(trade["date"], datetime.min.time())
+
+        # Guardamos (upsert) todos los trades bajo la misma fecha
+        self.collection.update_one(
+            {"date": trades[0]["date"]},   # usamos la fecha como clave
+            {"$set": {"date": trades[0]["date"], "trades": trades}},
+            upsert=True
+        )
+
+        
+    def get_trades_by_date(self, day: date):
+        # Si ya viene como datetime.date, conviértelo a datetime (00:00:00)
+        if isinstance(day, date) and not isinstance(day, datetime):
+            day = datetime.combine(day, datetime.min.time())
+
+        doc = self.collection.find_one({"date": day})
+        return doc["trades"] if doc else []
+
+    def get_trades_today(self):
+       
+        today = datetime.now().date()
+        return self.get_trades_by_date(today)
