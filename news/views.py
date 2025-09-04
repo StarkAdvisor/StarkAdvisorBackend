@@ -29,20 +29,22 @@ class NewsView(View):
         start = request.GET.get("start", str(yesterday))
         end = request.GET.get("end", str(today))
         max_articles = int(request.GET.get("max_articles", 100))
-        source = request.GET.get("source")
+
+        source_param = request.GET.get("source")
+        sources = [s.strip() for s in source_param.split(",")] if source_param else None
 
         # Parseo de fechas
         start_date = datetime.strptime(start, "%Y-%m-%d")
         end_date = datetime.strptime(end, "%Y-%m-%d")
-        service =NewsService()
+
+        service = NewsService()
         data = service.fetch_news(
             category=query,
-            source=source,
+            source=sources,   # ahora pasa una lista en lugar de un string
             start_date=start_date,
             end_date=end_date,
-            limit=max_articles 
+            limit=max_articles
         )
-
         data = self._convert_objectid(data)
         return JsonResponse(data, safe=False, json_dumps_params={"ensure_ascii": False, "indent": 2})
 

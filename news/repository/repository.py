@@ -15,17 +15,21 @@ class NewsRepository:
         self.collection.create_index([("category", ASCENDING)])
         self.metadata_collection.create_index("key", unique=True)
 
-    def get_news(self, category: str = None, source: str = None, start_date=None, end_date=None, limit=20):
+    def get_news(self, category: str = None, source=None, start_date=None, end_date=None, limit=20):
         query = {}
         if category:
             query["category"] = category
+        
         if source:
-            query["source"] = source
+            if isinstance(source, list):
+                query["source"] = {"$in": source}  # múltiples fuentes
+            else:
+                query["source"] = source  # caso de un solo string
+        
         if start_date and end_date:
             query["date"] = {"$gte": start_date, "$lte": end_date}
         
         return list(self.collection.find(query).sort("date", -1).limit(limit))
-
 
     def get_unique_sources(self):
         return self.collection.distinct("source")
