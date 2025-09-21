@@ -1,0 +1,1933 @@
+{
+    "faqs": [
+        {
+            "id": 1,
+            "domain": "conceptos_financieros",
+            "questions": {
+                "es": [
+                    "¿Qué es una acción?",
+                    "Acciones en la bolsa, ¿qué son?",
+                    "Definición de acción",
+                    "¿Qué significa tener una acción?",
+                    "¿Qué son las acciones de una empresa?",
+                    "Acciones, ¿cómo funcionan?",
+                    "Explicación simple de acción",
+                    "¿Qué implica comprar una acción?",
+                    "Acciones de empresas, ¿qué quiere decir?",
+                    "¿Para qué sirven las acciones?"
+                ],
+                "en": [
+                    "What is a stock?",
+                    "Stocks in the market, what are they?",
+                    "Definition of stock",
+                    "What does it mean to own a stock?",
+                    "What are company shares?",
+                    "Stocks, how do they work?",
+                    "Simple explanation of a stock",
+                    "What does buying a stock mean?",
+                    "Company shares, what does it mean?",
+                    "What are stocks used for?"
+                ]
+            },
+            "answer": {
+                "es": "Una acción es un título que representa una parte de la propiedad de una empresa. Al comprar una acción, una persona se convierte en accionista y obtiene ciertos derechos, como recibir dividendos (si la empresa reparte ganancias) y participar en decisiones corporativas a través de votaciones. Además, el valor de la acción puede subir o bajar dependiendo del desempeño de la empresa y de las condiciones del mercado. Por ejemplo, si compras acciones de una compañía tecnológica y esta crece en ventas, es probable que el precio de tus acciones aumente, lo que te permite ganar dinero al venderlas más caras.",
+                "en": "A stock is a security that represents a portion of ownership in a company. By buying a stock, an individual becomes a shareholder and gains certain rights, such as receiving dividends (if the company distributes profits) and participating in corporate decisions through voting. The stock's value can rise or fall depending on the company's performance and market conditions. For example, if you buy shares of a tech company and it grows in sales, the price of your shares may increase, allowing you to make a profit if you sell them at a higher price."
+            }
+        },
+        {
+            "id": 2,
+            "domain": "conceptos_financieros",
+            "questions": {
+                "es": [
+                    "¿Qué es un bono?",
+                    "Definición de bono",
+                    "Bonos financieros, ¿qué son?",
+                    "¿Cómo funcionan los bonos?",
+                    "¿Qué significa invertir en un bono?",
+                    "¿Qué es un bono de deuda?",
+                    "¿Qué implica comprar un bono?",
+                    "¿Para qué sirven los bonos?",
+                    "¿Qué son los bonos del gobierno?",
+                    "Explicación sencilla de bono"
+                ],
+                "en": [
+                    "What is a bond?",
+                    "Definition of bond",
+                    "Financial bonds, what are they?",
+                    "How do bonds work?",
+                    "What does it mean to invest in a bond?",
+                    "What is a debt bond?",
+                    "What does buying a bond mean?",
+                    "What are bonds used for?",
+                    "What are government bonds?",
+                    "Simple explanation of bond"
+                ]
+            },
+            "answer": {
+                "es": "Un bono es un instrumento de deuda que emiten gobiernos, empresas u otras instituciones para obtener financiamiento. Al comprar un bono, el inversionista presta dinero al emisor a cambio de una promesa de devolución del capital en una fecha futura, más un interés periódico llamado cupón. Los bonos se consideran inversiones más seguras que las acciones, aunque el riesgo depende de la solidez del emisor: un bono del gobierno suele ser más seguro que uno de una empresa con dificultades financieras. Por ejemplo, si compras un bono a 5 años con un interés del 4%, recibirás pagos regulares de ese 4% y, al final del plazo, la devolución del dinero invertido.",
+                "en": "A bond is a debt instrument issued by governments, companies, or other institutions to raise funds. When you buy a bond, you are essentially lending money to the issuer in exchange for a promise to repay the principal on a future date, plus periodic interest known as a coupon. Bonds are generally considered safer investments than stocks, although the risk depends on the issuer’s strength: a government bond is usually safer than one from a struggling company. For example, if you buy a 5-year bond with a 4% interest rate, you will receive regular payments of that 4% and, at the end of the term, get back your invested money."
+            }
+        },
+        {
+            "id": 4,
+            "domain": "conceptos_financieros",
+            "questions": {
+                "es": [
+                    "¿Qué es un ETF?",
+                    "Explícame qué significa ETF",
+                    "¿Un ETF es lo mismo que un fondo de inversión?",
+                    "¿Cuál es la diferencia entre un ETF y un fondo mutuo?",
+                    "He escuchado hablar de los ETF, ¿qué son exactamente?",
+                    "¿Un ETF funciona como una acción o como un fondo?",
+                    "¿Qué ventajas tiene invertir en un ETF frente a un fondo común?",
+                    "¿Cómo se diferencian los ETF de los fondos tradicionales?",
+                    "¿Qué significa que un ETF replique un índice?",
+                    "ETF en palabras simples, ¿qué es?"
+                ],
+                "en": [
+                    "What is an ETF?",
+                    "Can you explain what ETF means?",
+                    "Is an ETF the same as a mutual fund?",
+                    "What's the difference between an ETF and a mutual fund?",
+                    "I've heard about ETFs, but what exactly are they?",
+                    "Does an ETF work more like a stock or like a fund?",
+                    "What are the advantages of investing in an ETF over a regular fund?",
+                    "How are ETFs different from traditional funds?",
+                    "What does it mean when an ETF replicates an index?",
+                    "ETF in simple terms, what is it?"
+                ]
+            },
+            "answer": {
+                "es": "Un ETF (Exchange Traded Fund) es un fondo de inversión que se negocia en la bolsa de valores de manera similar a una acción. Generalmente, busca replicar el comportamiento de un índice de referencia (como el S&P 500) o de un sector específico. Los ETF combinan características de los fondos mutuos (diversificación de activos) con la flexibilidad de las acciones (se pueden comprar y vender durante toda la jornada bursátil). Suelen tener comisiones más bajas que los fondos tradicionales y son una forma práctica de diversificar la inversión sin necesidad de comprar cada activo por separado.",
+                "en": "An ETF (Exchange Traded Fund) is an investment fund traded on the stock exchange, much like a stock. It usually aims to replicate the performance of a benchmark index (such as the S&P 500) or a specific sector. ETFs combine the diversification benefits of mutual funds with the flexibility of stocks, since they can be bought and sold throughout the trading day. They often have lower fees compared to traditional mutual funds and offer an easy way to diversify investments without having to purchase each asset individually."
+            }
+        },
+        {
+            "id": 6,
+            "domain": "conceptos_financieros",
+            "questions": {
+                "es": [
+                    "qué es capitalización de mercado",
+                    "capitalización bursátil qué significa",
+                    "me explicas capitalización de mercado",
+                    "capitalización de una empresa, eso qué es",
+                    "cómo se calcula la capitalización de mercado",
+                    "capitalización bursátil y valor de empresa es lo mismo",
+                    "empresa de gran capitalización, qué quiere decir",
+                    "qué significa small cap o large cap",
+                    "capitalización de mercado explicado fácil",
+                    "eso de market cap qué significa",
+                    "capitalización bursátil, nunca lo entiendo",
+                    "cuando dicen market cap alto, de qué hablan",
+                    "capitalización de mercado en palabras simples",
+                    "qué tanto vale una empresa según su capitalización",
+                    "capitalización bursátil = valor de mercado?"
+                ],
+                "en": [
+                    "what is market capitalization",
+                    "market cap meaning",
+                    "can you explain market capitalization",
+                    "market cap how is it calculated",
+                    "market cap same as company value?",
+                    "large cap company what does it mean",
+                    "what does small cap mean",
+                    "heard about market cap, what is it",
+                    "market capitalization explained simple",
+                    "market cap in stocks, what is it",
+                    "so what is market cap actually",
+                    "market cap vs real value?",
+                    "what does high market cap mean",
+                    "market cap low or high, what’s the difference",
+                    "market capitalization, I don’t get it"
+                ]
+            },
+            "answer": {
+                "es": "La capitalización de mercado, también conocida como market cap, es el valor total de todas las acciones en circulación de una empresa cotizada en bolsa. Se calcula multiplicando el precio actual de una acción por el número total de acciones existentes. No siempre refleja el valor real de la empresa, ya que depende del precio de mercado de las acciones. Una empresa de gran capitalización (large cap) tiene un market cap alto, generalmente superior a varios miles de millones de dólares, mientras que una small cap es más pequeña y puede ser más volátil. En palabras simples, la capitalización de mercado indica cuánto 'vale' la empresa según el mercado bursátil, y sirve para clasificar compañías y comparar su tamaño relativo dentro del mercado financiero.",
+                "en": "Market capitalization, or market cap, is the total value of all outstanding shares of a publicly traded company. It is calculated by multiplying the current share price by the total number of outstanding shares. It does not always reflect the company's actual value, as it depends on the market price of the shares. A large-cap company has a high market cap, usually in the billions of dollars, while a small-cap company is smaller and can be more volatile. In simple terms, market capitalization shows how much the company is 'worth' according to the stock market and is used to classify companies and compare their relative size in the financial market."
+            }
+        },
+        {
+            "id": 9,
+            "domain": "conceptos_financieros",
+            "questions": {
+                "es": [
+                    "¿Qué es una commodity?",
+                    "¿Qué significa commodity?",
+                    "¿Qué son las commodities?",
+                    "¿Qué quiere decir commodity en economía?",
+                    "¿Qué productos se consideran commodities?",
+                    "¿Qué ejemplos de commodities hay?",
+                    "¿Qué es exactamente una commodity?",
+                    "¿Qué entienden por commodity?",
+                    "¿Qué diferencia hay entre commodity y producto normal?",
+                    "¿Qué tipo de bienes son las commodities?",
+                    "¿Qué quiere decir cuando dicen que algo es una commodity?",
+                    "¿Qué commodities existen en el mercado?",
+                    "¿Qué es eso de las commodities?",
+                    "¿Qué se entiende por commodity?",
+                    "¿Qué bienes básicos se consideran commodities?"
+                ],
+                "en": [
+                    "What is a commodity?",
+                    "What does commodity mean?",
+                    "What are commodities?",
+                    "What exactly is a commodity?",
+                    "What is meant by commodity?",
+                    "What products are considered commodities?",
+                    "What are some examples of commodities?",
+                    "What does it mean when they say something is a commodity?",
+                    "What types of goods are commodities?",
+                    "What is the difference between a commodity and a normal product?",
+                    "What commodities exist in the market?",
+                    "What does commodity refer to?",
+                    "What are basic commodities?",
+                    "What is commodity in economics?",
+                    "What is a commodity in simple terms?"
+                ]
+            },
+            "answer": {
+                "es": "Una commodity es un bien básico de consumo o materia prima, como el oro, el petróleo o el trigo, que se comercializa en mercados internacionales. Su característica principal es que son productos homogéneos, es decir, no importa quién los produzca, su valor en el mercado es prácticamente el mismo.",
+                "en": "A commodity is a basic good or raw material, such as gold, oil, or wheat, traded in international markets. Their main feature is that they are homogeneous products, meaning their market value is almost the same regardless of who produces them."
+            }
+        },
+        {
+            "id": 10,
+            "domain": "conceptos_financieros",
+            "questions": {
+                "es": [
+                    "¿Qué significa liquidez de un activo?",
+                    "¿Qué es la liquidez de un activo?",
+                    "¿Qué quiere decir liquidez en finanzas?",
+                    "¿Qué es la liquidez en economía?",
+                    "¿Qué implica que un activo sea líquido?",
+                    "¿Qué tan líquido puede ser un activo?",
+                    "¿Qué entienden por liquidez de un activo?",
+                    "¿Qué mide la liquidez?",
+                    "¿Qué significa que un activo tenga más o menos liquidez?",
+                    "¿Qué es la liquidez en términos simples?",
+                    "¿Qué diferencia hay entre un activo líquido y uno que no lo es?",
+                    "¿Qué ejemplos de activos líquidos existen?",
+                    "¿Qué tan rápido se puede vender un activo?",
+                    "¿Qué es la liquidez en palabras sencillas?",
+                    "¿Qué representa la liquidez de un activo?"
+                ],
+                "en": [
+                    "What does liquidity of an asset mean?",
+                    "What is liquidity of an asset?",
+                    "What does liquidity mean in finance?",
+                    "What is liquidity in economics?",
+                    "What does it mean if an asset is liquid?",
+                    "How liquid can an asset be?",
+                    "What is meant by asset liquidity?",
+                    "What does liquidity measure?",
+                    "What does it mean when an asset has high or low liquidity?",
+                    "What is liquidity in simple terms?",
+                    "What is the difference between liquid and illiquid assets?",
+                    "What are examples of liquid assets?",
+                    "How fast can an asset be sold?",
+                    "What does liquidity represent in assets?",
+                    "What is the concept of liquidity in finance?"
+                ]
+            },
+            "answer": {
+                "es": "La liquidez de un activo se refiere a la facilidad con la que puede convertirse en dinero en efectivo sin perder valor en el proceso. Un activo es más líquido si puede venderse rápido y sin afectar mucho su precio, como sucede con el efectivo o las acciones de grandes empresas. En cambio, bienes como inmuebles o arte suelen tener baja liquidez porque requieren más tiempo y esfuerzo para venderse.",
+                "en": "Liquidity of an asset refers to how easily it can be converted into cash without losing value in the process. An asset is more liquid if it can be sold quickly and with little impact on its price, such as cash or large company stocks. On the other hand, assets like real estate or art tend to have low liquidity because they take more time and effort to sell."
+            }
+        },
+        {
+            "id": 11,
+            "domain": "conceptos_financieros",
+            "questions": {
+                "es": [
+                    "¿Qué es el mercado Forex?",
+                    "¿Qué significa Forex?",
+                    "¿Qué es el mercado de divisas?",
+                    "¿Qué hacen en el mercado Forex?",
+                    "¿Qué implica invertir en Forex?",
+                    "¿Qué se negocia en Forex?",
+                    "¿Qué quiere decir mercado Forex?",
+                    "¿Qué pasa en el mercado de divisas?",
+                    "¿Qué es Forex en finanzas?",
+                    "¿Qué significa operar en Forex?",
+                    "¿Qué tan grande es el mercado Forex?",
+                    "¿Qué importancia tiene el mercado de divisas?",
+                    "¿Qué es el trading en Forex?",
+                    "¿Qué se entiende por mercado Forex?",
+                    "¿Qué función cumple el mercado de divisas?"
+                ],
+                "en": [
+                    "What is the Forex market?",
+                    "What does Forex mean?",
+                    "What is the foreign exchange market?",
+                    "What happens in Forex?",
+                    "What does investing in Forex mean?",
+                    "What is traded in Forex?",
+                    "What does Forex stand for in finance?",
+                    "What is Forex trading?",
+                    "What is meant by Forex market?",
+                    "What happens in the currency market?",
+                    "What is the size of the Forex market?",
+                    "What role does the foreign exchange market play?",
+                    "What does it mean to trade in Forex?",
+                    "What is Forex in simple terms?",
+                    "What is the function of the currency market?"
+                ]
+            },
+            "answer": {
+                "es": "El mercado Forex, también llamado mercado de divisas, es el espacio global donde se compran y venden monedas de distintos países. Es el mercado financiero más grande del mundo, operando las 24 horas del día y moviendo enormes volúmenes de dinero. Su función principal es facilitar el intercambio de divisas para el comercio internacional, la inversión y la especulación financiera. Por ejemplo, en Forex se negocian pares de divisas como el euro/dólar (EUR/USD) o el yen/dólar (JPY/USD).",
+                "en": "The Forex market, also known as the foreign exchange market, is the global space where currencies from different countries are bought and sold. It is the largest financial market in the world, operating 24 hours a day and moving huge amounts of money. Its main function is to facilitate currency exchange for international trade, investment, and financial speculation. For example, in Forex, currency pairs such as the euro/dollar (EUR/USD) or yen/dollar (JPY/USD) are traded."
+            }
+        },
+        {
+            "id": 12,
+            "domain": "conceptos_financieros",
+            "questions": {
+                "es": [
+                    "¿Qué significa par de divisas?",
+                    "¿Qué es un par de divisas?",
+                    "¿Qué quiere decir EUR/USD?",
+                    "¿Qué es eso de par de monedas?",
+                    "¿Qué significa ver dos monedas juntas como EUR/USD?",
+                    "¿Cómo funciona un par de divisas?",
+                    "¿Qué quiere decir cuando ponen USD/JPY?",
+                    "¿Qué implica un par de divisas?",
+                    "¿Qué significa en Forex un par de monedas?",
+                    "¿Qué representan las siglas EUR/USD?",
+                    "¿Cómo se leen los pares de divisas?",
+                    "¿Qué es eso de cotizar monedas por pares?",
+                    "¿Qué indica un par de divisas?",
+                    "¿Por qué las divisas siempre se muestran en pares?",
+                    "¿Qué significa comparar el euro con el dólar?"
+                ],
+                "en": [
+                    "What is a currency pair?",
+                    "What does a currency pair mean?",
+                    "What does EUR/USD stand for?",
+                    "What is a pair of currencies?",
+                    "What does it mean when two currencies are shown together?",
+                    "How does a currency pair work?",
+                    "What does USD/JPY represent?",
+                    "What is meant by a currency pair in Forex?",
+                    "Why are currencies always quoted in pairs?",
+                    "What does a pair like GBP/USD indicate?",
+                    "How do you read currency pairs?",
+                    "What does comparing euro to dollar mean?",
+                    "What does it mean when you see EUR/USD?",
+                    "What is the purpose of a currency pair?",
+                    "What does it show when two currencies are paired?"
+                ]
+            },
+            "answer": {
+                "es": "Un par de divisas representa la relación de valor entre dos monedas. La primera se llama **divisa base** y la segunda es la **divisa de cotización**. Por ejemplo, en el par EUR/USD, el euro (EUR) es la moneda base y el dólar estadounidense (USD) es la moneda de cotización. Si el par EUR/USD está en 1.10, significa que 1 euro equivale a 1.10 dólares. Los pares de divisas son la base del mercado Forex, donde se compran y venden monedas en función de estas relaciones.",
+                "en": "A currency pair represents the value relationship between two currencies. The first is called the **base currency** and the second is the **quote currency**. For example, in the pair EUR/USD, the euro (EUR) is the base currency and the US dollar (USD) is the quote currency. If the pair EUR/USD is at 1.10, it means that 1 euro equals 1.10 dollars. Currency pairs are the foundation of the Forex market, where currencies are bought and sold based on these relationships."
+            }
+        },
+        {
+            "id": 15,
+            "domain": "conceptos_financieros",
+            "questions": {
+                "es": [
+                    "¿Qué es volatilidad?",
+                    "Volatilidad qué significa",
+                    "Eso de volatilidad qué es",
+                    "Explícame la volatilidad",
+                    "Volatilidad en finanzas?",
+                    "Qué es volatilidad de mercado",
+                    "Qué significa volatilidad en economía",
+                    "La volatilidad qué quiere decir",
+                    "Volatilidad explicación fácil",
+                    "Qué implica que algo sea volátil"
+                ],
+                "en": [
+                    "What is volatility?",
+                    "Volatility meaning",
+                    "Explain volatility",
+                    "Volatility in finance?",
+                    "What does volatility mean in markets?",
+                    "Market volatility, what is it?",
+                    "Volatility explained simply",
+                    "What does it mean when something is volatile?"
+                ]
+            },
+            "answer": {
+                "es": "La volatilidad es cuánto varía el precio de un activo o mercado en un periodo de tiempo. Alta volatilidad significa cambios fuertes y rápidos; baja volatilidad significa precios más estables.",
+                "en": "Volatility is how much the price of an asset or market changes over a period of time. High volatility means strong and fast changes; low volatility means more stable prices."
+            }
+        },
+        {
+            "id": 17,
+            "domain": "conceptos_financieros",
+            "questions": {
+                "es": [
+                    "¿Qué es ROI?",
+                    "ROI qué significa",
+                    "Explícame ROI",
+                    "Qué es el ROI en inversiones",
+                    "ROI para qué sirve",
+                    "Cómo se entiende el ROI",
+                    "Qué significa Return on Investment",
+                    "Qué mide el ROI",
+                    "ROI explicación sencilla",
+                    "Eso del ROI qué quiere decir"
+                ],
+                "en": [
+                    "What is ROI?",
+                    "ROI meaning",
+                    "Explain ROI",
+                    "What does ROI stand for",
+                    "ROI in finance?",
+                    "What does Return on Investment mean?",
+                    "How is ROI explained?",
+                    "What is ROI in investments?",
+                    "ROI explained simply",
+                    "What does ROI measure"
+                ]
+            },
+            "answer": {
+                "es": "El ROI (Return on Investment) mide cuánto beneficio genera una inversión en comparación con lo que costó. Es una forma de saber si una inversión valió la pena: un ROI alto significa que se ganó más en proporción al dinero invertido, mientras que un ROI bajo indica poco rendimiento.",
+                "en": "ROI (Return on Investment) measures how much profit an investment generates compared to its cost. It's a way to know if an investment was worth it: a high ROI means greater gains relative to the money invested, while a low ROI indicates poor performance."
+            }
+        },
+        {
+            "id": 26,
+            "domain": "conceptos_financieros",
+            "questions": {
+                "es": [
+                    "¿Qué es un stop loss y un take profit?",
+                    "Explícame stop loss y take profit",
+                    "Stop loss y take profit qué significan",
+                    "Para qué sirven el stop loss y el take profit",
+                    "Cuál es la diferencia entre stop loss y take profit",
+                    "Qué significa poner un stop loss o un take profit",
+                    "Cómo funciona el stop loss y el take profit",
+                    "Stop loss y take profit explicación sencilla",
+                    "Qué son esas órdenes de stop loss y take profit",
+                    "Stop loss y take profit en trading qué son"
+                ],
+                "en": [
+                    "What are stop loss and take profit?",
+                    "Explain stop loss and take profit",
+                    "Stop loss vs take profit meaning",
+                    "What does stop loss and take profit mean?",
+                    "How do stop loss and take profit work?",
+                    "Stop loss and take profit explained simply",
+                    "What’s the difference between stop loss and take profit?",
+                    "Stop loss and take profit in trading?",
+                    "Why use stop loss and take profit?",
+                    "Stop loss and take profit orders meaning"
+                ]
+            },
+            "answer": {
+                "es": "En trading, un **stop loss** es una orden que se coloca para limitar las pérdidas si el precio va en contra de tu inversión, mientras que un **take profit** es una orden que asegura tus ganancias al vender automáticamente cuando el precio alcanza un nivel fijado. Ambos son herramientas de gestión de riesgo que ayudan a planear de antemano cuánto estás dispuesto a perder o ganar en una operación.",
+                "en": "In trading, a **stop loss** is an order placed to limit losses if the price moves against your position, while a **take profit** is an order that locks in profits by automatically selling when the price reaches a target level. Both are risk management tools that help you plan in advance how much you are willing to lose or gain in a trade."
+            }
+        },
+        {
+            "id": 28,
+            "domain": "conceptos_financieros",
+            "questions": {
+                "es": [
+                    "¿Qué es diversificación de cartera?",
+                    "¿Qué significa diversificar un portafolio?",
+                    "Diversificación en inversiones qué es",
+                    "¿Qué es un portafolio?",
+                    "¿Qué es un portafolio de inversión?",
+                    "Portafolio de inversión qué significa",
+                    "¿Qué es un portafolio equilibrado?",
+                    "Portafolio balanceado qué quiere decir",
+                    "¿Cómo se equilibra un portafolio?",
+                    "Diversificación y portafolio en palabras simples"
+                ],
+                "en": [
+                    "What is portfolio diversification?",
+                    "What does diversifying a portfolio mean?",
+                    "Portfolio diversification explained",
+                    "What is a portfolio in investing?",
+                    "What does investment portfolio mean?",
+                    "What is a balanced portfolio?",
+                    "Balanced portfolio meaning",
+                    "How to balance a portfolio?",
+                    "Portfolio and diversification explained simply"
+                ]
+            },
+            "answer": {
+                "es": "Un portafolio de inversión es el conjunto de activos financieros que posee un inversor, como acciones, bonos, ETFs, divisas o materias primas. Un portafolio **equilibrado** significa que está distribuido de forma que combina activos de mayor riesgo con otros más seguros, buscando un balance entre rentabilidad y seguridad. La **diversificación de cartera** consiste en repartir las inversiones en diferentes tipos de activos y sectores, ya que no todos se comportan igual al mismo tiempo. Esto reduce el riesgo porque si un activo pierde valor, otros pueden mantenerse o subir, compensando la caída. Por ejemplo, invertir solo en acciones de una empresa es arriesgado, pero si además incluyes bonos, ETFs o materias primas, tu portafolio es más estable y resistente a las caídas del mercado.",
+                "en": "An investment portfolio is the collection of financial assets an investor holds, such as stocks, bonds, ETFs, currencies, or commodities. A **balanced portfolio** means it is distributed in a way that combines riskier assets with safer ones, aiming for a balance between return and security. **Portfolio diversification** involves spreading investments across different types of assets and sectors, since not all move the same way at the same time. This reduces risk because if one asset loses value, others may remain stable or rise, offsetting the drop. For example, investing only in one company’s stock is risky, but if you also include bonds, ETFs, or commodities, your portfolio is more stable and resistant to market downturns."
+            }
+        },
+        {
+            "id": 30,
+            "domain": "conceptos_financieros",
+            "questions": {
+                "es": [
+                    "¿Qué significa apalancamiento financiero?",
+                    "¿Qué es apalancamiento en finanzas?",
+                    "Apalancamiento financiero qué es",
+                    "¿Cómo funciona el apalancamiento financiero?",
+                    "¿Qué quiere decir operar con apalancamiento?",
+                    "¿Apalancamiento es endeudarse?",
+                    "¿Qué implica usar apalancamiento en inversiones?",
+                    "Apalancamiento en bolsa qué significa",
+                    "Explicación simple del apalancamiento financiero",
+                    "¿Es bueno o malo el apalancamiento?"
+                ],
+                "en": [
+                    "What does financial leverage mean?",
+                    "What is leverage in finance?",
+                    "Financial leverage explained",
+                    "How does financial leverage work?",
+                    "What does it mean to trade with leverage?",
+                    "Is leverage the same as debt?",
+                    "What does using leverage in investing imply?",
+                    "Leverage in the stock market meaning",
+                    "Simple explanation of financial leverage",
+                    "Is leverage good or bad?"
+                ]
+            },
+            "answer": {
+                "es": "El apalancamiento financiero es una herramienta que permite invertir o operar con más dinero del que realmente se posee, utilizando recursos prestados, como créditos, préstamos o productos derivados. Su objetivo es aumentar la capacidad de inversión y, potencialmente, las ganancias, pero también incrementa los riesgos, ya que las pérdidas también se amplifican. Por ejemplo, con apalancamiento puedes controlar una posición de 10.000 dólares en el mercado aportando solo 1.000 propios, pero si el mercado va en tu contra, la pérdida será proporcionalmente mayor.",
+                "en": "Financial leverage is a tool that allows investing or trading with more money than one actually owns, by using borrowed resources such as loans, credits, or derivative products. Its purpose is to increase investment capacity and potentially profits, but it also increases risk, since losses are amplified as well. For example, with leverage you can control a $10,000 market position with only $1,000 of your own, but if the market moves against you, the loss will also be proportionally larger."
+            }
+        },
+        {
+            "id": 33,
+            "domain": "conceptos_financieros",
+            "questions": {
+                "es": [
+                    "¿Qué es inversión a largo plazo vs corto plazo?",
+                    "¿Qué significa invertir a corto o a largo plazo?",
+                    "¿Cuál es la diferencia entre inversión a corto y largo plazo?",
+                    "Invertir a corto plazo qué es",
+                    "Invertir a largo plazo qué es",
+                    "¿Conviene más invertir a corto o largo plazo?",
+                    "Explicación sencilla de corto plazo y largo plazo en inversiones",
+                    "¿Qué implica una inversión a largo plazo?",
+                    "¿Qué implica una inversión a corto plazo?",
+                    "Corto plazo vs largo plazo en finanzas"
+                ],
+                "en": [
+                    "What is long-term vs short-term investing?",
+                    "What does it mean to invest short-term or long-term?",
+                    "Difference between long-term and short-term investment",
+                    "Short-term investing explained",
+                    "Long-term investing explained",
+                    "Is it better to invest short-term or long-term?",
+                    "Simple explanation of short vs long term investing",
+                    "What does a long-term investment imply?",
+                    "What does a short-term investment imply?",
+                    "Short-term vs long-term in finance"
+                ]
+            },
+            "answer": {
+                "es": "La inversión a largo plazo consiste en mantener activos durante varios años con el objetivo de acumular valor de manera sostenida, aprovechando el crecimiento de empresas, intereses compuestos o la estabilidad de ciertos mercados. Suele estar asociada con perfiles de inversor más pacientes y estrategias de menor riesgo relativo. En cambio, la inversión a corto plazo busca generar ganancias rápidas en días, semanas o meses, aprovechando movimientos de precios más volátiles, pero con mayor riesgo de pérdidas. La elección entre corto o largo plazo depende de los objetivos financieros, la tolerancia al riesgo y el horizonte temporal de cada persona.",
+                "en": "Long-term investing means holding assets for several years with the goal of building value steadily, benefiting from company growth, compound interest, or market stability. It is usually linked to more patient investors and strategies with relatively lower risk. On the other hand, short-term investing aims to generate quick profits within days, weeks, or months, by taking advantage of more volatile price movements, but it carries a higher risk of losses. The choice between short-term and long-term depends on personal financial goals, risk tolerance, and investment horizon."
+            }
+        },
+        {
+            "id": 36,
+            "domain": "conceptos_financieros",
+            "questions": {
+                "es": [
+                    "¿Qué es inflación?",
+                    "¿Qué significa que haya inflación?",
+                    "¿Cómo me afecta la inflación?",
+                    "Inflación explicación sencilla",
+                    "¿Qué pasa con mis inversiones cuando hay inflación?",
+                    "Inflación qué es y cómo impacta el dinero",
+                    "¿Cómo influye la inflación en la economía?",
+                    "¿Por qué la inflación reduce el poder de compra?",
+                    "¿Qué es inflación en finanzas?",
+                    "¿Cómo afecta la inflación al ahorro y la inversión?",
+                    "Explícame la inflación fácil",
+                    "Inflación definición corta",
+                    "¿Qué implica vivir con inflación?",
+                    "Inflación y precios, ¿qué relación tienen?"
+                ],
+                "en": [
+                    "What is inflation and how does it affect investments?",
+                    "What does inflation mean?",
+                    "How does inflation affect me?",
+                    "Simple explanation of inflation",
+                    "What happens to investments during inflation?",
+                    "What is inflation in finance?",
+                    "Why does inflation reduce purchasing power?",
+                    "How does inflation impact the economy?",
+                    "What does inflation mean for savings?",
+                    "Effects of inflation on money and investments",
+                    "Explain inflation in simple words",
+                    "Inflation short definition",
+                    "What happens when there's inflation?",
+                    "Inflation and prices, how are they related?"
+                ]
+            },
+            "answer": {
+                "es": "La inflación es el aumento sostenido y generalizado de los precios de bienes y servicios en una economía durante un periodo de tiempo. Esto significa que, con el paso del tiempo, el dinero pierde poder adquisitivo: lo que antes alcanzaba para comprar cierta cantidad de productos, ahora alcanza para menos. En el ámbito financiero, la inflación afecta directamente el valor real de los ahorros y las inversiones. Por ejemplo, si una inversión genera un 5% de rendimiento anual pero la inflación es del 6%, en términos reales estás perdiendo poder adquisitivo. Por ello, al invertir es importante considerar la inflación y buscar activos que ayuden a protegerse de ella, como acciones, bienes raíces o instrumentos indexados.",
+                "en": "Inflation is the sustained and general increase in the prices of goods and services in an economy over time. This means that money gradually loses purchasing power: what used to buy a certain amount of goods now buys less. In finance, inflation directly affects the real value of savings and investments. For example, if an investment yields 5% annually but inflation is 6%, in real terms you are losing purchasing power. That is why it is important to consider inflation when investing and seek assets that can help protect against it, such as stocks, real estate, or inflation-indexed instruments."
+            }
+        },
+        {
+            "id": 37,
+            "domain": "conceptos_financieros",
+            "questions": {
+                "es": [
+                    "¿Qué es deflación?",
+                    "Deflación explicación sencilla",
+                    "¿Qué significa deflación en economía?",
+                    "¿Cómo afecta la deflación a la economía?",
+                    "Ejemplos de deflación",
+                    "¿Cómo es la deflación?",
+                    "¿Cómo impacta la deflación en las empresas?",
+                    "Deflación consecuencias",
+                    "¿Qué diferencia hay entre inflación y deflación?",
+                    "¿Cómo afecta la deflación a los consumidores y empresas?",
+                    "Deflación definición corta",
+                    "¿Qué pasa cuando los precios bajan mucho?",
+                    "Explícame la deflación fácil",
+                    "Deflación y economía, ¿qué relación tienen?"
+                ],
+                "en": [
+                    "What is deflation?",
+                    "Simple explanation of deflation",
+                    "What does deflation mean in economics?",
+                    "How does deflation affect the economy?",
+                    "Examples of deflation",
+                    "What happens when prices fall?",
+                    "Impact of deflation on companies",
+                    "Consequences of deflation",
+                    "Difference between inflation and deflation",
+                    "How does deflation affect consumers and businesses?",
+                    "Short definition of deflation",
+                    "Explain deflation in simple words",
+                    "What happens if prices keep going down?",
+                    "Deflation and economy, how are they connected?"
+                ]
+            },
+            "answer": {
+                "es": "La deflación es la disminución sostenida y generalizada de los precios de bienes y servicios en una economía durante un periodo de tiempo. Aunque a primera vista puede parecer positivo que los precios bajen, la deflación suele ser un signo de debilidad económica. Cuando los precios caen, los consumidores y las empresas tienden a retrasar sus compras e inversiones esperando que los precios bajen aún más, lo que reduce la demanda y afecta las ganancias de las compañías. Esto puede llevar a recortes de producción, despidos y una desaceleración económica. En el ámbito financiero, la deflación incrementa el valor real del dinero y de las deudas, lo que puede dificultar el pago de créditos y generar riesgos en el sistema económico.",
+                "en": "Deflation is the sustained and generalized decrease in the prices of goods and services in an economy over a period of time. While lower prices may sound beneficial, deflation is usually a sign of economic weakness. When prices fall, consumers and businesses often delay purchases and investments expecting further drops, which reduces demand and affects company profits. This can lead to production cuts, layoffs, and economic slowdown. In finance, deflation increases the real value of money and debts, making it harder to pay loans and creating risks for the economic system."
+            }
+        },
+        {
+            "id": 41,
+            "domain": "conceptos_financieros",
+            "questions": {
+                "es": [
+                    "¿Qué es el nivel de riesgo de un inversor?",
+                    "¿Qué significa tolerancia al riesgo?",
+                    "Tipos de inversores según su riesgo",
+                    "Ejemplos de perfil de riesgo en inversiones",
+                    "¿Cómo saber mi nivel de riesgo al invertir?",
+                    "¿Qué es un inversor conservador?",
+                    "¿Qué es un inversor moderado?",
+                    "¿Qué es un inversor arriesgado o agresivo?",
+                    "Perfil de riesgo explicación sencilla",
+                    "¿Cómo identificar mi perfil de inversión?",
+                    "Inversor conservador, moderado y agresivo, ¿qué significa?",
+                    "Diferencia entre perfiles de riesgo en inversiones"
+                ],
+                "en": [
+                    "What is an investor's risk level?",
+                    "What does risk tolerance mean?",
+                    "Types of investors by risk level",
+                    "Examples of investor risk profiles",
+                    "How to know my risk level when investing?",
+                    "What is a conservative investor?",
+                    "What is a moderate investor?",
+                    "What is a risky or aggressive investor?",
+                    "Simple explanation of risk profiles",
+                    "How to identify my investment profile?",
+                    "Conservative, moderate, aggressive investors — what do they mean?",
+                    "Difference between investment risk profiles"
+                ]
+            },
+            "answer": {
+                "es": "El nivel de riesgo de un inversor representa la disposición y capacidad que tiene una persona para asumir posibles pérdidas en sus inversiones a cambio de obtener ganancias. Este nivel depende de factores como la situación financiera, los objetivos de inversión, el horizonte de tiempo y la personalidad del inversor. En general, se suelen identificar tres perfiles principales: Conservador, que busca proteger su capital y prefiere inversiones seguras con rendimientos más bajos (ejemplo: bonos gubernamentales); Moderado, que busca un equilibrio entre seguridad y rentabilidad, aceptando cierto riesgo para obtener mejores resultados a largo plazo (ejemplo: combinar acciones y bonos en su portafolio); y Arriesgado o agresivo, que está dispuesto a asumir mayores pérdidas en el corto plazo para intentar lograr altas ganancias (ejemplo: invertir principalmente en acciones volátiles o criptomonedas). Identificar el nivel de riesgo ayuda a definir un portafolio adecuado y a tomar decisiones financieras alineadas con las metas personales.",
+                "en": "An investor's risk level represents the willingness and ability of a person to accept potential losses in their investments in exchange for possible gains. This level depends on factors such as financial situation, investment goals, time horizon, and personality. In general, three main profiles are identified: Conservative, who seeks to protect their capital and prefers safer investments with lower returns (e.g., government bonds); Moderate, who aims for a balance between safety and profitability, accepting some risk to achieve better long-term results (e.g., combining stocks and bonds in their portfolio); and Risky or aggressive, who is willing to face greater short-term losses in exchange for the possibility of higher gains (e.g., investing mainly in volatile stocks or cryptocurrencies). Identifying the risk level helps design a suitable portfolio and make financial decisions aligned with personal goals."
+            }
+        },
+        {
+            "id": 53,
+            "domain": "conceptos_financieros",
+            "questions": {
+                "es": [
+                    "¿Qué es el RSI (Relative Strength Index)?",
+                    "RSI explicación sencilla",
+                    "¿Qué significa RSI en trading?",
+                    "¿Para qué sirve el RSI?",
+                    "Indicador RSI qué es",
+                    "¿Cómo interpretar el RSI?",
+                    "RSI en análisis técnico, ¿qué mide?",
+                    "¿Qué indica un RSI alto o bajo?",
+                    "Ejemplo de RSI en inversiones",
+                    "RSI significado en finanzas",
+                    "¿Cómo usar el RSI en bolsa?",
+                    "RSI definición corta"
+                ],
+                "en": [
+                    "What is RSI (Relative Strength Index)?",
+                    "Simple explanation of RSI",
+                    "What does RSI mean in trading?",
+                    "What is RSI used for?",
+                    "RSI indicator meaning",
+                    "How to interpret RSI?",
+                    "RSI in technical analysis, what does it measure?",
+                    "What does high or low RSI indicate?",
+                    "Example of RSI in investing",
+                    "RSI meaning in finance",
+                    "How to use RSI in stock trading?",
+                    "Short definition of RSI"
+                ]
+            },
+            "answer": {
+                "es": "El RSI (Índice de Fuerza Relativa) es un indicador técnico que mide la rapidez y magnitud de los movimientos de precio de un activo. Su valor va de 0 a 100. Generalmente, un RSI por encima de 70 indica que el activo está sobrecomprado y podría bajar, mientras que un RSI por debajo de 30 indica que está sobrevendido y podría subir. Se usa para identificar posibles cambios de tendencia y momentos de compra o venta.",
+                "en": "RSI (Relative Strength Index) is a technical indicator that measures the speed and magnitude of an asset's price movements. Its value ranges from 0 to 100. Generally, an RSI above 70 indicates the asset is overbought and may fall, while an RSI below 30 indicates it is oversold and may rise. It is used to identify potential trend changes and buy or sell opportunities."
+            }
+        },
+        {
+            "id": 54,
+            "domain": "conceptos_financieros",
+            "questions": {
+                "es": [
+                    "¿Qué significa que un activo esté sobrecomprado o sobrevendido?",
+                    "¿Qué es sobrecomprado en trading?",
+                    "¿Qué es sobrevendido en trading?",
+                    "Sobrecomprado explicación sencilla",
+                    "Sobrevendido explicación sencilla",
+                    "¿Qué implica que un activo esté sobrecomprado?",
+                    "¿Qué implica que un activo esté sobrevendido?",
+                    "¿Cuál es la diferencia entre sobrecomprado y sobrevendido?",
+                    "Ejemplo de activo sobrecomprado",
+                    "Ejemplo de activo sobrevendido",
+                    "¿Qué pasa si un activo está sobrecomprado?",
+                    "¿Qué pasa si un activo está sobrevendido?"
+                ],
+                "en": [
+                    "What does it mean when an asset is overbought or oversold?",
+                    "What does overbought mean in trading?",
+                    "What does oversold mean in trading?",
+                    "Simple explanation of overbought",
+                    "Simple explanation of oversold",
+                    "What happens if an asset is overbought?",
+                    "What happens if an asset is oversold?",
+                    "Difference between overbought and oversold",
+                    "Example of an overbought asset",
+                    "Example of an oversold asset",
+                    "Overbought meaning in finance",
+                    "Oversold meaning in finance"
+                ]
+            },
+            "answer": {
+                "es": "Sobrecomprado significa que el precio ha subido demasiado y podría corregirse a la baja. Sobrevendido significa que el precio ha bajado mucho y podría subir.",
+                "en": "Overbought means the price has risen too much and may correct downwards. Oversold means the price has dropped a lot and may rise."
+            }
+        },
+        {
+            "id": 55,
+            "domain": "conceptos_financieros",
+            "questions": {
+                "es": [
+                    "¿Qué es un promedio móvil (Moving Average)?",
+                    "Promedio móvil explicación sencilla",
+                    "¿Para qué sirve un promedio móvil?",
+                    "¿Cómo funciona el promedio móvil?",
+                    "Ejemplo de promedio móvil en trading",
+                    "¿Qué indica el promedio móvil?",
+                    "Definición de promedio móvil",
+                    "¿Cómo se calcula un promedio móvil?",
+                    "¿Qué es una media móvil en finanzas?",
+                    "Promedio móvil qué significa en análisis técnico",
+                    "Promedio móvil uso en inversiones",
+                    "¿Cómo interpretar el promedio móvil?"
+                ],
+                "en": [
+                    "What is a moving average?",
+                    "Simple explanation of moving average",
+                    "What is a moving average used for?",
+                    "How does a moving average work?",
+                    "Example of moving average in trading",
+                    "What does a moving average indicate?",
+                    "Definition of moving average",
+                    "How is a moving average calculated?",
+                    "What is a moving average in finance?",
+                    "Moving average meaning in technical analysis",
+                    "Use of moving average in investing",
+                    "How to interpret a moving average?"
+                ]
+            },
+            "answer": {
+                "es": "El promedio móvil muestra el precio promedio de un activo durante un período de tiempo determinado y ayuda a identificar tendencias generales.",
+                "en": "A moving average shows the average price of an asset over a specific period and helps identify overall trends."
+            }
+        },
+        {
+            "id": 62,
+            "domain": "conceptos_financieros",
+            "questions": {
+                "es": [
+                    "¿Qué es un índice bursátil?",
+                    "¿Cómo funcionan los índices bursátiles?",
+                    "¿Qué tipos de índices existen?",
+                    "¿Cuáles son los índices bursátiles más conocidos?",
+                    "Índice bursátil explicación sencilla",
+                    "Ejemplo de índice bursátil",
+                    "¿Para qué sirve un índice bursátil?",
+                    "Índices bursátiles definición corta",
+                    "¿Qué mide un índice bursátil?",
+                    "¿Cómo se calcula un índice bursátil?",
+                    "Índices más importantes en la bolsa",
+                    "Índice bursátil en economía, ¿qué significa?"
+                ],
+                "en": [
+                    "What is a stock market index?",
+                    "How do stock market indices work?",
+                    "What types of indices exist?",
+                    "What are the most well-known stock market indices?",
+                    "Simple explanation of stock market index",
+                    "Example of a stock market index",
+                    "What is the purpose of a stock market index?",
+                    "Short definition of stock market index",
+                    "What does a stock index measure?",
+                    "How is a stock index calculated?",
+                    "Most important stock market indices",
+                    "Stock market index meaning in economics"
+                ]
+            },
+            "answer": {
+                "es": "Un índice bursátil es un indicador que muestra el comportamiento de un grupo de acciones seleccionadas y sirve para medir cómo le va a un mercado o sector en general. Funciona como un promedio ponderado: cada empresa dentro del índice tiene un peso distinto según criterios como su tamaño de mercado o el precio de sus acciones. Existen diferentes tipos de índices: 1) **Generales**, que miden todo un mercado (ejemplo: S&P 500 en EE.UU.); 2) **Sectoriales**, que agrupan empresas de una misma industria (ejemplo: Nasdaq tecnológico); 3) **Internacionales**, que combinan empresas de varios países (ejemplo: MSCI World). Algunos de los índices más conocidos son: el **S&P 500**, el **Dow Jones**, el **Nasdaq**, el **FTSE 100**, el **DAX** y el **Nikkei 225**.",
+                "en": "A stock market index is an indicator that shows the performance of a selected group of stocks and helps measure how a market or sector is doing overall. It works like a weighted average: each company in the index has a different weight based on criteria such as its market size or stock price. There are different types of indices: 1) **General**, which measure an entire market (e.g., S&P 500 in the U.S.); 2) **Sectoral**, which group companies from the same industry (e.g., Nasdaq tech index); 3) **International**, which combine companies from several countries (e.g., MSCI World). Some of the most well-known indices are: the **S&P 500**, the **Dow Jones**, the **Nasdaq**, the **FTSE 100**, the **DAX**, and the **Nikkei 225**."
+            }
+        },
+        {
+            "id": 67,
+            "domain": "conceptos_financieros",
+            "questions": {
+                "es": [
+                    "¿Cuál es la diferencia entre un índice bursátil y un ETF?",
+                    "¿En qué se distingue un ETF de un índice?",
+                    "¿Por qué no es lo mismo invertir en un índice que en un ETF?",
+                    "¿Qué relación existe entre un índice y un ETF?",
+                    "¿Un índice se puede comprar igual que un ETF?",
+                    "¿Qué los diferencia: un índice frente a un ETF?",
+                    "¿Cómo funciona un índice comparado con un ETF?",
+                    "¿Es lo mismo un índice que un ETF?",
+                    "¿Qué papel cumple un ETF frente a un índice bursátil?",
+                    "¿Qué significa que un ETF replique un índice?"
+                ],
+                "en": [
+                    "What is the difference between a stock market index and an ETF?",
+                    "How is an ETF different from an index?",
+                    "Why is investing in an index not the same as investing in an ETF?",
+                    "What is the relationship between an index and an ETF?",
+                    "Can an index be bought like an ETF?",
+                    "What sets an index apart from an ETF?",
+                    "How does an index work compared to an ETF?",
+                    "Is an index the same as an ETF?",
+                    "What role does an ETF play compared to an index?",
+                    "What does it mean when an ETF replicates an index?"
+                ]
+            },
+            "answer": {
+                "es": "Un índice es un indicador que refleja el comportamiento de un grupo de acciones, pero no es un activo en sí mismo ni se puede comprar directamente. Un ETF (Exchange-Traded Fund) es un fondo de inversión que busca replicar el rendimiento de un índice y que sí se puede negociar en la bolsa como si fuera una acción. En otras palabras, el índice es la referencia teórica y el ETF es el vehículo práctico que permite a los inversores acceder a ese desempeño. Por ejemplo, el S&P 500 es un índice, mientras que el ETF SPY es un fondo que lo replica.",
+                "en": "An index is an indicator that reflects the performance of a group of stocks, but it is not an asset itself and cannot be bought directly. An ETF (Exchange-Traded Fund) is an investment fund that seeks to replicate the performance of an index and can be traded on the stock exchange like a stock. In other words, the index is the theoretical benchmark, while the ETF is the practical vehicle that allows investors to access that performance. For example, the S&P 500 is an index, while the SPY ETF is a fund that replicates it."
+            }
+        },
+        {
+            "id": 69,
+            "domain": "conceptos_financieros",
+            "questions": {
+                "es": [
+                    "¿Qué es el mercado de valores?",
+                    "Mercado de valores, definición",
+                    "Quiero saber qué es el mercado de valores",
+                    "Explícame el mercado de valores",
+                    "Mercado de valores: ¿cómo funciona?",
+                    "¿Para qué sirve el mercado de valores?",
+                    "¿Qué se negocia en el mercado de valores?",
+                    "Importancia del mercado de valores en la economía",
+                    "Participantes en el mercado de valores",
+                    "Mercado de valores y bolsa, ¿son lo mismo?"
+                ],
+                "en": [
+                    "What is the stock market?",
+                    "Stock market, definition",
+                    "I want to know what the stock market is",
+                    "Explain the stock market to me",
+                    "Stock market: how does it work?",
+                    "What is the purpose of the stock market?",
+                    "What is traded in the stock market?",
+                    "Importance of the stock market in the economy",
+                    "Who participates in the stock market?",
+                    "Stock market vs. exchange: are they the same?"
+                ]
+            },
+            "answer": {
+                "es": "El mercado de valores es el espacio, físico o virtual, donde se negocian acciones, bonos y otros instrumentos financieros. Su función principal es conectar a las empresas y gobiernos que buscan financiamiento con los inversores que desean hacer crecer su dinero. A través de este mercado, las empresas pueden emitir acciones o deuda para obtener recursos, mientras que los inversores tienen la oportunidad de obtener rendimientos. Además, el mercado de valores cumple un papel clave en la economía porque refleja la confianza de los agentes económicos y facilita la asignación eficiente del capital.",
+                "en": "The stock market is the physical or virtual space where stocks, bonds, and other financial instruments are traded. Its main function is to connect companies and governments seeking funding with investors looking to grow their money. Through this market, companies can issue shares or debt to raise capital, while investors have the opportunity to earn returns. In addition, the stock market plays a key role in the economy as it reflects the confidence of economic agents and facilitates the efficient allocation of capital."
+            }
+        },
+        {
+            "id": 72,
+            "domain": "conceptos_financieros",
+            "questions": {
+                "es": [
+                    "¿Qué es el S&P 500?",
+                    "S&P 500, definición",
+                    "Explícame qué significa el S&P 500",
+                    "¿Para qué sirve el S&P 500?",
+                    "Quiero saber qué es el índice S&P 500",
+                    "¿Por qué es importante el S&P 500?",
+                    "¿El S&P 500 representa la economía de EE.UU.?",
+                    "Ejemplo de índice bursátil: el S&P 500",
+                    "S&P 500 vs Dow Jones, ¿en qué se diferencian?",
+                    "¿Qué empresas forman parte del S&P 500?"
+                ],
+                "en": [
+                    "What is the S&P 500?",
+                    "S&P 500, definition",
+                    "Explain what the S&P 500 means",
+                    "What is the purpose of the S&P 500?",
+                    "I want to know what the S&P 500 index is",
+                    "Why is the S&P 500 important?",
+                    "Does the S&P 500 represent the U.S. economy?",
+                    "Example of a stock market index: the S&P 500",
+                    "S&P 500 vs Dow Jones, what's the difference?",
+                    "Which companies are included in the S&P 500?"
+                ]
+            },
+            "answer": {
+                "es": "El S&P 500 es un índice bursátil que agrupa a 500 de las empresas más grandes y representativas de Estados Unidos, elegidas por su tamaño de mercado, liquidez y relevancia en la economía. Se utiliza como un termómetro del mercado estadounidense, ya que refleja de manera bastante amplia el comportamiento de distintos sectores. Es una de las referencias más importantes para inversores y analistas, junto con otros índices como el Dow Jones o el Nasdaq.",
+                "en": "The S&P 500 is a stock market index that includes 500 of the largest and most representative U.S. companies, selected based on market size, liquidity, and economic relevance. It is widely used as a barometer of the U.S. market, as it broadly reflects the performance of different sectors. Along with indices like the Dow Jones and the Nasdaq, it is one of the most important benchmarks for investors and analysts."
+            }
+        },
+        {
+            "id": 100,
+            "domain": "informacion_plataforma",
+            "questions": {
+                "es": [
+                    "¿Qué es StarkAdvisor?",
+                    "Para qué sirve StarkAdvisor?",
+                    "Qué ofrece StarkAdvisor?",
+                    "Qué servicios da StarkAdvisor?",
+                    "Me puedes explicar qué es StarkAdvisor?",
+                    "Qué funciones tiene StarkAdvisor?",
+                    "Para qué se usa StarkAdvisor?",
+                    "StarkAdvisor es plataforma financiera?",
+                    "Qué apartados principales tiene StarkAdvisor?",
+                    "Qué funcionalidades tiene StarkAdvisor?",
+                    "Cuál es el objetivo de StarkAdvisor?",
+                    "Cuál es la finalidad de StarkAdvisor?",
+                    "Para qué se creó StarkAdvisor?",
+                    "Qué busca StarkAdvisor con los usuarios?",
+                    "Me podrías detallar el propósito de StarkAdvisor?",
+                    "Podrías explicarme la misión y objetivo de StarkAdvisor?",
+                    "Me puedes dar un resumen completo de qué es StarkAdvisor y su objetivo?",
+                    "Qué herramientas ofrece StarkAdvisor para analizar el mercado?",
+                    "Cuáles son los objetivos principales de StarkAdvisor y cómo ayuda al usuario?",
+                    "Explícame detalladamente qué es StarkAdvisor, sus funciones y la finalidad de la plataforma."
+                ],
+                "en": [
+                    "What is StarkAdvisor?",
+                    "What's StarkAdvisor for?",
+                    "What services does StarkAdvisor offer?",
+                    "What does StarkAdvisor provide?",
+                    "Can you explain what StarkAdvisor is?",
+                    "What functionalities does StarkAdvisor have?",
+                    "What is StarkAdvisor used for?",
+                    "Is StarkAdvisor a financial platform?",
+                    "What are the main sections of StarkAdvisor?",
+                    "What are StarkAdvisor's features?",
+                    "What is the objective of StarkAdvisor?",
+                    "What is the aim of StarkAdvisor?",
+                    "Why was StarkAdvisor created?",
+                    "What does StarkAdvisor seek to do for users?",
+                    "Could you detail the purpose of StarkAdvisor?",
+                    "Could you explain the mission and goal of StarkAdvisor?",
+                    "Can you give me a complete summary of what StarkAdvisor is and its purpose?",
+                    "What tools does StarkAdvisor offer to analyze the market?",
+                    "What are the main objectives of StarkAdvisor and how does it help the user?",
+                    "Explain in detail what StarkAdvisor is, its features, and the platform's purpose."
+                ]
+            },
+            "answer": {
+                "es": "StarkAdvisor es una plataforma de análisis financiero que centraliza información del mercado en un solo lugar. Ofrece cuatro funcionalidades principales: 1) Trade del Día, que proporciona recomendaciones diarias de inversión; 2) Noticias financieras, con buscador y filtros para estar al día del mercado; 3) Mercado, donde se pueden consultar datos, gráficos e indicadores de acciones, ETFs y divisas; 4) Starky, el chatbot que ayuda a resolver dudas sobre conceptos financieros y uso de la plataforma. Su objetivo es brindar a los usuarios información clara y accesible para comprender mejor el mercado y tomar decisiones informadas.",
+                "en": "StarkAdvisor is a financial analysis platform that centralizes market information in one place. It offers four main features: 1) Trade of the Day, providing daily investment recommendations; 2) Financial news, with search and filters to stay up-to-date on the market; 3) Market, where users can view data, charts, and indicators for stocks, ETFs, and currencies; 4) Starky, the chatbot that helps answer questions about financial concepts and platform usage. Its objective is to provide users with clear and accessible information to better understand the market and make informed decisions."
+            }
+        },
+        {
+            "id": 101,
+            "domain": "informacion_plataforma",
+            "questions": {
+                "es": [
+                    "¿Qué limitaciones tiene StarkAdvisor?",
+                    "StarkAdvisor tiene restricciones?",
+                    "Hay algo que StarkAdvisor no pueda hacer?",
+                    "Qué no ofrece StarkAdvisor?",
+                    "Qué no hace la plataforma?",
+                    "Qué no puedo hacer en StarkAdvisor?",
+                    "Cuáles son los límites de StarkAdvisor?",
+                    "Qué precauciones debo tener al usar StarkAdvisor?",
+                    "StarkAdvisor garantiza ganancias?",
+                    "Se puede confiar al 100% en StarkAdvisor?",
+                    "StarkAdvisor da asesoría personalizada?",
+                    "¿Qué restricciones existen al usar StarkAdvisor en cuanto a inversiones?",
+                    "Qué tipo de límites o advertencias debo conocer antes de usar StarkAdvisor?",
+                    "Qué consideraciones debo tener en cuenta sobre las recomendaciones de StarkAdvisor?",
+                    "StarkAdvisor ofrece información educativa pero no asesoría, puedes explicarlo?",
+                    "Cuáles son las limitaciones legales o de uso que tiene la plataforma StarkAdvisor?",
+                    "Podrías detallar las restricciones y responsabilidades de los usuarios dentro de StarkAdvisor?",
+                    "Explícame de manera completa cuáles son los alcances y límites de StarkAdvisor en términos de inversión y asesoría financiera.",
+                    "Detállame la información que StarkAdvisor puede ofrecer y qué no garantiza en cuanto a resultados de inversión.",
+                    "Podrías explicar claramente cuáles son las restricciones, responsabilidades del usuario y el alcance educativo de StarkAdvisor?",
+                    "Quisiera un resumen completo de las limitaciones, precauciones y responsabilidades al usar StarkAdvisor."
+                ],
+                "en": [
+                    "What limits does StarkAdvisor have?",
+                    "Does StarkAdvisor have restrictions?",
+                    "Is there something StarkAdvisor cannot do?",
+                    "What does StarkAdvisor not offer?",
+                    "What can’t I do on StarkAdvisor?",
+                    "What are the boundaries of StarkAdvisor?",
+                    "What precautions should I take when using StarkAdvisor?",
+                    "Does StarkAdvisor guarantee profits?",
+                    "Can you fully trust StarkAdvisor?",
+                    "Does StarkAdvisor provide personalized advice?",
+                    "What restrictions exist in StarkAdvisor regarding investments?",
+                    "What limits or warnings should I know before using StarkAdvisor?",
+                    "What considerations should I keep in mind about StarkAdvisor's recommendations?",
+                    "StarkAdvisor provides educational information but not advice, can you explain?",
+                    "What are the legal or usage limitations of the StarkAdvisor platform?",
+                    "Could you detail the restrictions and responsibilities of users within StarkAdvisor?",
+                    "Explain fully the scope and limits of StarkAdvisor in terms of investment and financial advice.",
+                    "Detail the information StarkAdvisor can provide and what it does not guarantee regarding investment results.",
+                    "Could you clearly explain the restrictions, user responsibilities, and educational scope of StarkAdvisor?",
+                    "I would like a complete summary of the limitations, precautions, and responsibilities when using StarkAdvisor."
+                ]
+            },
+            "answer": {
+                "es": "StarkAdvisor no ofrece asesoría financiera personalizada ni garantiza resultados de inversión. La información proporcionada es educativa e informativa, y los usuarios son responsables de sus decisiones de inversión.",
+                "en": "StarkAdvisor does not provide personalized financial advice or guarantee investment results. The information provided is educational and informative, and users are responsible for their own investment decisions."
+            }
+        },
+        {
+            "id": 102,
+            "domain": "informacion_plataforma",
+            "questions": {
+                "es": [
+                    "¿Cómo me registro en StarkAdvisor?",
+                    "¿Puedo registrarme?",
+                    "¿Cómo hago para crear una cuenta?",
+                    "Registro en StarkAdvisor, cómo es?",
+                    "¿Cómo inicio sesión?",
+                    "No recuerdo cómo entrar a mi cuenta, qué hago?",
+                    "¿Puedo acceder sin registrarme?",
+                    "¿Qué pasa si no me registro?",
+                    "Usuarios registrados y no registrados, cuál es la diferencia?",
+                    "¿Qué ventajas tiene registrarse?",
+                    "¿Para qué sirve registrarse en StarkAdvisor?",
+                    "Al registrarme, qué funciones obtengo?",
+                    "¿Qué limitaciones tengo si no creo cuenta?",
+                    "Necesito crear cuenta, qué pasos debo seguir?",
+                    "Explica cómo iniciar sesión y registrarse en StarkAdvisor.",
+                    "Detállame las diferencias entre usuarios con cuenta y sin cuenta y qué beneficios tiene registrarse.",
+                    "Podrías explicarme todo el proceso de registro, login y las ventajas de tener una cuenta en StarkAdvisor?",
+                    "Quisiera un resumen completo de cómo registrarme, iniciar sesión y las diferencias de funcionalidad entre usuarios registrados y no registrados.",
+                    "Explícame detalladamente el procedimiento de registro, inicio de sesión y los beneficios completos de la plataforma para los usuarios con cuenta.",
+                    "Podrías darme una descripción completa de cómo crear cuenta, iniciar sesión y las funcionalidades accesibles según el tipo de usuario en StarkAdvisor?"
+                ],
+                "en": [
+                    "How do I register on StarkAdvisor?",
+                    "Can I register?",
+                    "How do I create an account?",
+                    "Registration on StarkAdvisor, how does it work?",
+                    "How do I log in?",
+                    "I forgot how to access my account, what should I do?",
+                    "Can I access without registering?",
+                    "What happens if I don’t register?",
+                    "Registered vs unregistered users, what’s the difference?",
+                    "What are the benefits of registering?",
+                    "Why should I register on StarkAdvisor?",
+                    "What features do I get if I register?",
+                    "What limitations exist if I don’t create an account?",
+                    "I need to create an account, what steps should I follow?",
+                    "Explain how to log in and register on StarkAdvisor.",
+                    "Detail the differences between users with and without accounts and the benefits of registering.",
+                    "Could you explain the entire registration, login process, and benefits of having a StarkAdvisor account?",
+                    "I would like a complete summary of how to register, log in, and the functional differences between registered and unregistered users.",
+                    "Explain in detail the registration procedure, login, and full benefits for users with an account.",
+                    "Could you provide a complete description of how to create an account, log in, and the functionalities available depending on user type on StarkAdvisor?"
+                ]
+            },
+            "answer": {
+                "es": "Para registrarte en StarkAdvisor necesitas un correo electrónico personal y podrás seleccionar tu nivel de riesgo para personalizar tu experiencia. Para iniciar sesión, usa el mismo correo y contraseña. Registrarse ofrece acceso completo a todas las funcionalidades, incluyendo Trade del Día, noticias con filtros avanzados, gráficos de acciones, ETFs y divisas, y Starky. Los usuarios no registrados tienen acceso limitado a información básica y algunas noticias.",
+                "en": "To register on StarkAdvisor, you need a personal email and you can select your risk level to personalize your experience. To log in, use the same email and password. Registering gives full access to all features, including Trade of the Day, news with advanced filters, stock, ETF, and currency charts, and Starky. Unregistered users have limited access to basic information and some news."
+            }
+        },
+        {
+            "id": 605,
+            "domain": "informacion_plataforma",
+            "questions": {
+                "es": [
+                    "¿Quien hizo esto?",
+                    "¿Quiénes son los desarrolladores de StarkAdvisor?",
+                    "¿Quiénes hicieron StarkAdvisor?",
+                    "¿Quién creó la plataforma?",
+                    "¿Me puedes decir quiénes son los devs?",
+                    "¿Quién está detrás de StarkAdvisor?",
+                    "¿Equipo de desarrollo?",
+                    "¿Quiénes son los programadores?",
+                    "¿Nombres de los creadores?",
+                    "¿Quién desarrolló la app?",
+                    "¿Quiénes son los fundadores?",
+                    "¿Equipo de StarkAdvisor?",
+                    "Me gustaría saber quiénes son las personas que desarrollaron la aplicación StarkAdvisor.",
+                    "¿Me podrías dar información sobre el equipo de desarrolladores que crearon StarkAdvisor?",
+                    "Quisiera conocer el nombre de los programadores o ingenieros de la plataforma.",
+                    "¿Quiénes fueron los encargados de crear el software de StarkAdvisor?",
+                    "¿Podrían nombrar a los desarrolladores principales de StarkAdvisor, por favor?",
+                    "Necesito contactar a los creadores de la app, ¿me puedes decir sus nombres?",
+                    "¿Podrías decirme quiénes son los desarrolladores del proyecto StarkAdvisor?",
+                    "Con el objetivo de conocer al equipo detrás del proyecto, me podría proporcionar los nombres y roles de los desarrolladores principales de la plataforma StarkAdvisor?",
+                    "Podrías aclarar y detallar quiénes son los miembros del equipo multidisciplinario que se encargó de la concepción y desarrollo de StarkAdvisor, especificando sus roles dentro del proyecto?",
+                    "Me gustaría saber la identidad de los profesionales que estuvieron a cargo de la creación de StarkAdvisor, desde la programación y el diseño hasta la infraestructura en la nube."
+                ],
+                "en": [
+                    "Who are the developers of StarkAdvisor?",
+                    "Who made StarkAdvisor?",
+                    "Who created the platform?",
+                    "Can you tell me who the devs are?",
+                    "Who is behind StarkAdvisor?",
+                    "Development team?",
+                    "Who are the programmers?",
+                    "Names of the creators?",
+                    "Who developed the app?",
+                    "Who are the founders?",
+                    "StarkAdvisor team?",
+                    "I would like to know who the people who developed the StarkAdvisor application are.",
+                    "Could you give me information about the development team that created StarkAdvisor?",
+                    "I would like to know the names of the programmers or engineers of the platform.",
+                    "Who was in charge of creating the StarkAdvisor software?",
+                    "Could you name the main developers of StarkAdvisor, please?",
+                    "I need to contact the creators of the app, can you tell me their names?",
+                    "Could you tell me who the developers of the StarkAdvisor project are?",
+                    "With the aim of getting to know the team behind the project, could you provide me with the names and roles of the main developers of the StarkAdvisor platform?",
+                    "Could you clarify and detail who the members of the multidisciplinary team that was in charge of the conception and development of StarkAdvisor are, specifying their roles within the project?",
+                    "I would like to know the identity of the professionals who were in charge of the creation of StarkAdvisor, from programming and design to cloud infrastructure."
+                ]
+            },
+            "answer": {
+                "es": "StarkAdvisor fue desarrollado por un equipo multidisciplinario: Juan Sebastián Granados Jaimes (Backend y Machine Learning), Leyder Stiven Ortiz Jaimes (Backend y Frontend), Carlos Alberto Quintero Díaz (QA Tester) y Juan Carlos Niño Osorio (Frontend e Infraestructura en la nube).",
+                "en": "StarkAdvisor was developed by a multidisciplinary team: Juan Sebastián Granados Jaimes (Backend and Machine Learning), Leyder Stiven Ortiz Jaimes (Backend and Frontend), Carlos Alberto Quintero Díaz (QA Tester), and Juan Carlos Niño Osorio (Frontend and Cloud Infrastructure)."
+            }
+        },
+        {
+            "id": 200,
+            "domain": "chatbot_starky",
+            "questions": {
+                "es": [
+                    "¿Qué eres Starky?",
+                    "¿Para qué sirves Starky?",
+                    "¿Me puedes enseñar sobre finanzas?",
+                    "¿Solo respondes de la plataforma?",
+                    "¿Cuál es tu función Starky?",
+                    "¿Explicas conceptos financieros?",
+                    "¿Eres un bot de ayuda?",
+                    "¿Qué haces Starky?",
+                    "¿Resuelves dudas de la app?",
+                    "¿También contestas sobre inversiones?",
+                    "¿Qué rol cumples dentro de StarkAdvisor?",
+                    "¿Respondes tanto sobre la plataforma como sobre finanzas?",
+                    "¿Me ayudas a entender inversiones de forma general?",
+                    "¿Puedo preguntarte sobre cómo funciona la plataforma y también conceptos financieros?",
+                    "¿Cuál es tu objetivo principal dentro de la aplicación?",
+                    "¿Estás diseñado solo para soporte técnico o también para educación financiera?",
+                    "¿Cómo me puedes ayudar si quiero aprender finanzas básicas?",
+                    "¿Podrías explicarme con detalle qué eres y cuál es tu propósito dentro de StarkAdvisor?",
+                    "¿En qué consiste tu función y cómo contribuyes tanto al uso de la plataforma como al aprendizaje financiero?",
+                    "¿Fuiste creado únicamente para resolver preguntas sobre la plataforma o también para ofrecer explicaciones educativas de conceptos financieros generales?"
+                ],
+                "en": [
+                    "What are you, Starky?",
+                    "What are you for, Starky?",
+                    "Can you teach me about finance?",
+                    "Do you only answer about the app?",
+                    "What’s your role Starky?",
+                    "Do you explain financial concepts?",
+                    "Are you a help bot?",
+                    "What do you do, Starky?",
+                    "Can you solve platform questions?",
+                    "Do you also answer about investments?",
+                    "What role do you play inside StarkAdvisor?",
+                    "Do you answer both about the platform and finance?",
+                    "Can you help me understand investments in a general way?",
+                    "Can I ask you about how the platform works and also about financial concepts?",
+                    "What is your main purpose in the app?",
+                    "Are you designed only for technical support or also for financial education?",
+                    "How can you help me if I want to learn basic finance?",
+                    "Could you explain in detail what you are and your purpose within StarkAdvisor?",
+                    "What is your function and how do you contribute both to platform use and financial learning?",
+                    "Were you created only to answer platform questions or also to provide educational explanations about general financial concepts?"
+                ]
+            },
+            "answer": {
+                "es": "Soy Starky, el chatbot inteligente de StarkAdvisor. Estoy aquí para ayudarte a resolver dudas sobre el uso de la plataforma y también para explicarte conceptos financieros generales de forma sencilla y educativa.",
+                "en": "I am Starky, the intelligent chatbot of StarkAdvisor. I’m here to help you with questions about using the platform and also to explain general financial concepts in a simple and educational way."
+            }
+        },
+        {
+            "id": 201,
+            "domain": "chatbot_starky",
+            "questions": {
+                "es": [
+                    "¿Qué tipo de dudas te puedo hacer Starky?",
+                    "¿Qué me puedes explicar tú?",
+                    "¿Puedo preguntarte de acciones?",
+                    "¿Respondes cosas sobre ETFs?",
+                    "¿Hablas de divisas Starky?",
+                    "¿Me ayudas con indicadores?",
+                    "¿Sirves para responder de la app?",
+                    "¿Me dices en qué invertir?",
+                    "¿Das consejos personales?",
+                    "¿Puedo pedirte una recomendación de inversión?",
+                    "¿Sobre qué temas puedes responderme dentro de la plataforma?",
+                    "¿Me puedes aclarar dudas de cómo funciona StarkAdvisor y también de finanzas?",
+                    "¿Es posible preguntarte tanto de servicios de la app como de inversiones en general?",
+                    "¿Explicas conceptos de mercado como acciones, ETFs o divisas?",
+                    "¿Además de la plataforma, resuelves preguntas financieras generales?",
+                    "¿Qué tipo de información está dentro de tu alcance y cuál no?",
+                    "¿Puedo pedirte análisis de indicadores como RSI o medias móviles?",
+                    "¿Podrías explicarme con detalle qué clase de preguntas puedo hacerte y cuáles no están dentro de tus capacidades?",
+                    "¿Eres capaz de responder tanto sobre el funcionamiento de la plataforma como sobre conceptos financieros generales, o también das asesoría personalizada?",
+                    "¿Podrías aclarar si puedes hacer recomendaciones de inversión específicas o si solo ofreces explicaciones informativas?"
+                ],
+                "en": [
+                    "What kind of questions can I ask you, Starky?",
+                    "What can you explain to me?",
+                    "Can I ask you about stocks?",
+                    "Do you answer things about ETFs?",
+                    "Do you talk about currencies, Starky?",
+                    "Can you help me with indicators?",
+                    "Are you for answering about the app?",
+                    "Will you tell me what to invest in?",
+                    "Do you give personal advice?",
+                    "Can I ask you for an investment recommendation?",
+                    "What topics can you answer inside the platform?",
+                    "Can you help me with doubts about StarkAdvisor and also about finance?",
+                    "Is it possible to ask you both about app services and about general investments?",
+                    "Do you explain market concepts like stocks, ETFs or currencies?",
+                    "Besides the platform, do you also answer general financial questions?",
+                    "What kind of information is within your scope and what isn’t?",
+                    "Can I ask you about indicators like RSI or moving averages?",
+                    "Could you explain in detail what kind of questions I can ask you and which ones are out of your scope?",
+                    "Are you able to answer both about how the platform works and about general financial concepts, or do you also provide personalized advice?",
+                    "Could you clarify whether you can give specific investment recommendations or if you only provide informative explanations?"
+                ]
+            },
+            "answer": {
+                "es": "Puedo ayudarte a resolver dudas sobre cómo funciona la plataforma, qué servicios ofrece y también a explicarte conceptos financieros como acciones, ETFs, divisas o indicadores. Sin embargo, no doy asesoría personalizada ni hago recomendaciones de inversión específicas.",
+                "en": "I can help you with questions about how the platform works, what services it offers, and I can also explain financial concepts such as stocks, ETFs, currencies, or indicators. However, I do not provide personalized advice or make specific investment recommendations."
+            }
+        },
+        {
+            "id": 202,
+            "domain": "chatbot_starky",
+            "questions": {
+                "es": [
+                    "¿En qué idiomas hablas Starky?",
+                    "¿Respondes en inglés?",
+                    "¿Puedes contestar en español?",
+                    "¿Solo hablas dos idiomas?",
+                    "¿Me respondes en inglés si quiero?",
+                    "¿Hablas español Starky?",
+                    "¿En qué lengua me puedes responder?",
+                    "¿Puedes cambiar de idioma?",
+                    "¿Respondes tanto en inglés como en español?",
+                    "¿Entiendes ambos idiomas Starky?",
+                    "¿Me puedes contestar si te escribo en inglés o en español?",
+                    "¿Soportas varios idiomas o solo uno?",
+                    "¿Es posible preguntarte en español y que también respondas en inglés?",
+                    "¿En qué idiomas estás entrenado para responder dentro de StarkAdvisor?",
+                    "¿Tienes la capacidad de responder en más de un idioma?",
+                    "¿Eres bilingüe y puedes responder tanto en inglés como en español?",
+                    "¿Si cambio de idioma en mis preguntas, también me contestas en ese idioma?",
+                    "¿Podrías explicarme en qué idiomas exactamente puedes responder y si tu entrenamiento está optimizado para esas lenguas?",
+                    "¿Eres capaz de interactuar fluidamente en español e inglés gracias al modelo mBERT, o también manejas otros idiomas?",
+                    "¿Podrías aclarar si tu soporte multilingüe se limita únicamente al español e inglés, o si existe la posibilidad de que entiendas otros idiomas en menor medida?"
+                ],
+                "en": [
+                    "What languages do you speak, Starky?",
+                    "Do you reply in English?",
+                    "Can you answer in Spanish?",
+                    "Do you only handle two languages?",
+                    "Will you answer me in English if I ask?",
+                    "Do you speak Spanish, Starky?",
+                    "What language can you reply in?",
+                    "Can you switch languages?",
+                    "Do you reply in both English and Spanish?",
+                    "Do you understand both languages, Starky?",
+                    "Can you reply if I ask you in English or Spanish?",
+                    "Do you support several languages or just one?",
+                    "Is it possible to ask you in Spanish and also get answers in English?",
+                    "What languages are you trained to respond in within StarkAdvisor?",
+                    "Do you have the ability to reply in more than one language?",
+                    "Are you bilingual and can answer both in English and Spanish?",
+                    "If I change the language of my questions, will you reply in that language too?",
+                    "Could you explain exactly which languages you can respond in and whether your training is optimized for them?",
+                    "Are you able to interact fluently in Spanish and English thanks to the mBERT model, or do you also handle other languages?",
+                    "Could you clarify if your multilingual support is limited only to Spanish and English, or if you might also understand other languages to some extent?"
+                ]
+            },
+            "answer": {
+                "es": "Puedo responder en español e inglés gracias a mi entrenamiento con el modelo mBERT. Esto me permite ayudarte en ambos idiomas de manera fluida.",
+                "en": "I can respond in Spanish and English thanks to my training with the mBERT model. This allows me to assist you fluently in both languages."
+            }
+        },
+        {
+            "id": 203,
+            "domain": "chatbot_starky",
+            "questions": {
+                "es": [
+                    "Adiós",
+                    "Hasta luego",
+                    "Nos vemos",
+                    "Chao",
+                    "Me voy",
+                    "Hasta pronto",
+                    "Gracias, adiós",
+                    "Hasta luego Starky",
+                    "Nos vemos luego",
+                    "Me despido"
+                ],
+                "en": [
+                    "Goodbye",
+                    "Bye",
+                    "See you later",
+                    "Farewell",
+                    "I’m leaving",
+                    "See you soon",
+                    "Thanks, bye",
+                    "Bye Starky",
+                    "See you later then",
+                    "I’m signing off"
+                ]
+            },
+            "answer": {
+                "es": "¡Hasta luego! Ha sido un placer ayudarte. Recuerda que puedes preguntarme sobre la plataforma o conceptos financieros cuando quieras.",
+                "en": "Goodbye! It was a pleasure helping you. Remember you can ask me about the platform or financial concepts anytime."
+            }
+        },
+        {
+            "id": 204,
+            "domain": "chatbot_starky",
+            "questions": {
+                "es": [
+                    "Hola",
+                    "Hola Starky",
+                    "Buenas",
+                    "Hey",
+                    "Hola, ¿estás ahí?",
+                    "Hola, ¿me puedes ayudar?",
+                    "Hola, Starky, ¿qué haces?",
+                    "Hola, quiero aprender sobre finanzas",
+                    "Buenas, ¿qué puedes hacer?",
+                    "Hola, ¿puedes explicarme algo?"
+                ],
+                "en": [
+                    "Hi",
+                    "Hello Starky",
+                    "Hey",
+                    "Hi there",
+                    "Hello, are you there?",
+                    "Hi, can you help me?",
+                    "Hello Starky, what do you do?",
+                    "Hi, I want to learn about finance",
+                    "Hey, what can you do?",
+                    "Hello, can you explain something to me?"
+                ]
+            },
+            "answer": {
+                "es": "¡Hola! Soy Starky, el chatbot de StarkAdvisor. Puedo ayudarte a resolver dudas sobre la plataforma y explicarte conceptos financieros de manera sencilla.",
+                "en": "Hi! I'm Starky, StarkAdvisor's chatbot. I can help you with questions about the platform and explain financial concepts in a simple way."
+            }
+        },
+        {
+            "id": 300,
+            "domain": "trade_del_dia",
+            "questions": {
+                "es": [
+                    "¿Qué es el Trade del Día?",
+                    "¿Qué significa Trade del Día?",
+                    "¿Qué hace el Trade del Día?",
+                    "¿Para qué sirve el Trade del Día?",
+                    "¿Qué muestra Trade del Día?",
+                    "¿Trade del Día qué es?",
+                    "¿Qué encuentro en Trade del Día?",
+                    "¿Qué ofrece la sección de Trade del Día?",
+                    "¿Qué veo en Trade del Día?",
+                    "¿Cuál es la función de Trade del Día?",
+                    "¿Qué puedo consultar en el Trade del Día de StarkAdvisor?",
+                    "¿Qué tipo de información da la sección Trade del Día?",
+                    "¿El apartado de Trade del Día incluye recomendaciones diarias?",
+                    "¿El módulo de Trade del Día sirve para ver oportunidades de inversión?",
+                    "¿En qué consiste la funcionalidad Trade del Día?",
+                    "¿Qué características tiene la sección de Trade del Día en StarkAdvisor?",
+                    "¿Podrías explicarme la utilidad del Trade del Día dentro de la plataforma?",
+                    "¿Qué beneficios ofrece para los usuarios el Trade del Día?",
+                    "¿Cuál es el propósito del Trade del Día en StarkAdvisor y cómo funciona?",
+                    "¿Podrías detallar en qué consiste la sección de Trade del Día y qué tipo de información integra para los usuarios?"
+                ],
+                "en": [
+                    "What is Trade of the Day?",
+                    "What does Trade of the Day mean?",
+                    "What does Trade of the Day do?",
+                    "What is Trade of the Day for?",
+                    "What does Trade of the Day show?",
+                    "Trade of the Day, what is it?",
+                    "What can I find in Trade of the Day?",
+                    "What does the Trade of the Day section offer?",
+                    "What can I see in Trade of the Day?",
+                    "What is the function of Trade of the Day?",
+                    "What can I check in StarkAdvisor’s Trade of the Day?",
+                    "What type of information does Trade of the Day provide?",
+                    "Does the Trade of the Day section include daily recommendations?",
+                    "Is the Trade of the Day module useful for viewing investment opportunities?",
+                    "What does the Trade of the Day feature consist of?",
+                    "What features does the Trade of the Day section in StarkAdvisor have?",
+                    "Could you explain the usefulness of Trade of the Day within the platform?",
+                    "What benefits does the Trade of the Day feature provide to users?",
+                    "What is the purpose of Trade of the Day in StarkAdvisor and how does it work?",
+                    "Could you describe in detail what the Trade of the Day section consists of and what type of information it integrates for users?"
+                ]
+            },
+            "answer": {
+                "es": "El Trade del Día muestra 10 sugerencias diarias. Cada recomendación incluye el ticker del activo, su precio, el retorno promedio proyectado a 21 días y un conjunto de insights basados en indicadores como el RSI, medias móviles y datos históricos. Las recomendaciones se presentan en inglés para mantener consistencia con la información financiera global.",
+                "en": "The Trade of the Day displays 10 daily suggestions. Each recommendation includes the asset’s ticker, its price, the projected 21-day average forward return, and a set of insights based on indicators such as RSI, moving averages, and historical data. The recommendations are presented in English to ensure consistency with global financial information."
+            }
+        },
+        {
+            "id": 301,
+            "domain": "trade_del_dia",
+            "questions": {
+                "es": [
+                    "¿El Trade del Día asegura ganancias?",
+                    "¿Se garantizan beneficios con el Trade del Día?",
+                    "¿Siempre se gana con el Trade del Día?",
+                    "¿El Trade del Día da resultados seguros?",
+                    "¿Promete ganancias el Trade del Día?",
+                    "¿El Trade del Día garantiza retornos en las inversiones?",
+                    "¿Puedo tener beneficios seguros usando el Trade del Día?",
+                    "¿El Trade del Día asegura que voy a ganar dinero?",
+                    "¿El Trade del Día ofrece inversiones sin riesgo?",
+                    "¿Con el Trade del Día las inversiones tienen ganancia asegurada?",
+                    "¿El Trade del Día realmente garantiza beneficios en mis inversiones?",
+                    "¿Cada sugerencia del Trade del Día asegura retornos positivos?",
+                    "¿El Trade del Día me asegura que no voy a perder dinero?",
+                    "¿Usar el Trade del Día significa obtener resultados garantizados en bolsa?",
+                    "¿La herramienta de Trade del Día ofrece una garantía de retorno económico?",
+                    "¿Podrías aclarar si las recomendaciones del Trade del Día implican beneficios garantizados o existe riesgo de pérdida?",
+                    "¿El módulo de Trade del Día garantiza de alguna forma la obtención de beneficios en las operaciones sugeridas?",
+                    "¿Cada recomendación del Trade del Día equivale a una promesa de rentabilidad o son solo sugerencias informativas?",
+                    "¿Podrías detallar si el Trade del Día asegura resultados positivos en las inversiones o si simplemente orienta con datos técnicos?",
+                    "¿El Trade del Día constituye una herramienta de beneficios garantizados en inversiones o únicamente una guía informativa sin compromiso de resultados?"
+                ],
+                "en": [
+                    "Does Trade of the Day guarantee profits?",
+                    "Are gains assured with Trade of the Day?",
+                    "Do you always win with Trade of the Day?",
+                    "Does Trade of the Day give safe results?",
+                    "Does Trade of the Day promise earnings?",
+                    "Does the Trade of the Day guarantee returns on investments?",
+                    "Can I get secure profits using Trade of the Day?",
+                    "Does Trade of the Day ensure I’ll make money?",
+                    "Does Trade of the Day offer risk-free investments?",
+                    "With Trade of the Day, are profits guaranteed?",
+                    "Does the Trade of the Day really guarantee profits in my investments?",
+                    "Does each suggestion from Trade of the Day ensure positive returns?",
+                    "Does the Trade of the Day make sure I won’t lose money?",
+                    "Does using Trade of the Day mean obtaining guaranteed stock market results?",
+                    "Does the Trade of the Day tool provide a guarantee of economic return?",
+                    "Could you clarify if the Trade of the Day recommendations imply guaranteed profits or if there’s still risk of loss?",
+                    "Does the Trade of the Day module in any way guarantee benefits in the suggested operations?",
+                    "Does every recommendation in Trade of the Day equal a promise of profitability, or are they just informative suggestions?",
+                    "Could you detail whether the Trade of the Day ensures positive investment outcomes or simply guides with technical data?",
+                    "Is the Trade of the Day a tool for guaranteed investment profits or just an informative guide without commitment to results?"
+                ]
+            },
+            "answer": {
+                "es": "No. El Trade del Día ofrece sugerencias informativas basadas en análisis técnico e históricos, pero no garantiza resultados. Los mercados financieros siempre implican riesgo y la herramienta no constituye asesoría financiera personalizada.",
+                "en": "No. The Trade of the Day provides informational suggestions based on technical and historical analysis, but it does not guarantee results. Financial markets always involve risk, and the tool does not constitute personalized financial advice."
+            }
+        },
+        {
+            "id": 400,
+            "domain": "mercado_financiero",
+            "questions": {
+                "es": [
+                    "¿Qué es el módulo de mercado?",
+                    "¿Para qué sirve el mercado financiero?",
+                    "¿Qué hay en la sección de mercado?",
+                    "¿Qué hace el apartado de mercado en StarkAdvisor?",
+                    "¿Qué veo en mercado financiero?",
+                    "¿Cuál es la sección de mercado?",
+                    "¿Mercado financiero qué es?",
+                    "¿Qué ofrece el módulo de mercado?",
+                    "¿El módulo de mercado qué muestra?",
+                    "¿Qué encuentro en la parte de mercado?",
+                    "¿Qué puedo consultar en el módulo de Mercado Financiero de StarkAdvisor?",
+                    "¿Qué tipo de información da la sección de mercado financiero?",
+                    "¿El apartado de mercado incluye datos de acciones y divisas?",
+                    "¿El módulo de mercado sirve para ver ETFs?",
+                    "¿En qué consiste el módulo de mercado financiero?",
+                    "¿Qué características tiene la sección de Mercado Financiero en StarkAdvisor?",
+                    "¿Podrías explicarme la utilidad del módulo de mercado dentro de la plataforma?",
+                    "¿Qué beneficios tiene para los usuarios el módulo de Mercado Financiero?",
+                    "¿Cuál es el propósito del módulo de Mercado Financiero en StarkAdvisor y cómo funciona?",
+                    "¿Podrías detallar en qué consiste la sección de Mercado Financiero y qué tipo de información integra para los usuarios?"
+                ],
+                "en": [
+                    "What is the market module?",
+                    "What’s the financial market for?",
+                    "What’s in the market section?",
+                    "What does the market tab in StarkAdvisor do?",
+                    "What can I see in financial market?",
+                    "Which one is the market section?",
+                    "Financial market, what is it?",
+                    "What does the market module offer?",
+                    "What does the market show?",
+                    "What’s in the market part?",
+                    "What can I check in StarkAdvisor’s Financial Market module?",
+                    "What kind of information does the market section provide?",
+                    "Does the market module include stocks and currencies data?",
+                    "Is the market section useful for viewing ETFs?",
+                    "What does the Financial Market module consist of?",
+                    "What features does the Financial Market section in StarkAdvisor have?",
+                    "Could you explain the usefulness of the Financial Market module inside the platform?",
+                    "What benefits does the Financial Market module provide to users?",
+                    "What is the main purpose of the Financial Market module in StarkAdvisor and how does it work?",
+                    "Could you describe in detail what the Financial Market section consists of and what type of information it integrates for users?"
+                ]
+            },
+            "answer": {
+                "es": "El módulo de Mercado Financiero en StarkAdvisor es una sección de la plataforma que permite consultar información actualizada sobre el comportamiento del mercado. Integra datos de acciones del mercado estadounidense, divisas y ETFs, conectándose a APIs oficiales como Yahoo Finance para ofrecer información confiable en tiempo real.",
+                "en": "The Financial Market module in StarkAdvisor is a section of the platform that provides updated information on market performance. It integrates data from U.S. market stocks, currencies, and ETFs, connecting to official APIs such as Yahoo Finance to deliver reliable real-time information."
+            }
+        },
+        {
+            "id": 401,
+            "domain": "mercado_financiero",
+            "questions": {
+                "es": [
+                    "¿Qué activos puedo ver en mercado?",
+                    "¿Qué cosas salen en el módulo de mercado?",
+                    "¿Qué se puede buscar en el mercado?",
+                    "¿Qué activos muestra StarkAdvisor?",
+                    "¿En mercado qué hay?",
+                    "¿Qué divisas o acciones puedo ver?",
+                    "¿Se pueden ver ETFs en mercado?",
+                    "¿Mercado qué activos enseña?",
+                    "¿Qué aparece en el apartado de mercado?",
+                    "¿Qué puedo consultar en el módulo de mercado?",
+                    "¿Qué activos financieros están disponibles en la sección de mercado?",
+                    "¿Qué información de acciones o divisas puedo revisar en el módulo?",
+                    "¿Puedo buscar acciones o ETFs específicos en el mercado?",
+                    "¿Qué opciones de búsqueda de activos ofrece el módulo?",
+                    "¿El mercado financiero incluye divisas internacionales?",
+                    "¿El módulo de mercado permite ver diferentes tipos de activos?",
+                    "¿Qué conjunto de activos puedo explorar dentro del módulo de mercado?",
+                    "¿Cuál es el alcance de los activos que se consultan en la sección de mercado financiero?",
+                    "¿Podrías detallar qué activos se incluyen y cómo se pueden buscar dentro del módulo de mercado financiero?",
+                    "¿Qué tipo de activos contempla el módulo de mercado y de qué manera los usuarios pueden consultarlos o localizarlos en la plataforma?"
+                ],
+                "en": [
+                    "What assets can I see in market?",
+                    "What shows up in the market module?",
+                    "What can be searched in market?",
+                    "What assets does StarkAdvisor show?",
+                    "What’s in market?",
+                    "Which currencies or stocks can I check?",
+                    "Does market include ETFs?",
+                    "What assets appear in market?",
+                    "What’s listed in the market section?",
+                    "What can I view in the market module?",
+                    "What financial assets are available in the market section?",
+                    "What stock or currency info can I check in the module?",
+                    "Can I search for specific stocks or ETFs in market?",
+                    "What search options for assets does the module give?",
+                    "Does the financial market section include international currencies?",
+                    "Does the market module allow different types of assets?",
+                    "What set of assets can I explore in the market module?",
+                    "What is the scope of assets that can be consulted in the financial market section?",
+                    "Could you explain in detail which assets are included and how they can be searched within the financial market module?",
+                    "What types of assets are covered in the market module and how can users consult or locate them on the platform?"
+                ]
+            },
+            "answer": {
+                "es": "En el módulo de Mercado Financiero puedes consultar una pool de activos compuesta por acciones del mercado estadounidense, divisas internacionales y ETFs. Además, puedes buscar activos específicos utilizando su nombre o ticker para acceder a la información detallada de cada uno.",
+                "en": "In the Financial Market module you can view a pool of assets including U.S. market stocks, international currencies, and ETFs. You can also search for specific assets using their name or ticker to access detailed information about each one."
+            }
+        },
+        {
+            "id": 402,
+            "domain": "mercado_financiero",
+            "questions": {
+                "es": [
+                    "¿Muestra gráficos el mercado?",
+                    "¿Se ven precios en gráficos?",
+                    "¿Hay gráficas en mercado?",
+                    "¿El módulo enseña gráficas?",
+                    "¿Puedo ver gráficos de precios?",
+                    "¿Existen gráficas en el apartado de mercado?",
+                    "¿Se pueden ver gráficos de activos?",
+                    "¿Mercado trae gráficos de valores?",
+                    "¿Puedo ver la evolución en un gráfico?",
+                    "¿Gráficos de precios disponibles en mercado?",
+                    "¿El módulo de mercado incluye gráficos para ver precios históricos?",
+                    "¿Puedo analizar acciones o divisas con gráficos en esta sección?",
+                    "¿El mercado financiero ofrece gráficos para seguir tendencias?",
+                    "¿El apartado de mercado permite comparar activos en gráficos?",
+                    "¿Existen gráficas interactivas de acciones, ETFs y divisas?",
+                    "¿Los precios que aparecen se representan en gráficos visuales?",
+                    "¿Cómo se muestran los cambios de precio en el módulo de mercado, con gráficos?",
+                    "¿El sistema presenta de forma visual, mediante gráficos, la evolución de precios de los activos?",
+                    "¿Podrías explicar si el módulo de mercado incluye herramientas gráficas para analizar los precios de acciones, divisas y ETFs en distintos periodos?",
+                    "¿En qué medida el módulo de mercado ofrece gráficos interactivos que permiten estudiar tendencias y comparar la evolución de diferentes activos?"
+                ],
+                "en": [
+                    "Does market show charts?",
+                    "Are prices shown in graphs?",
+                    "Does it have graphs in market?",
+                    "Does the module display charts?",
+                    "Can I see price charts?",
+                    "Are graphs available in the market section?",
+                    "Can I view charts of assets?",
+                    "Does market include value charts?",
+                    "Can I track prices on a chart?",
+                    "Price charts available in market?",
+                    "Does the market module include charts to see price history?",
+                    "Can I analyze stocks or currencies with charts here?",
+                    "Does the financial market provide charts to follow trends?",
+                    "Does the market section allow asset comparison in charts?",
+                    "Are there interactive graphs for stocks, ETFs, and currencies?",
+                    "Are the displayed prices represented in visual charts?",
+                    "How are price changes shown in the market module, with charts?",
+                    "Does the system present the evolution of asset prices visually through charts?",
+                    "Could you explain if the market module includes charting tools to analyze the prices of stocks, currencies, and ETFs over time?",
+                    "To what extent does the market module provide interactive charts that let users study trends and compare the evolution of different assets?"
+                ]
+            },
+            "answer": {
+                "es": "Sí, el módulo ofrece gráficos interactivos que muestran la evolución de precios de acciones, divisas y ETFs en distintos intervalos de tiempo. Estos gráficos permiten analizar tendencias y comparar el comportamiento de diferentes activos de manera visual.",
+                "en": "Yes, the module provides interactive charts that display the price evolution of stocks, currencies, and ETFs over different time intervals. These charts allow users to analyze trends and compare the behavior of different assets visually."
+            }
+        },
+        {
+            "id": 403,
+            "domain": "mercado_financiero",
+            "questions": {
+                "es": [
+                    "¿Puedo filtrar los activos en el módulo?",
+                    "¿El módulo deja ordenar los activos?",
+                    "¿Se pueden organizar los activos?",
+                    "¿Puedo usar filtros en el mercado financiero?",
+                    "¿El módulo incluye ordenamiento?",
+                    "¿Puedo buscar con filtros los activos?",
+                    "¿Hay opción de filtrar divisas, acciones y ETFs?",
+                    "¿Se pueden ordenar los activos por criterio?",
+                    "¿El sistema permite filtrar activos?",
+                    "¿Puedo organizar los activos de alguna forma?",
+                    "¿El módulo de Mercado Financiero tiene funciones para ordenar o filtrar activos según preferencias?",
+                    "¿Se pueden aplicar filtros y ordenar activos dentro del módulo?",
+                    "¿Puedo organizar la lista de activos por diferentes criterios en el mercado financiero?",
+                    "¿El sistema ofrece herramientas de ordenamiento y filtrado para los activos?",
+                    "¿Es posible filtrar y ordenar acciones, divisas y ETFs en este módulo?",
+                    "¿El módulo cuenta con opciones de búsqueda y filtrado para organizar los activos?",
+                    "¿Se pueden aplicar distintos filtros a los activos para facilitar la comparación?",
+                    "¿Podrías explicarme si el módulo de Mercado Financiero ofrece funciones de ordenamiento y filtrado que permitan organizar los activos de manera personalizada?",
+                    "¿Este módulo incluye herramientas avanzadas de ordenamiento y filtrado que ayuden a los usuarios a comparar y localizar activos de interés más fácilmente?",
+                    "¿Qué tan flexibles son las opciones de ordenamiento y filtrado disponibles en el módulo para gestionar acciones, divisas y ETFs?"
+                ],
+                "en": [
+                    "Can I filter assets in the module?",
+                    "Does the module let me sort assets?",
+                    "Can assets be organized?",
+                    "Can I use filters in the financial market module?",
+                    "Does the module include sorting?",
+                    "Can I search assets with filters?",
+                    "Is there a filter option for stocks, currencies, and ETFs?",
+                    "Can assets be sorted by criteria?",
+                    "Does the system allow filtering assets?",
+                    "Can I organize assets somehow?",
+                    "Does the Financial Market module have functions to sort or filter assets by preferences?",
+                    "Can I apply filters and sort assets within the module?",
+                    "Can I organize the asset list by different criteria in the financial market module?",
+                    "Does the system provide sorting and filtering tools for assets?",
+                    "Is it possible to filter and sort stocks, currencies, and ETFs in this module?",
+                    "Does the module include search and filtering options to organize assets?",
+                    "Can different filters be applied to assets to make comparison easier?",
+                    "Could you explain if the Financial Market module offers sorting and filtering features that let users organize assets in a personalized way?",
+                    "Does this module include advanced sorting and filtering tools to help users compare and locate assets of interest more easily?",
+                    "How flexible are the sorting and filtering options available in the module for managing stocks, currencies, and ETFs?"
+                ]
+            },
+            "answer": {
+                "es": "El módulo incluye herramientas de ordenamiento y filtrado que permiten organizar los activos según diferentes criterios. Esto facilita comparar información y encontrar de forma más rápida los activos de interés dentro de acciones, divisas y ETFs.",
+                "en": "The module includes sorting and filtering tools that allow users to organize assets according to different criteria. This makes it easier to compare information and quickly find the assets of interest among stocks, currencies, and ETFs."
+            }
+        },
+        {
+            "id": 500,
+            "domain": "noticias_financieras",
+            "questions": {
+                "es": [
+                    "¿Qué es el módulo de Noticias Financieras?",
+                    "¿Qué son las noticias en StarkAdvisor?",
+                    "¿Para qué sirve la sección de noticias?",
+                    "¿Qué encuentro en el apartado de noticias?",
+                    "¿Qué hacen las noticias en la plataforma?",
+                    "¿Qué es la sección de noticias financieras?",
+                    "¿Dónde veo las noticias en StarkAdvisor?",
+                    "¿Qué noticias aparecen en la app?",
+                    "¿Para qué están las noticias?",
+                    "¿Qué es la parte de noticias?",
+                    "¿Qué incluye el módulo de Noticias Financieras en StarkAdvisor?",
+                    "¿Qué información puedo ver en la sección de noticias?",
+                    "¿Qué características tiene el apartado de noticias?",
+                    "¿Qué me ofrece el módulo de noticias de StarkAdvisor?",
+                    "¿Qué tipo de contenido hay en la sección de noticias?",
+                    "¿Qué información reúnen las noticias de la plataforma?",
+                    "¿Qué funcionalidades tiene el módulo de Noticias Financieras?",
+                    "¿Podrías explicar en qué consiste el módulo de Noticias Financieras y qué funcionalidades ofrece?",
+                    "¿Cuál es la utilidad principal del apartado de Noticias Financieras y qué información reúne?",
+                    "¿Podrías describir en detalle el módulo de Noticias Financieras de StarkAdvisor y cómo apoya al usuario?"
+                ],
+                "en": [
+                    "What is the Financial News module?",
+                    "What are the news in StarkAdvisor?",
+                    "What’s the news section for?",
+                    "What can I see in the news module?",
+                    "What does the news section do?",
+                    "What is the news section in StarkAdvisor?",
+                    "Where can I see the news in StarkAdvisor?",
+                    "What news appear in the app?",
+                    "What is the news for?",
+                    "What is the news part?",
+                    "What does the Financial News module include in StarkAdvisor?",
+                    "What information can I check in the news section?",
+                    "What features does the news module have?",
+                    "What does the Financial News section offer me?",
+                    "What kind of content is in the news section?",
+                    "What information do the news articles gather in the platform?",
+                    "What functionalities does the Financial News module provide?",
+                    "Could you explain what the Financial News module consists of and the functionalities it provides?",
+                    "What is the main purpose of the Financial News section and what type of information does it gather?",
+                    "Could you describe in detail the Financial News module in StarkAdvisor and how it helps the user?"
+                ]
+            },
+            "answer": {
+                "es": "El módulo de Noticias Financieras es una sección de la plataforma donde se agregan y presentan noticias económicas y financieras provenientes de distintas fuentes. Ofrece resúmenes de cada noticia, indicadores y herramientas de filtrado para explorar la información relevante en un solo lugar. Cada noticia muestra la fecha de publicación, el título, una breve descripción o resumen, y un indicador de sentimiento. Además incluye un enlace directo a la fuente original para leer el artículo completo y consultar más detalles en la fuente primaria.",
+                "en": "The Financial News module is a section of the platform that aggregates and presents economic and financial news from various sources. It provides summaries of each article, indicators, and filtering tools to explore relevant information in one place. Each news item shows the publication date, title, a short description or summary, and a sentiment indicator. It also includes a direct link to the original source so you can read the full article and check more details at the primary source."
+            }
+        },
+        {
+            "id": 503,
+            "domain": "noticias_financieras",
+            "questions": {
+                "es": [
+                    "¿Qué es análisis de sentimiento?",
+                    "¿Para qué sirve el análisis de sentimiento?",
+                    "¿Cómo saber si la noticia es positiva o negativa?",
+                    "¿Qué significa el color en la noticia?",
+                    "¿Qué quiere decir el indicador de sentimiento?",
+                    "¿El análisis me dice si la noticia es buena o mala?",
+                    "¿Qué significa el valor de sentimiento?",
+                    "¿Cómo interpretar el tono de la noticia?",
+                    "¿El sistema marca si la noticia es positiva o negativa?",
+                    "¿Qué muestran los colores en la noticia?",
+                    "¿Cómo entender el análisis de sentimiento?",
+                    "¿El análisis refleja la opinión general?",
+                    "¿Qué indica el sentimiento en la noticia?",
+                    "¿El análisis sirve para ver cómo se percibe la noticia?",
+                    "¿Cómo me ayuda el análisis de sentimiento?"
+                ],
+                "en": [
+                    "What is sentiment analysis?",
+                    "What is sentiment analysis for?",
+                    "How to know if the news is positive or negative?",
+                    "What does the color in the news mean?",
+                    "What does the sentiment indicator mean?",
+                    "Does it tell me if the news is good or bad?",
+                    "What does the sentiment value mean?",
+                    "How to interpret the tone of the news?",
+                    "Does the system show if the news is positive or negative?",
+                    "What do the colors in the article mean?",
+                    "How to understand sentiment analysis?",
+                    "Does the analysis reflect the general opinion?",
+                    "What does the sentiment in the news indicate?",
+                    "Does the analysis help me see how the news is perceived?",
+                    "How does sentiment analysis help me?"
+                ]
+            },
+            "answer": {
+                "es": "El análisis de sentimiento es un indicador que mide si el tono de la noticia es mayormente positivo o negativo. Se presenta como un valor y una señal visual (por ejemplo, colores) para ayudar a identificar rápidamente la percepción general del artículo; no constituye asesoría financiera por sí mismo.",
+                "en": "Sentiment analysis is an indicator that measures whether the tone of the article is mostly positive or negative. It is presented as a value and a visual cue (for example, colors) to help quickly identify the general perception of the article; it does not constitute financial advice by itself."
+            }
+        },
+        {
+            "id": 504,
+            "domain": "noticias_financieras",
+            "questions": {
+                "es": [
+                    "¿De dónde vienen las noticias?",
+                    "¿Quién escribe las noticias?",
+                    "¿Las noticias son de StarkAdvisor?",
+                    "¿De qué fuente salen las noticias?",
+                    "¿Ustedes redactan las noticias?",
+                    "¿Quién crea el contenido de las noticias?",
+                    "¿Las noticias las escriben ustedes o alguien más?",
+                    "¿Las noticias son originales de la plataforma?",
+                    "¿De qué medio sacan las noticias?",
+                    "¿Quién publica las noticias?",
+                    "¿Las noticias provienen de otras páginas?",
+                    "¿Las redacta el equipo de StarkAdvisor o son externas?",
+                    "¿Las noticias se escriben aquí o son tomadas de afuera?",
+                    "¿De dónde se recopilan las noticias que aparecen?",
+                    "¿El contenido de noticias lo genera un editor propio?",
+                    "¿Se encargan ustedes de escribir las noticias financieras?",
+                    "¿Quién está detrás de la redacción de cada artículo?",
+                    "¿Son noticias generadas automáticamente o redactadas por alguien?",
+                    "¿Las noticias incluyen la fuente original del autor?",
+                    "¿Cómo sé quién redactó la noticia que aparece en la plataforma?"
+                ],
+                "en": [
+                    "Where do the news come from?",
+                    "Who writes the news?",
+                    "Are the news from StarkAdvisor?",
+                    "What source are the news taken from?",
+                    "Do you write the news yourselves?",
+                    "Who creates the news content?",
+                    "Are the news written by you or someone else?",
+                    "Are the articles original to the platform?",
+                    "From which outlet do you get the news?",
+                    "Who publishes the news?",
+                    "Do the news come from other sites?",
+                    "Are they written by StarkAdvisor’s team or external sources?",
+                    "Are the news written here or taken from outside?",
+                    "Where are the news articles collected from?",
+                    "Is the content produced by an in-house editor?",
+                    "Do you handle writing the financial news?",
+                    "Who is behind the writing of each article?",
+                    "Are the news generated automatically or written by someone?",
+                    "Do the articles include the original source?",
+                    "How can I know who wrote the article shown on the platform?"
+                ]
+            },
+            "answer": {
+                "es": "Las noticias se obtienen de fuentes externas mediante agregación (feeds y scraping) y no son redactadas directamente por el equipo de StarkAdvisor. Cada noticia incluye un enlace a la fuente original para que puedas verificar la autoría y el contenido original.",
+                "en": "News items are obtained from external sources via aggregation (feeds and scraping) and are not written directly by the StarkAdvisor team. Each article includes a link to the original source so you can verify the authorship and original content."
+            }
+        },
+        {
+            "id": 600,
+            "domain": "restricciones",
+            "questions": {
+                "es": [
+                    "¿En qué acción debo invertir hoy?",
+                    "¿Cuál es la mejor inversión ahora mismo?",
+                    "¿Debería comprar acciones de Apple?",
+                    "¿Me recomiendas invertir en Tesla?",
+                    "¿Me puedes decir qué acción subirá esta semana?",
+                    "¿Puedes garantizarme que no voy a perder dinero?",
+                    "¿Armas un portafolio de inversión para mí?",
+                    "¿Qué activos son buenos para un perfil conservador?",
+                    "¿Me dices la acción más rentable en este momento?",
+                    "¿Cuál será la próxima acción en subir fuerte?",
+                    "¿Compro dólares hoy o mejor espero?",
+                    "¿Es buen momento para entrar en ETFs?",
+                    "¿Cuál es la mejor acción si solo tengo poco dinero?",
+                    "¿Puedes predecir qué acción subirá mañana?",
+                    "¿Qué me recomiendas comprar: ETFs o acciones?",
+                    "¿Me puedes decir dónde invertir seguro?",
+                    "¿Cuál es el mejor activo para ganar rápido?",
+                    "¿Puedes decirme qué acción nunca baja?",
+                    "¿Me recomiendas vender mis acciones ahora?",
+                    "¿Cuál es la acción con más potencial hoy?",
+                    "Dime qué activo es el más seguro?",
+                    "¿Me dices qué criptomoneda va a subir?",
+                    "¿Qué acciones comprarías tú en mi lugar?",
+                    "¿Cuál es la inversión más rentable para mí?",
+                    "¿Qué debo comprar para no perder dinero?",
+                    "¿Cuál es la mejor acción a largo plazo?",
+                    "¿Qué activos son ideales para alguien arriesgado?",
+                    "¿Puedes garantizarme que no voy a perder con ETFs?",
+                    "¿Me recomiendas entrar en el mercado hoy?",
+                    "¿Cuál es la inversión más segura ahora mismo?",
+                    "¿Qué activos son los mejores para mi presupuesto?",
+                    "¿Me puedes decir qué acción va a explotar pronto?",
+                    "¿Qué inversión me asegura ganancias rápidas?",
+                    "¿Cuál es la mejor divisa para invertir hoy?",
+                    "¿Me recomiendas comprar bonos ahora?",
+                    "¿Cuál es la acción más prometedora del momento?",
+                    "¿Puedes decirme qué activo comprar este mes?",
+                    "¿Qué debo hacer con mis ahorros para ganar más?",
+                    "¿Me puedes construir un portafolio ideal?",
+                    "¿Cuál es el mejor ETF ahora mismo?",
+                    "¿Qué me recomiendas vender ya mismo?",
+                    "¿Me dices en qué invertir con poco riesgo?",
+                    "¿Cuál será la acción estrella este año?",
+                    "¿Qué activo me conviene para jubilarme?",
+                    "¿Puedes decirme cómo duplicar mi dinero rápido?"
+                ],
+                "en": [
+                    "Which stock should I invest in today?",
+                    "What is the best investment right now?",
+                    "Should I buy Apple stock?",
+                    "Do you recommend investing in Tesla?",
+                    "Can you tell me which stock will rise this week?",
+                    "Can you guarantee I won’t lose money?",
+                    "Can you build me an investment portfolio?",
+                    "What assets are good for a conservative profile?",
+                    "Tell me the most profitable stock at the moment.",
+                    "Which stock will be the next to rise sharply?",
+                    "Should I buy dollars today or wait?",
+                    "Is now a good time to invest in ETFs?",
+                    "What’s the best stock if I have little money?",
+                    "Can you predict which stock will go up tomorrow?",
+                    "Do you recommend ETFs or stocks?",
+                    "Can you tell me where to invest safely?",
+                    "What’s the best asset to earn quickly?",
+                    "Can you tell me a stock that never falls?",
+                    "Do you recommend selling my stocks now?",
+                    "Which stock has the most potential today?",
+                    "Tell me which asset is the safest.",
+                    "Can you tell me which cryptocurrency will rise?",
+                    "Which stocks would you buy if you were me?",
+                    "What is the most profitable investment for me?",
+                    "What should I buy to avoid losing money?",
+                    "What’s the best stock for the long term?",
+                    "Which assets are best for a risky profile?",
+                    "Can you guarantee I won’t lose with ETFs?",
+                    "Should I enter the market today?",
+                    "What’s the safest investment right now?",
+                    "What assets fit my budget best?",
+                    "Can you tell me which stock will explode soon?",
+                    "What investment guarantees fast profits?",
+                    "What’s the best currency to invest in today?",
+                    "Do you recommend buying bonds now?",
+                    "Which stock is the most promising right now?",
+                    "Can you tell me what asset to buy this month?",
+                    "What should I do with my savings to earn more?",
+                    "Can you create the perfect portfolio for me?",
+                    "What is the best ETF right now?",
+                    "What do you recommend I sell immediately?",
+                    "Tell me what to invest in with low risk.",
+                    "Which will be the star stock this year?",
+                    "What asset is best for retirement?",
+                    "Can you tell me how to double my money fast?"
+                ]
+            },
+            "answer": {
+                "es": "Lo siento, Starky no puede dar asesoría o recomendaciones personalizadas de inversión. Te invito a usar las herramientas de StarkAdvisor: el apartado de Mercado Financiero para explorar activos, el Trade del Día para ver análisis diarios y las Noticias Financieras para mantenerte informado. Con estas secciones podrás hacer tu propio análisis y tomar decisiones de inversión fundamentadas.",
+                "en": "Sorry, Starky cannot provide personalized investment advice or recommendations. I invite you to use StarkAdvisor’s tools: the Financial Market section to explore assets, the Trade of the Day for daily analysis, and the Financial News to stay informed. With these sections, you can perform your own analysis and make well-informed investment decisions."
+            }
+        }
+    ]
+}

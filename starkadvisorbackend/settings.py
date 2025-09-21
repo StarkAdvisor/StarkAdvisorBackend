@@ -12,6 +12,11 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 import environ
+import os
+import environ
+from pathlib import Path
+
+
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -29,7 +34,7 @@ SECRET_KEY = 'django-insecure-is*0lq-)ysvs(+hmo(-*0n1&l%pt6ofl4xm)+qqtp7jz(emk#1
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -43,7 +48,8 @@ INSTALLED_APPS = [
     "debug_toolbar",
     "rest_framework",
     "news",
-    "stocks" 
+    "stocks",
+    'chatbot'
 ]
 
 INTERNAL_IPS = [
@@ -156,3 +162,9 @@ MONGO_DB = {
 
 
 FINANCIAL_NEWS_SOURCES = env.list("FINANCIAL_NEWS_SOURCES", default=[])
+
+FAQ_PATH = env("FAQ_PATH", default=os.path.join(BASE_DIR, "chatbot/faqs/faqs.json"))
+FAQ_NORMALIZED_PATH = env("FAQ_NORMALIZED_PATH", default=os.path.join(BASE_DIR, "chatbot/faqs/faqs_normalized.json"))
+FALLOVER_THRESHOLD = env.float("FALLOVER_THRESHOLD", default=0.08)
+FALLOVER_MESSAGE = env("FALLOVER_MESSAGE", default="Lo siento, Starky no entendió tu pregunta. Por favor intenta con otra.")
+FAQ_MODEL_PATH = env("FALLOVER_MESSAGE", default=os.path.join(BASE_DIR, os.getenv("FAQ_MODEL_PATH", "chatbot/faq_model_2"))) 
