@@ -11,7 +11,24 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 import redis
 import json
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
+
+# Helper function para serializar fechas
+def serialize_for_json(obj):
+    """Convierte objetos Python a formatos serializables en JSON"""
+    if isinstance(obj, (date, datetime)):
+        return obj.isoformat()
+    elif isinstance(obj, type):
+        # Si es un tipo de clase, convertir a string
+        return str(obj)
+    elif hasattr(obj, '__dict__'):
+        # Si es un objeto complejo, convertir a string
+        return str(obj)
+    elif obj is None:
+        return None
+    else:
+        # Para tipos básicos (str, int, float, bool)
+        return obj, timedelta
 from .models import CustomUser
 from .serializers import (
     UserRegistrationSerializer, 
@@ -159,17 +176,48 @@ class UserRegistrationView(generics.CreateAPIView):
     permission_classes = [AllowAny]
 
     def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        if serializer.is_valid():
-            user = serializer.save()
+        # Debug: imprimir datos recibidos
+        print("=" * 50)
+        print("REGISTRO - DATOS RECIBIDOS EN EL BACKEND:")
+        print(f"request.data: {request.data}")
+        print(f"Content-Type: {request.content_type}")
+        print(f"Request method: {request.method}")
+        print(f"Request headers: {dict(request.headers)}")
+        print("=" * 50)
+        
+        try:
+            serializer = self.get_serializer(data=request.data)
+            print(f"Serializer created: {type(serializer)}")
+            
+            if serializer.is_valid():
+                print("✅ Serializer is valid, creating user...")
+                user = serializer.save()
+                print(f"✅ User created successfully: {user.username}")
+                
+                return Response({
+                    'message': 'Usuario registrado exitosamente',
+                    'user': UserSerializer(user).data
+                }, status=status.HTTP_201_CREATED)
+            else:
+                # Debug: imprimir errores de validación
+                print("❌ ERRORES DE VALIDACIÓN EN REGISTRO:")
+                print(f"serializer.errors: {serializer.errors}")
+                print("=" * 50)
+                
+                return Response({
+                    'message': 'Error en el registro',
+                    'errors': serializer.errors
+                }, status=status.HTTP_400_BAD_REQUEST)
+                
+        except Exception as e:
+            print(f"❌ Exception in registration: {str(e)}")
+            import traceback
+            traceback.print_exc()
+            
             return Response({
-                'message': 'Usuario registrado exitosamente',
-                'user': UserSerializer(user).data
-            }, status=status.HTTP_201_CREATED)
-        return Response({
-            'message': 'Error en el registro',
-            'errors': serializer.errors
-        }, status=status.HTTP_400_BAD_REQUEST)
+                'message': 'Error interno del servidor',
+                'error': str(e)
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class UserListView(generics.ListAPIView):
     """
@@ -211,6 +259,7 @@ class UserUpdateView(generics.UpdateAPIView):
     queryset = CustomUser.objects.all()
     serializer_class = UserUpdateSerializer
     permission_classes = [IsAuthenticated]
+    http_method_names = ['put', 'patch']  # Permitir PUT y PATCH
 
     def get_object(self):
         # Solo el propio usuario puede actualizar su informacion
@@ -221,6 +270,103 @@ class UserUpdateView(generics.UpdateAPIView):
             return user
         else:
             self.permission_denied(self.request)
+    
+    def update(self, request, *args, **kwargs):
+        import logging
+        logger = logging.getLogger(__name__)
+        
+        # Print directo para asegurar que se ejecute
+        print("=" * 50)
+        print("UserUpdateView - EJECUTANDO UPDATE:")
+        print(f"User ID in URL: {kwargs.get('pk')}")
+        print(f"Request user: {request.user}")
+        print(f"Request data: {request.data}")
+        print(f"Content-Type: {request.content_type}")
+        print(f"Request method: {request.method}")
+        print("=" * 50)
+        
+        logger.debug("=" * 50)
+        logger.debug("UserUpdateView - DEBUGGING:")
+        logger.debug(f"User ID in URL: {kwargs.get('pk')}")
+        logger.debug(f"Request user: {request.user}")
+        logger.debug(f"Request data: {request.data}")
+        logger.debug(f"Content-Type: {request.content_type}")
+        logger.debug(f"Request method: {request.method}")
+        logger.debug("=" * 50)
+        
+        partial = kwargs.pop('partial', True)  # Siempre permitir partial updates
+        instance = self.get_object()
+        
+        try:
+            serializer = self.get_serializer(instance, data=request.data, partial=partial)
+            
+            if serializer.is_valid():
+                print("✅ Serializer is valid, updating...")
+                logger.debug("Serializer is valid, updating...")
+                self.perform_update(serializer)
+                print("✅ User updated successfully in database")
+                
+                # Intentar actualizar sesión en Redis (no crítico si falla)
+                try:
+                    session_data = get_user_session(instance.id)
+                    if session_data:
+                        # Actualizar datos relevantes en la sesión
+                        updated_fields = request.data.keys()
+                        print(f"Campos a actualizar: {list(updated_fields)}")
+                        
+                        for field in updated_fields:
+                            if hasattr(instance, field):
+                                value = getattr(instance, field)
+                                print(f"Campo: {field}, Valor: {value}, Tipo: {type(value)}")
+                                
+                                try:
+                                    # Usar helper function para serializar fechas
+                                    serialized_value = serialize_for_json(value)
+                                    session_data[field] = serialized_value
+                                    print(f"✅ Campo {field} serializado correctamente")
+                                except Exception as field_error:
+                                    print(f"❌ Error serializando campo {field}: {field_error}")
+                                    # Si hay error, usar string representation
+                                    session_data[field] = str(value)
+                        
+                        try:
+                            redis_client.setex(
+                                f"user_session:{instance.id}",
+                                86400,
+                                json.dumps(session_data)
+                            )
+                            print(f"✅ Session updated in Redis for user {instance.id}")
+                            logger.debug(f"Session updated in Redis for user {instance.id}")
+                        except Exception as redis_error:
+                            print(f"❌ Error guardando en Redis: {redis_error}")
+                            print(f"Datos de sesión problemáticos: {session_data}")
+                            # Continue sin actualizar Redis en caso de error
+                            pass
+                except Exception as session_error:
+                    print(f"❌ Error general con Redis session: {session_error}")
+                    # Continue sin problemas, la actualización del usuario ya funcionó
+                    pass
+                
+                # Devolver el usuario actualizado usando UserSerializer
+                user_serializer = UserSerializer(instance)
+                logger.debug("Update successful")
+                return Response({
+                    'message': 'Perfil actualizado exitosamente',
+                    'user': user_serializer.data
+                }, status=status.HTTP_200_OK)
+            else:
+                logger.error(f"Serializer validation errors: {serializer.errors}")
+                return Response({
+                    'message': 'Error de validación',
+                    'errors': serializer.errors
+                }, status=status.HTTP_400_BAD_REQUEST)
+                
+        except Exception as e:
+            logger.error(f"Exception in UserUpdateView: {str(e)}")
+            return Response({
+                'message': 'Error interno del servidor',
+                'error': str(e)
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class UserDeleteView(generics.DestroyAPIView):
     """
@@ -326,39 +472,73 @@ def risk_profiles(request):
 
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
+@csrf_exempt
 def update_risk_profile(request):
     """
     Vista para actualizar solo el perfil de riesgo del usuario
     """
+    import logging
+    logger = logging.getLogger(__name__)
+    
+    logger.debug(f"Update risk profile called")
+    logger.debug(f"Request data: {request.data}")
+    logger.debug(f"Request method: {request.method}")
+    logger.debug(f"User: {request.user}")
+    logger.debug(f"Content type: {request.content_type}")
+    logger.debug(f"Request body: {request.body}")
+    
+    # Verificar si el usuario está autenticado
+    if not request.user.is_authenticated:
+        logger.error("User not authenticated")
+        return Response({
+            'message': 'Usuario no autenticado'
+        }, status=status.HTTP_401_UNAUTHORIZED)
+    
     user = request.user
     new_risk_profile = request.data.get('risk_profile')
+    
+    logger.debug(f"Current risk profile: {user.risk_profile}")
+    logger.debug(f"New risk profile: {new_risk_profile}")
     
     # Validar que el perfil de riesgo sea válido
     valid_profiles = [choice[0] for choice in CustomUser.RISK_PROFILE_CHOICES]
     if new_risk_profile not in valid_profiles:
+        logger.error(f"Invalid risk profile: {new_risk_profile}. Valid options: {valid_profiles}")
         return Response({
             'message': 'Perfil de riesgo inválido',
-            'valid_profiles': valid_profiles
+            'valid_profiles': valid_profiles,
+            'received_profile': new_risk_profile
         }, status=status.HTTP_400_BAD_REQUEST)
     
-    # Actualizar el perfil de riesgo
-    old_profile = user.risk_profile
-    user.risk_profile = new_risk_profile
-    user.save()
-    
-    # Actualizar sesión en Redis si existe
-    session_data = get_user_session(user.id)
-    if session_data:
-        session_data['risk_profile'] = new_risk_profile
-        redis_client.setex(
-            f"user_session:{user.id}",
-            86400,
-            json.dumps(session_data)
-        )
-    
-    return Response({
-        'message': 'Perfil de riesgo actualizado exitosamente',
-        'old_profile': old_profile,
-        'new_profile': new_risk_profile,
-        'user': UserSerializer(user).data
-    }, status=status.HTTP_200_OK)
+    try:
+        # Actualizar el perfil de riesgo
+        old_profile = user.risk_profile
+        user.risk_profile = new_risk_profile
+        user.save()
+        
+        logger.debug(f"User profile updated successfully from {old_profile} to {new_risk_profile}")
+        
+        # Actualizar sesión en Redis si existe
+        session_data = get_user_session(user.id)
+        if session_data:
+            session_data['risk_profile'] = new_risk_profile
+            redis_client.setex(
+                f"user_session:{user.id}",
+                86400,
+                json.dumps(session_data)
+            )
+            logger.debug(f"Redis session updated for user {user.id}")
+        
+        return Response({
+            'message': 'Perfil de riesgo actualizado exitosamente',
+            'old_profile': old_profile,
+            'new_profile': new_risk_profile,
+            'user': UserSerializer(user).data
+        }, status=status.HTTP_200_OK)
+        
+    except Exception as e:
+        logger.error(f"Error updating risk profile: {str(e)}")
+        return Response({
+            'message': 'Error interno del servidor',
+            'error': str(e)
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

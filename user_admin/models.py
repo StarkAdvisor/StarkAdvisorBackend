@@ -12,8 +12,8 @@ class CustomUser(AbstractUser):
     
     # Validador para numero de telefono
     phone_regex = RegexValidator(
-        regex=r'^\+?1?\d{9,15}$', 
-        message="El número debe estar en formato: '+999999999'. Máximo 15 dígitos."
+        regex=r'^\+\d{1,3}\d{10}$', 
+        message="El número debe tener el formato: código de país (+1 a +999) seguido de 10 dígitos (ej: +573001234567, +12025551234)"
     )
     phone_number = models.CharField(
         validators=[phone_regex], 
