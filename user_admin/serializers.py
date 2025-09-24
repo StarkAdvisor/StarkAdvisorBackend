@@ -19,6 +19,11 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         style={'input_type': 'password'},
         help_text='Confirma tu contraseña'
     )
+    phone_number = serializers.CharField(
+        required=False,
+        allow_blank=True,
+        help_text='Número de teléfono opcional en formato +999999999'
+    )
 
     class Meta:
         model = CustomUser
@@ -31,6 +36,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
             'first_name': {'required': True},
             'last_name': {'required': True},
             'risk_profile': {'required': True},
+            'phone_number': {'required': False, 'allow_blank': True},
         }
 
     def validate_email(self, value):
@@ -53,6 +59,19 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(e.messages)
         return value
 
+    def validate_phone_number(self, value):
+        """Validar el número de teléfono solo si no está vacío"""
+        if value and value.strip():  # Solo validar si hay contenido
+            import re
+            # Formato: cualquier código de país (+1 a +999) seguido de exactamente 10 dígitos
+            phone_regex = re.compile(r'^\+\d{1,3}\d{10}$')
+            clean_value = value.replace(' ', '').replace('-', '')  # Remover espacios y guiones
+            if not phone_regex.match(clean_value):
+                raise serializers.ValidationError(
+                    "El número debe tener el formato: código de país (+1 a +999) seguido de 10 dígitos (ej: +573001234567, +12025551234)"
+                )
+        return value
+
     def validate(self, attrs):
         """Validar que las contraseñas coincidan"""
         if attrs['password'] != attrs['password_confirm']:
@@ -63,18 +82,30 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         """Crear usuario con contraseña encriptada"""
-        validated_data.pop('password_confirm')
-        user = CustomUser.objects.create_user(
-            username=validated_data['username'],
-            email=validated_data['email'],
-            password=validated_data['password'],
-            first_name=validated_data['first_name'],
-            last_name=validated_data['last_name'],
-            phone_number=validated_data.get('phone_number', ''),
-            date_of_birth=validated_data.get('date_of_birth', None),
-            risk_profile=validated_data['risk_profile'],
-        )
-        return user
+        print(f"🔄 Creating user with validated_data: {validated_data}")
+        
+        try:
+            validated_data.pop('password_confirm')
+            print(f"✅ Removed password_confirm, remaining data: {validated_data}")
+            
+            user = CustomUser.objects.create_user(
+                username=validated_data['username'],
+                email=validated_data['email'],
+                password=validated_data['password'],
+                first_name=validated_data['first_name'],
+                last_name=validated_data['last_name'],
+                phone_number=validated_data.get('phone_number', ''),
+                date_of_birth=validated_data.get('date_of_birth', None),
+                risk_profile=validated_data['risk_profile'],
+            )
+            print(f"✅ User created successfully: {user.username} (ID: {user.id})")
+            return user
+            
+        except Exception as e:
+            print(f"❌ Error creating user: {str(e)}")
+            import traceback
+            traceback.print_exc()
+            raise
 
 class LoginSerializer(serializers.Serializer):
     """
@@ -154,12 +185,21 @@ class UserUpdateSerializer(serializers.ModelSerializer):
     """
     Serializer para actualizar información del usuario
     """
+    email = serializers.EmailField(required=False)
+    
     class Meta:
         model = CustomUser
         fields = (
-            'first_name', 'last_name', 'phone_number', 
+            'first_name', 'last_name', 'email', 'phone_number', 
             'date_of_birth', 'profile_picture', 'risk_profile'
         )
+    
+    def validate_email(self, value):
+        """Validar que el email sea único (excepto para el usuario actual)"""
+        user = self.instance
+        if user and CustomUser.objects.filter(email=value).exclude(pk=user.pk).exists():
+            raise serializers.ValidationError("Este correo electrónico ya está registrado.")
+        return value
 
 class PasswordChangeSerializer(serializers.Serializer):
     """
