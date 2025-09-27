@@ -49,7 +49,12 @@ INSTALLED_APPS = [
     "rest_framework",
     "news",
     "stocks",
-    'chatbot'
+    'chatbot',
+    "user_admin",
+    'rest_framework.authtoken',
+    'django.contrib.sessions',
+      'corsheaders',
+    
 ]
 
 INTERNAL_IPS = [
@@ -59,6 +64,8 @@ INTERNAL_IPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',  # 👈 tiene que ir arriba
+    'django.middleware.common.CommonMiddleware',
     "debug_toolbar.middleware.DebugToolbarMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -68,6 +75,9 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+CORS_ALLOW_ALL_ORIGINS = True
+
 
 ROOT_URLCONF = 'starkadvisorbackend.urls'
 
@@ -102,6 +112,7 @@ DATABASES = {
         'PORT': '5432',              
     }
 }
+AUTH_USER_MODEL = "user_admin.CustomUser"
 
 
 # Password validation
