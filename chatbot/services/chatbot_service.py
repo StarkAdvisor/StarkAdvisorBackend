@@ -71,4 +71,4 @@ class ChatbotService:
         LoggingManager.log_interaction(user_question, predicted_answer, confidence)
 
         # 6. Failover por baja confianza
-        return self._failover.check(confidence, predicted_answer), confidence
+        return self._failover.check(confidence, predicted_answer)
