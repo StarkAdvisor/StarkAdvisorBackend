@@ -34,6 +34,7 @@ class MercadoFinancieroViewSet(viewsets.ReadOnlyModelViewSet):
         return queryset.order_by('simbolo')
     
     @action(detail=False, methods=['get'])
+    
     def acciones(self, request):
         """
         Endpoint específico para obtener todas las acciones

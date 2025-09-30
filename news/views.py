@@ -21,7 +21,7 @@ class NewsView(View):
         return data
 
     def get(self, request: HttpRequest):
-        query = request.GET.get("q", "Apple")
+        query = request.GET.get("q", None)
 
         today = datetime.now().date()
         yesterday = today - timedelta(days=1)
