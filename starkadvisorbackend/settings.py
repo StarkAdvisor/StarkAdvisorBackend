@@ -53,7 +53,7 @@ INSTALLED_APPS = [
     "user_admin",
     'rest_framework.authtoken',
     'django.contrib.sessions',
-      'corsheaders',
+    'corsheaders',
     
 ]
 
