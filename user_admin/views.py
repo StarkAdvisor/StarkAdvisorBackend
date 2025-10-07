@@ -39,19 +39,26 @@ from .serializers import (
 )
 
 # Configuración de Redis para sesiones
+# Configuración de Redis segura y basada en entorno
 try:
-    redis_client = redis.Redis(
-        host=getattr(settings, 'REDIS_HOST', 'localhost'),
-        port=getattr(settings, 'REDIS_PORT', 6379),
-        db=getattr(settings, 'REDIS_DB', 0),
-        decode_responses=True
-    )
-    # Probar la conexión
+    redis_url = getattr(settings, "REDIS_URL", None)
+
+    if redis_url:
+        redis_client = redis.from_url(redis_url, decode_responses=True)
+    else:
+        redis_client = redis.Redis(
+            host=getattr(settings, "REDIS_HOST", "localhost"),
+            port=getattr(settings, "REDIS_PORT", 6379),
+            db=getattr(settings, "REDIS_DB", 0),
+            decode_responses=True
+        )
+
     redis_client.ping()
-    print(" Redis conectado correctamente")
+    print("✅ Redis conectado correctamente")
 except Exception as e:
-    print(f" Redis no disponible: {e}")
+    print(f"⚠️ Redis no disponible: {e}")
     redis_client = None
+
 
 def cache_user_session(user, token):
     """
