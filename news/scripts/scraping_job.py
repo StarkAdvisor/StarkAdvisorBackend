@@ -1,8 +1,7 @@
-import os
-import django
+from starkadvisorbackend.utils.django_setup import ensure_django
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "starkadvisorbackend.settings")
-django.setup()
+# Initialize Django and require the 'news' app
+ensure_django(require_apps=["news"])
 import time
 from datetime import datetime, timedelta
 
@@ -55,7 +54,7 @@ def run_scraper():
             if not articles:
                 retries += 1
                 print(f" No se encontraron artículos. Reintento {retries}/{MAX_RETRIES}")
-                time.sleep(5)  # espera entre intentos
+                time.sleep(7)  # espera entre intentos
 
         if articles:
             print(f" Guardando {len(articles)} artículos en DB para {category}")

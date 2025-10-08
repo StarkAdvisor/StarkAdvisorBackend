@@ -5,9 +5,7 @@ from transformers import pipeline
 
 
 from news.repository.repository import NewsRepository
-from starkadvisorbackend import settings
-
-from datetime import datetime
+from django.conf import settings
 from .scraping import NewsScraper
 
 class NewsService:

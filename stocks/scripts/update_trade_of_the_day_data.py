@@ -1,11 +1,10 @@
 
-import os
-import django
+from starkadvisorbackend.utils.django_setup import ensure_django
+
+# Initialize Django and require the 'stocks' app
+ensure_django(require_apps=["stocks"])
 
 from stocks.services.trade_of_the_day.trade_of_the_day_updater import TradeOfTheDayUpdater
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "starkadvisorbackend.settings") 
-django.setup()
-
 from stocks.repository.trade_of_the_day_repository import TradeOfTheDayRepository
 
 

@@ -1,12 +1,7 @@
+from starkadvisorbackend.utils.django_setup import ensure_django
 
-
-import os
-import django
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "starkadvisorbackend.settings") 
-django.setup()
-
-
-
+# Initialize Django and require the 'stocks' app to be present
+ensure_django(require_apps=["stocks"])
 
 from stocks.services.market.market_data_pipeline import MarketDataPipeline
 import argparse

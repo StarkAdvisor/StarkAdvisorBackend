@@ -10,7 +10,10 @@ import os
 # -----------------------------
 # Paths and environment setup
 # -----------------------------
-BASE_DIR = Path(__file__).resolve().parent.parent
+# BASE_DIR should point to the project root (repository root). base.py is located
+# at <project>/starkadvisorbackend/settings/base.py so go up three levels to reach
+# the repository root.
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 env = environ.Env()
 environ.Env.read_env()
 

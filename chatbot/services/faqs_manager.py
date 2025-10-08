@@ -19,17 +19,14 @@ class FaqsManager:
 
         self._faq_path = settings.FAQ_PATH
         self._normalized_path = settings.FAQ_NORMALIZED_PATH
-
         self._faqs_original = self._load_json(self._faq_path)
         self._faqs_normalized = self._load_json(self._normalized_path)
-        print(self._faqs_original)
+
         # Mapas para relacionar labels internos con IDs reales
         # Mapas para relacionar labels internos con IDs reales
         
         self._label_to_id = {idx: faq["id"] for idx, faq in enumerate(self._faqs_normalized)}
         self._id_to_label = {faq["id"]: idx for idx, faq in enumerate(self._faqs_normalized)}
-        print(self._label_to_id)
-        print(self._id_to_label)
 
 
 
@@ -37,7 +34,7 @@ class FaqsManager:
         self._initialized = True  # bandera para no recargar en llamadas futuras
 
     def _load_json(self, path: str) -> List[Dict[str, Any]]:
-       
+    
         with open(path, "r", encoding="utf-8") as f:
             return json.load(f)["faqs"]
 

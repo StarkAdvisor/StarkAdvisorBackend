@@ -2,7 +2,7 @@ from datetime import datetime
 from transformers import pipeline
 
 from news import repository
-from starkadvisorbackend import settings
+from django.conf import settings
 
 from datetime import datetime
 from .scraping import NewsScraper
