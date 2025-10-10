@@ -1,6 +1,5 @@
-﻿accelerate==1.10.1
-pywin32==311;
-sys_platform == "win32"
+accelerate==1.10.1
+pywin32==311; sys_platform == "win32"
 aiohappyeyeballs==2.6.1
 aiohttp==3.12.15
 aiosignal==1.4.0
@@ -28,6 +27,8 @@ debugpy==1.8.16
 decorator==5.2.1
 dill==0.4.0
 Django==5.2.5
+# Server WSGI para producción en Azure
+gunicorn==21.2.0
 django-cors-headers==4.9.0
 django-debug-toolbar==6.0.0
 django-environ==0.12.0
@@ -100,7 +101,6 @@ Pygments==2.19.2
 pymongo==4.14.1
 python-dateutil==2.9.0.post0
 pytz==2025.2
-pywin32==311
 PyYAML==6.0.2
 pyzmq==27.0.2
 redis==5.0.1
@@ -147,4 +147,3 @@ wrapt==1.17.3
 xxhash==3.5.0
 yarl==1.20.1
 yfinance==0.2.65
-
