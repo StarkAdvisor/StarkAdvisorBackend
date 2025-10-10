@@ -5,12 +5,13 @@ on:
     branches: [ "main" ]
   workflow_dispatch:
 
+# Evita solapes: si haces un nuevo push, cancela el anterior
 concurrency:
-  group: backend-deploy-${{ github.ref }}
+  group: webapp-starkadvisor-backend
   cancel-in-progress: true
 
 env:
-  PYTHON_VERSION: '3.11'   # Debe coincidir con la versión de App Service
+  PYTHON_VERSION: '3.11'   # Igual que en App Service (Configuración de la pila)
 
 jobs:
   build:
@@ -22,14 +23,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # (Opcional) Instalar deps solo para lint/tests en CI. 
-      # Omitimos crear venv para no duplicar el build: Azure hará el build con Oryx.
+      # (Opcional) Prepara Python si luego agregas lint/tests
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
-      - name: Cache pip (opcional, acelera lint/tests)
+      - name: Cache pip (opcional)
         uses: actions/cache@v4
         with:
           path: ~/.cache/pip
@@ -37,15 +37,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pip-
 
-      # (Opcional) Si quieres correr tests rápidos antes de desplegar, descomenta:
-      # - name: Install dependencies for tests
-      #   run: |
-      #     python -m pip install --upgrade pip
-      #     pip install -r requirements.txt
-      #     # pytest -q
-
-      # Subimos el código tal cual (sin venv). Azure hará el build con Oryx.
-      - name: Upload artifact
+      # Sube el código fuente sin venvs ni metadatos pesados
+      - name: Upload artifact (backend source)
         uses: actions/upload-artifact@v4
         with:
           name: backend-src
@@ -54,6 +47,13 @@ jobs:
             !.git/
             !.github/
             !**/__pycache__/
+            !**/*.ipynb
+            !**/.pytest_cache/
+            !**/.mypy_cache/
+            !**/.ruff_cache/
+            !**/.venv/
+            !**/venv/
+            !**/antenv/
 
   deploy:
     runs-on: ubuntu-latest
@@ -75,26 +75,47 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_0A35B1E80008457D8D59EF4E62EA9F08 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_958550156BE34115B59D23AC21EE820B }}
 
-      # (Súper útil) Garantiza app settings clave en App Service antes del deploy:
-      - name: Ensure App Settings
+      # Asegura settings críticos antes del deploy
+      - name: Ensure App Settings (Oryx on)
         run: |
           az webapp config appsettings set \
             --name starkadvisor-backend \
             --resource-group rg-starkadvisor \
             --settings \
-              SCM_DO_BUILD_DURING_DEPLOYMENT=true \
-              WEBSITES_PORT=8000
-          # Agrega aquí más settings si quieres forzarlos desde el pipeline.
-          # Ej: DJANGO_SETTINGS_MODULE=starkadvisorbackend.settings.production
+              SCM_DO_BUILD_DURING_DEPLOYMENT=true
+          # Si quieres forzar también el módulo de settings:
+          # az webapp config appsettings set \
+          #   --name starkadvisor-backend \
+          #   --resource-group rg-starkadvisor \
+          #   --settings DJANGO_SETTINGS_MODULE=starkadvisorbackend.settings.production
 
-      - name: Deploy to Azure Web App
+      # Empaqueta un ZIP limpio (OneDeploy funciona mejor con zip)
+      - name: Create clean deployment ZIP
+        run: |
+          rm -rf package app.zip
+          mkdir -p package
+          rsync -av \
+            --exclude '.git' \
+            --exclude '.github' \
+            --exclude '__pycache__' \
+            --exclude '*.ipynb' \
+            --exclude '.pytest_cache' \
+            --exclude '.mypy_cache' \
+            --exclude '.ruff_cache' \
+            --exclude 'venv' \
+            --exclude '.venv' \
+            --exclude 'antenv' \
+            ./ package/
+          cd package
+          zip -r ../app.zip .
+
+      - name: Deploy to Azure Web App (OneDeploy + zip)
         id: deploy
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'starkadvisor-backend'
           slot-name: 'Production'
-          package: '.'
+          package: app.zip
 
-      # (Opcional) Reinicio suave tras el deploy
-      - name: Restart app
+      - name: Restart app (soft)
         run: az webapp restart --name starkadvisor-backend --resource-group rg-starkadvisor
