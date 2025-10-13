@@ -78,3 +78,4 @@ jobs:
         run: |
           echo "App Service URL:"
           az webapp show -n $APP_NAME -g $RESOURCE_GROUP --query defaultHostName -o tsv
+
