@@ -148,7 +148,7 @@ class TimeSeriesView(APIView):
 
             else:
                 # From Yahoo Finance (hourly or 4h granularity)
-                interval = "1h" if period == "1d" else "4h"
+                interval = "15m" if period == "1d" else "1h"
                 data = MarketDataFetcher.get_time_series(
                     ticker=ticker,
                     asset_type=AssetType[asset_type],
