@@ -1,5 +1,5 @@
 from datetime import datetime, date
-from pymongo import ASCENDING
+from pymongo import ASCENDING, DESCENDING
 from mongo_client import get_mongo_client  
 
 class TradeOfTheDayRepository:
@@ -36,3 +36,19 @@ class TradeOfTheDayRepository:
        
         today = datetime.now().date()
         return self.get_trades_by_date(today)
+    
+    
+    def get_most_recent_trade(self):
+        """
+        Obtiene el documento de trade más reciente (última fecha registrada)
+        """
+        doc = self.collection.find_one(sort=[("date", DESCENDING)])
+        if not doc:
+            return None
+
+        # Convertir _id a string y la fecha a formato ISO
+        doc["_id"] = str(doc["_id"])
+        if isinstance(doc["date"], datetime):
+            doc["date"] = doc["date"].isoformat()
+
+        return doc["trades"] if doc else []

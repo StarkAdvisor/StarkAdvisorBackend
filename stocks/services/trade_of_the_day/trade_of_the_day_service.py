@@ -9,5 +9,5 @@ class TradeOfTheDayService:
       
 
       def get_trade_of_the_day(self):
-        return self.repository.get_trades_today()
+        return self.repository.get_most_recent_trade()
   
