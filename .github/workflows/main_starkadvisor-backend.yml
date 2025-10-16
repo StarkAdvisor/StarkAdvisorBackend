@@ -1,0 +1,81 @@
+name: Deploy Django backend to Azure Web App (Linux)
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+# Evita despliegues solapados / 409 en Kudu
+concurrency:
+  group: backend-deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Ajusta si usas otra versión en App Service
+  PYTHON_VERSION: '3.11'
+  APP_NAME: 'starkadvisor-backend'
+  RESOURCE_GROUP: 'rg-starkadvisor'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write      # para login federado
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # (Opcional) Útil si más adelante quieres correr tests antes de desplegar
+      - name: Setup Python for pre-checks (optional)
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      # --- Login a Azure (federated) ---
+      - name: Azure Login (federated)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_2A74A6406B2C4AE5BDE8385E609832AC }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_0A35B1E80008457D8D59EF4E62EA9F08 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_958550156BE34115B59D23AC21EE820B }}
+
+      # --- Asegurar App Settings críticos ANTES del deploy ---
+      - name: Ensure App Settings
+        run: |
+          az webapp config appsettings set \
+            --name $APP_NAME \
+            --resource-group $RESOURCE_GROUP \
+            --settings \
+              SCM_DO_BUILD_DURING_DEPLOYMENT=true \
+              WEBSITES_PORT=8000 \
+              DJANGO_SETTINGS_MODULE=starkadvisorbackend.settings.production
+
+          # Si tu App Service usa comando de inicio (Startup Command) para gunicorn, déjalo configurado en el Portal:
+          # gunicorn starkadvisorbackend.wsgi --bind=0.0.0.0:8000
+
+      # --- Pequeño delay para evitar el reinicio del contenedor SCM durante el despliegue ---
+      - name: Small delay to avoid SCM restart conflict
+        run: sleep 20
+
+      # --- Despliegue con OneDeploy (Oryx compila e instala deps) ---
+      # Pasa todo el repo como 'package: .'. No subas .venv ni __pycache__ en tu repo.
+      - name: Deploy to Azure Web App (OneDeploy + Oryx)
+        id: deploy
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ env.APP_NAME }}
+          slot-name: 'Production'
+          package: '.'
+
+      # --- Reinicio suave tras el deploy (opcional) ---
+      - name: Restart app (soft)
+        run: az webapp restart --name $APP_NAME --resource-group $RESOURCE_GROUP
+
+      # --- Output útil ---
+      - name: Deployment info
+        run: |
+          echo "App Service URL:"
+          az webapp show -n $APP_NAME -g $RESOURCE_GROUP --query defaultHostName -o tsv
+
