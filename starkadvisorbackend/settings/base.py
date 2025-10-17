@@ -10,9 +10,6 @@ import os
 # -----------------------------
 # Paths and environment setup
 # -----------------------------
-# BASE_DIR should point to the project root (repository root). base.py is located
-# at <project>/starkadvisorbackend/settings/base.py so go up three levels to reach
-# the repository root.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 env = environ.Env()
 environ.Env.read_env()
@@ -21,6 +18,9 @@ environ.Env.read_env()
 # Core Django settings
 # -----------------------------
 SECRET_KEY = env("SECRET_KEY", default="change-this-in-production")
+
+# Lee DEBUG desde variables de entorno (en Azure será False)
+DEBUG = env.bool("DEBUG", default=False)
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -32,7 +32,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
-    'debug_toolbar',   # Solo se usará si está activado en local
+    # <<< NO pongas debug_toolbar aquí fijo >>>
     'news',
     'stocks',
     'chatbot',
@@ -48,8 +48,15 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-     'debug_toolbar.middleware.DebugToolbarMiddleware',
+    # <<< NO pongas el middleware de debug aquí fijo >>>
 ]
+
+# Solo en desarrollo (DEBUG=True)
+if DEBUG:
+    INSTALLED_APPS += ['debug_toolbar']
+    MIDDLEWARE = ['debug_toolbar.middleware.DebugToolbarMiddleware'] + MIDDLEWARE
+    # opcional: útil para ver el panel en local
+    INTERNAL_IPS = ['127.0.0.1', 'localhost']
 
 ROOT_URLCONF = 'starkadvisorbackend.urls'
 
@@ -123,7 +130,3 @@ FALLOVER_MESSAGE = env("FALLOVER_MESSAGE", default="Lo siento, Starky no entendi
 FAQ_MODEL_PATH = env("FAQ_MODEL_PATH", default=os.path.join(BASE_DIR, "chatbot/faq_model_2"))
 
 FINANCIAL_NEWS_SOURCES = env.list("FINANCIAL_NEWS_SOURCES", default=[])
-
-
-
-
