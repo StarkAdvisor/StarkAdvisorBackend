@@ -20,16 +20,16 @@ jobs:
         with:
           python-version: "3.11"
 
-      # Esto valida que requirements.txt instala bien (para fallar temprano si hay error de pip)
+      # Validación temprana de requirements (para fallar aquí si algo está mal en pip)
       - name: Install dependencies (validation only)
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # 👉 Oryx hará el build en Azure; NO enviamos zip/artefacto.
+      # 👉 NO enviamos un zip. Oryx compila en Azure con tus App Settings.
       - name: Deploy to Azure Web App (Oryx source-based)
         uses: azure/webapps-deploy@v2
         with:
-          app-name: <APP_SERVICE_NAME>            # ej: starkadvisor-backend-f0ekbqfpd6hnf0e6
+          app-name: starkadvisor-backend-f0ekbqfpd6hnf0e6   # <-- Pon aquí el NOMBRE EXACTO de tu App Service
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE }}
-          # package: (intencionalmente vacío)
+          # package:  # Intencionalmente vacío para usar Oryx
