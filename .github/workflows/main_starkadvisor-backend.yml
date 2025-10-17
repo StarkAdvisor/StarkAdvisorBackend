@@ -1,9 +1,19 @@
-name: Deploy Django Backend to Azure (SP login, Oryx)
+name: Deploy Django Backend to Azure (OIDC)
 
 on:
   push:
     branches: [ "main" ]
   workflow_dispatch:
+
+# Necesario para OIDC (emitir el id-token) y leer el repo
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  PYTHON_VERSION: "3.11"
+  APP_NAME: "starkadvisor-backend"         # <-- nombre EXACTO del App Service
+  # RESOURCE_GROUP: "rg-starkadvisor"      # (no es obligatorio para webapps-deploy)
 
 jobs:
   build-and-deploy:
@@ -18,24 +28,28 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: ${{ env.PYTHON_VERSION }}
 
-      # (Opcional) Validación temprana de requirements para fallar aquí si hay algo roto
+      # (Opcional) validar requirements para fallar aquí si hay algo roto de pip
       - name: Install dependencies (validation only)
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # 🔐 Login a Azure con Service Principal (evita 'No credentials found')
-      - name: Azure login
+      # 🔐 Login a Azure con OIDC (SIN publish profile)
+      # Asegúrate de tener estos secrets creados por Deployment Center o manualmente:
+      # AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_SUBSCRIPTION_ID
+      - name: Azure login (OIDC)
         uses: azure/login@v2
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      # 🚀 Despliegue al App Service. Sin 'package' => Oryx construye en Azure con tus App Settings
-      - name: Deploy to Azure Web App (source-based)
+      # 🚀 Desplegar al App Service. Sin 'package' -> Oryx construye en Azure usando tus App Settings
+      - name: Deploy to Azure Web App (Oryx source-based)
         uses: azure/webapps-deploy@v2
         with:
-          app-name: starkadvisor-backend   # <--- NOMBRE EXACTO de tu App Service
-          # slot-name: production          # (opcional) si usas deployment slots
-          # package:                       # intencionalmente vacío
+          app-name: ${{ env.APP_NAME }}
+          # slot-name: production            # opcional si usas slots
+          # package:                         # DEJAR vacío para source-based
