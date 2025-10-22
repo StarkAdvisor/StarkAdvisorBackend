@@ -47,4 +47,6 @@ pymongo[srv]==4.8.0
 # pyarrow==21.0.0
 # fsspec==2025.7.0
 # yfinance==0.2.65
+pymongo==4.9.1
+dnspython>=2.4.0
 
