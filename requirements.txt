@@ -48,6 +48,9 @@ pymongo[srv]==4.9.1
 # fsspec==2025.7.0
 # yfinance==0.2.65
 dnspython>=2.4.0
+dj-database-url==2.2.0
+
+
 
 
 
