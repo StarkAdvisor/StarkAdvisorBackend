@@ -1,19 +1,18 @@
-name: Deploy Django Backend (OIDC + ZipDeploy estable)
+name: Deploy Django Backend (OIDC + ZipDeploy)
 
 on:
   push:
     branches: [ "main" ]
   workflow_dispatch:
 
-# Evita ejecuciones solapadas del deploy
+# Evita despliegues solapados
 concurrency:
   group: backend-deploy-${{ github.ref }}
   cancel-in-progress: true
 
 env:
-  PYTHON_VERSION: "3.11"
-  APP_NAME: "starkadvisor-backend"
-  RESOURCE_GROUP: "rg-starkadvisor"
+  APP_NAME: "starkadvisor-backend"        # <-- tu WebApp
+  RESOURCE_GROUP: "rg-starkadvisor"       # <-- tu RG
 
 jobs:
   deploy:
@@ -26,12 +25,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Python (opcional, sólo para pre-chequeos)
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ env.PYTHON_VERSION }}
-
-      # Login federado (OIDC) usando tus secretos ya configurados en Azure
+      # Login federado (OIDC): usa TUS secrets creados por Azure (federated credential)
       - name: Azure Login (OIDC)
         uses: azure/login@v2
         with:
@@ -39,7 +33,7 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_0A35B1E80008457D8D59EF4E62EA9F08 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_958550156BE34115B59D23AC21EE820B }}
 
-      # Asegura settings críticos antes del deploy
+      # Asegura settings críticos (no toca datos de Postgres ni Mongo)
       - name: Ensure App Settings
         run: |
           az webapp config appsettings set \
@@ -48,42 +42,65 @@ jobs:
             --settings \
               SCM_DO_BUILD_DURING_DEPLOYMENT=true \
               WEBSITES_PORT=8000 \
-              DJANGO_SETTINGS_MODULE=starkadvisorbackend.settings.production \
-              WEBSITE_RUN_FROM_PACKAGE=1
+              DJANGO_SETTINGS_MODULE=starkadvisorbackend.settings.production
 
-      # Empaqueta el repo como ZIP limpio (sin .git, caches, venvs, etc.)
-      - name: Create ZIP package
+      # Empaqueta el repo en app.zip EXCLUYENDO carpetas que no deben ir
+      - name: Make clean ZIP (app.zip)
         run: |
-          echo "Creando app.zip..."
           zip -r app.zip . \
-            -x "*.git*" \
-            -x ".github/*" \
-            -x "__pycache__/*" \
-            -x "*/__pycache__/*" \
-            -x "*.pyc" \
-            -x ".venv/*" "venv/*" \
-            -x ".pytest_cache/*" \
-            -x ".mypy_cache/*"
+            -x ".git/*" \
+               ".github/*" \
+               "__pycache__/*" \
+               "**/__pycache__/*" \
+               "*.pyc" \
+               ".venv/*" "venv/*" "env/*" \
+               "node_modules/*" \
+               "*.log" \
+               "staticfiles/*" \
+               ".DS_Store"
+          ls -lh app.zip
 
-      # Evita el 409: detener -> desplegar ZIP -> arrancar
+      # Evita conflictos 409 parando el sitio antes de ZipDeploy
       - name: Stop Web App (avoid locks)
-        run: az webapp stop --name "$APP_NAME" --resource-group "$RESOURCE_GROUP"
+        run: az webapp stop --name "$APP_NAME" --resource-group "$RESOURCE_GROUP" || true
 
+      # ZipDeploy “clásico” vía CLI (estable) + limpieza del destino
       - name: Zip Deploy via Azure CLI (sin OneDeploy)
         run: |
-          # --type zip usa Kudu ZipDeploy (estable). --clean limpia destino cuando no usas RunFromPackage
+          echo "WARNING: Initiating deployment"
           az webapp deploy \
             --resource-group "$RESOURCE_GROUP" \
             --name "$APP_NAME" \
-            --src-path app.zip \
             --type zip \
-            --async false
+            --src-path app.zip \
+            --clean true \
+            --timeout 1800
 
+      # Arranca el sitio
       - name: Start Web App
         run: az webapp start --name "$APP_NAME" --resource-group "$RESOURCE_GROUP"
 
-      # Info útil al final
-      - name: Deployment info
+      # Espera y hace warm-up básico (200/302/403/500 aceptables durante arranque)
+      - name: Warm up & show URL
+        shell: bash
         run: |
           HOST=$(az webapp show -n "$APP_NAME" -g "$RESOURCE_GROUP" --query defaultHostName -o tsv)
           echo "App Service URL: https://$HOST"
+
+          echo "Warming up..."
+          for i in {1..40}; do
+            CODE=$(curl -s -o /dev/null -w "%{http_code}" "https://$HOST" || true)
+            echo "Try $i: HTTP $CODE"
+            # 200 ok, 302 redirect, 403/401 por CSRF/autoriza, 500/502 transitorios en arranque
+            if [[ "$CODE" == "200" || "$CODE" == "302" || "$CODE" == "403" || "$CODE" == "401" ]]; then
+              echo "Site responded. Done."
+              break
+            fi
+            sleep 10
+          done
+
+      # Muestra link del último log de despliegue en Kudu si algo fallara
+      - name: Deployment info (Kudu link)
+        run: |
+          KUDU="https://${{ env.APP_NAME }}.scm.azurewebsites.net/api/deployments/latest"
+          echo "If something looks off, check: $KUDU"
