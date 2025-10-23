@@ -1,11 +1,11 @@
-name: Deploy Django Backend (OIDC + OneDeploy)
+name: Deploy Django Backend (OIDC + ZipDeploy estable)
 
 on:
   push:
     branches: [ "main" ]
   workflow_dispatch:
 
-# Evita despliegues solapados
+# Evita ejecuciones solapadas del deploy
 concurrency:
   group: backend-deploy-${{ github.ref }}
   cancel-in-progress: true
@@ -26,12 +26,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Python (optional pre-check)
+      - name: Setup Python (opcional, sólo para pre-chequeos)
         uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
-      # Login federado (OIDC). Usa tus secrets ya creados por Azure.
+      # Login federado (OIDC) usando tus secretos ya configurados en Azure
       - name: Azure Login (OIDC)
         uses: azure/login@v2
         with:
@@ -48,24 +48,42 @@ jobs:
             --settings \
               SCM_DO_BUILD_DURING_DEPLOYMENT=true \
               WEBSITES_PORT=8000 \
-              DJANGO_SETTINGS_MODULE=starkadvisorbackend.settings.production
+              DJANGO_SETTINGS_MODULE=starkadvisorbackend.settings.production \
+              WEBSITE_RUN_FROM_PACKAGE=1
 
-      - name: Small delay to avoid SCM restart conflict
-        run: sleep 20
+      # Empaqueta el repo como ZIP limpio (sin .git, caches, venvs, etc.)
+      - name: Create ZIP package
+        run: |
+          echo "Creando app.zip..."
+          zip -r app.zip . \
+            -x "*.git*" \
+            -x ".github/*" \
+            -x "__pycache__/*" \
+            -x "*/__pycache__/*" \
+            -x "*.pyc" \
+            -x ".venv/*" "venv/*" \
+            -x ".pytest_cache/*" \
+            -x ".mypy_cache/*"
 
-      # Despliegue con OneDeploy (zip del repo). No subas .venv ni __pycache__ al repo.
-      - name: Deploy to Azure Web App (OneDeploy + Zip)
-        uses: azure/webapps-deploy@v3
-        with:
-          app-name: ${{ env.APP_NAME }}
-          # slot-name: production         # descomenta si usas deployment slots
-          package: "."                    # empaqueta el repo y despliega
+      # Evita el 409: detener -> desplegar ZIP -> arrancar
+      - name: Stop Web App (avoid locks)
+        run: az webapp stop --name "$APP_NAME" --resource-group "$RESOURCE_GROUP"
 
-      - name: Restart app (soft)
-        run: az webapp restart --name "$APP_NAME" --resource-group "$RESOURCE_GROUP"
+      - name: Zip Deploy via Azure CLI (sin OneDeploy)
+        run: |
+          # --type zip usa Kudu ZipDeploy (estable). --clean limpia destino cuando no usas RunFromPackage
+          az webapp deploy \
+            --resource-group "$RESOURCE_GROUP" \
+            --name "$APP_NAME" \
+            --src-path app.zip \
+            --type zip \
+            --async false
 
+      - name: Start Web App
+        run: az webapp start --name "$APP_NAME" --resource-group "$RESOURCE_GROUP"
+
+      # Info útil al final
       - name: Deployment info
         run: |
-          echo "App Service URL:"
           HOST=$(az webapp show -n "$APP_NAME" -g "$RESOURCE_GROUP" --query defaultHostName -o tsv)
-          echo "https://$HOST"
+          echo "App Service URL: https://$HOST"
