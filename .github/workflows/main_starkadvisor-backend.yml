@@ -2,18 +2,16 @@ name: Deploy Django Backend (OIDC + OneDeploy)
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   workflow_dispatch:
 
-# Evita despliegues solapados
 concurrency:
   group: backend-deploy-${{ github.ref }}
   cancel-in-progress: true
 
 env:
-  PYTHON_VERSION: "3.11"
-  APP_NAME: "starkadvisor-backend"
-  RESOURCE_GROUP: "rg-starkadvisor"
+  APP_NAME: starkadvisor-backend
+  RESOURCE_GROUP: rg-starkadvisor
 
 jobs:
   deploy:
@@ -23,15 +21,8 @@ jobs:
       contents: read
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Python (optional pre-check)
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ env.PYTHON_VERSION }}
-
-      # Login federado (OIDC). Usa tus secrets ya creados por Azure.
       - name: Azure Login (OIDC)
         uses: azure/login@v2
         with:
@@ -39,7 +30,6 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_0A35B1E80008457D8D59EF4E62EA9F08 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_958550156BE34115B59D23AC21EE820B }}
 
-      # Asegura settings críticos antes del deploy
       - name: Ensure App Settings
         run: |
           az webapp config appsettings set \
@@ -49,22 +39,12 @@ jobs:
               SCM_DO_BUILD_DURING_DEPLOYMENT=true \
               WEBSITES_PORT=8000 \
               DJANGO_SETTINGS_MODULE=starkadvisorbackend.settings.production
-      - name: Small delay to avoid SCM restart conflict
-        run: sleep 20
 
-      # Despliegue con OneDeploy (zip del repo). No subas .venv ni __pycache__ al repo.
-      - name: Deploy to Azure Web App (OneDeploy + Zip)
+      - name: Deploy (OneDeploy + Zip) - repo raíz
         uses: azure/webapps-deploy@v3
         with:
           app-name: ${{ env.APP_NAME }}
-          # slot-name: production         # descomenta si usas deployment slots
-          package: "."                    # empaqueta el repo y despliega
+          package: "."   # <- manage.py está en la raíz del repo
 
-      - name: Restart app (soft)
-        run: az webapp restart --name "$APP_NAME" --resource-group "$RESOURCE_GROUP"
-
-      - name: Deployment info
-        run: |
-          echo "App Service URL:"
-          HOST=$(az webapp show -n "$APP_NAME" -g "$RESOURCE_GROUP" --query defaultHostName -o tsv)
-          echo "https://$HOST"
+      - name: Soft restart
+        run: az webapp restart -n "$APP_NAME" -g "$RESOURCE_GROUP"
