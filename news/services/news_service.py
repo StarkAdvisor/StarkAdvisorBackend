@@ -12,7 +12,7 @@ class NewsService:
         
     def __init__(self):
         self.repository = NewsRepository()
-        self.sentiment_analyzer = pipeline("sentiment-analysis")
+        self.sentiment_analyzer = pipeline("sentiment-analysis", model="distilbert/distilbert-base-uncased-finetuned-sst-2-english")
    
 
     def save_scraped_news(self, news_list):

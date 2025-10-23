@@ -21,10 +21,10 @@ class NewsView(View):
         return data
 
     def get(self, request: HttpRequest):
-        query = request.GET.get("q", None)
+        query = request.GET.get("q", "")
 
         today = datetime.now().date()
-        yesterday = today - timedelta(days=1)
+        yesterday = today - timedelta(days=30)
 
         start = request.GET.get("start", str(yesterday))
         end = request.GET.get("end", str(today))
