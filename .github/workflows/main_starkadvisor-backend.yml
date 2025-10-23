@@ -2,7 +2,7 @@ name: Deploy Django Backend (OIDC + OneDeploy)
 
 on:
   push:
-    branches: ["main"]
+    branches: [ "main" ]
   workflow_dispatch:
 
 concurrency:
@@ -10,8 +10,9 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  APP_NAME: starkadvisor-backend
-  RESOURCE_GROUP: rg-starkadvisor
+  PYTHON_VERSION: "3.11"
+  APP_NAME: "starkadvisor-backend"
+  RESOURCE_GROUP: "rg-starkadvisor"
 
 jobs:
   deploy:
@@ -21,7 +22,13 @@ jobs:
       contents: read
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python (optional)
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
 
       - name: Azure Login (OIDC)
         uses: azure/login@v2
@@ -30,21 +37,47 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_0A35B1E80008457D8D59EF4E62EA9F08 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_958550156BE34115B59D23AC21EE820B }}
 
+      # App Settings necesarios para Django en App Service Linux
       - name: Ensure App Settings
         run: |
           az webapp config appsettings set \
             --name "$APP_NAME" \
             --resource-group "$RESOURCE_GROUP" \
             --settings \
-              SCM_DO_BUILD_DURING_DEPLOYMENT=true \
+              DJANGO_SETTINGS_MODULE=starkadvisorbackend.settings.production \
               WEBSITES_PORT=8000 \
-              DJANGO_SETTINGS_MODULE=starkadvisorbackend.settings.production
+              SCM_DO_BUILD_DURING_DEPLOYMENT=true \
+              WEBSITE_RUN_FROM_PACKAGE=0 \
+              DISABLE_COLLECTSTATIC=true
+        shell: bash
 
-      - name: Deploy (OneDeploy + Zip) - repo raíz
+      - name: Small delay (avoid SCM restarts)
+        run: sleep 10
+        shell: bash
+
+      # Empaquetar DESDE LA RAÍZ (donde están manage.py y requirements.txt)
+      - name: Create deployment zip
+        run: |
+          rm -f app.zip
+          zip -r app.zip . \
+            -x ".git/*" ".github/*" ".vscode/*" \
+               "__pycache__/*" "*.pyc" "*.pyo" \
+               ".venv/*" "venv/*"
+          ls -lh app.zip
+        shell: bash
+
+      - name: Deploy to Azure Web App (OneDeploy + Zip)
         uses: azure/webapps-deploy@v3
         with:
           app-name: ${{ env.APP_NAME }}
-          package: "."   # <- manage.py está en la raíz del repo
+          package: "app.zip"
 
-      - name: Soft restart
-        run: az webapp restart -n "$APP_NAME" -g "$RESOURCE_GROUP"
+      - name: Restart app (soft)
+        run: az webapp restart --name "$APP_NAME" --resource-group "$RESOURCE_GROUP"
+        shell: bash
+
+      - name: Deployment info
+        run: |
+          HOST=$(az webapp show -n "$APP_NAME" -g "$RESOURCE_GROUP" --query defaultHostName -o tsv)
+          echo "App Service URL: https://$HOST"
+        shell: bash
