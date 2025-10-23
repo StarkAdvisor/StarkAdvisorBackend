@@ -1,15 +1,17 @@
-name: Deploy Django Backend (OneDeploy)
+name: Deploy Django Backend (OIDC + OneDeploy)
 
 on:
   push:
     branches: [ "main" ]
   workflow_dispatch:
 
+# Evita despliegues solapados
 concurrency:
   group: backend-deploy-${{ github.ref }}
   cancel-in-progress: true
 
 env:
+  PYTHON_VERSION: "3.11"
   APP_NAME: "starkadvisor-backend"
   RESOURCE_GROUP: "rg-starkadvisor"
 
@@ -24,15 +26,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # Login con OIDC (usa TUS secrets correctos)
+      - name: Setup Python (optional pre-check)
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      # Login federado (OIDC). Usa tus secrets ya creados por Azure.
       - name: Azure Login (OIDC)
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_2A74A6406B2C4AE5BDE8385E609832AC }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_0A35B1E80008457D8D59EF4E62EA9F08 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_958550156BE34115B59D23AC21EE820B }}
 
-      # Garantiza settings críticos antes del deploy
+      # Asegura settings críticos antes del deploy
       - name: Ensure App Settings
         run: |
           az webapp config appsettings set \
@@ -42,18 +49,22 @@ jobs:
               SCM_DO_BUILD_DURING_DEPLOYMENT=true \
               WEBSITES_PORT=8000 \
               DJANGO_SETTINGS_MODULE=starkadvisorbackend.settings.production
+      - name: Small delay to avoid SCM restart conflict
+        run: sleep 20
 
-      # Despliegue OneDeploy (zip del repo)
-      - name: Deploy to Azure Web App (OneDeploy Zip)
+      # Despliegue con OneDeploy (zip del repo). No subas .venv ni __pycache__ al repo.
+      - name: Deploy to Azure Web App (OneDeploy + Zip)
         uses: azure/webapps-deploy@v3
         with:
           app-name: ${{ env.APP_NAME }}
-          package: "."
+          # slot-name: production         # descomenta si usas deployment slots
+          package: "."                    # empaqueta el repo y despliega
 
-      - name: Restart app
+      - name: Restart app (soft)
         run: az webapp restart --name "$APP_NAME" --resource-group "$RESOURCE_GROUP"
 
-      - name: Show URL
+      - name: Deployment info
         run: |
+          echo "App Service URL:"
           HOST=$(az webapp show -n "$APP_NAME" -g "$RESOURCE_GROUP" --query defaultHostName -o tsv)
           echo "https://$HOST"
