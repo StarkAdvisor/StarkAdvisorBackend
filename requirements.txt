@@ -32,6 +32,7 @@ tokenizers==0.21.4
 safetensors==0.6.2
 huggingface-hub==0.34.4
 torch==2.8.0+cpu
+pymongo[srv]==4.9.1
 
 ########## (Opcionales, solo si de verdad los necesitas ahora) ##########
 # Si no son imprescindibles en el arranque, NO los añadas todavía:
@@ -46,3 +47,13 @@ torch==2.8.0+cpu
 # pyarrow==21.0.0
 # fsspec==2025.7.0
 # yfinance==0.2.65
+dnspython>=2.4.0
+dj-database-url==2.2.0
+
+
+
+
+
+
+
+
