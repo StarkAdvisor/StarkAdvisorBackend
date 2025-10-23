@@ -1,18 +1,17 @@
-name: Deploy Django Backend (OIDC + ZipDeploy)
+name: Deploy Django Backend (OneDeploy)
 
 on:
   push:
     branches: [ "main" ]
   workflow_dispatch:
 
-# Evita despliegues solapados
 concurrency:
   group: backend-deploy-${{ github.ref }}
   cancel-in-progress: true
 
 env:
-  APP_NAME: "starkadvisor-backend"        # <-- tu WebApp
-  RESOURCE_GROUP: "rg-starkadvisor"       # <-- tu RG
+  APP_NAME: "starkadvisor-backend"
+  RESOURCE_GROUP: "rg-starkadvisor"
 
 jobs:
   deploy:
@@ -25,15 +24,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # Login federado (OIDC): usa TUS secrets creados por Azure (federated credential)
+      # Login con OIDC (usa TUS secrets correctos)
       - name: Azure Login (OIDC)
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_2A74A6406B2C4AE5BDE8385E609832AC }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_0A35B1E80008457D8D59EF4E62EA9F08 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_958550156BE34115B59D23AC21EE820B }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID }}
 
-      # Asegura settings críticos (no toca datos de Postgres ni Mongo)
+      # Garantiza settings críticos antes del deploy
       - name: Ensure App Settings
         run: |
           az webapp config appsettings set \
@@ -44,63 +43,17 @@ jobs:
               WEBSITES_PORT=8000 \
               DJANGO_SETTINGS_MODULE=starkadvisorbackend.settings.production
 
-      # Empaqueta el repo en app.zip EXCLUYENDO carpetas que no deben ir
-      - name: Make clean ZIP (app.zip)
-        run: |
-          zip -r app.zip . \
-            -x ".git/*" \
-               ".github/*" \
-               "__pycache__/*" \
-               "**/__pycache__/*" \
-               "*.pyc" \
-               ".venv/*" "venv/*" "env/*" \
-               "node_modules/*" \
-               "*.log" \
-               "staticfiles/*" \
-               ".DS_Store"
-          ls -lh app.zip
+      # Despliegue OneDeploy (zip del repo)
+      - name: Deploy to Azure Web App (OneDeploy Zip)
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ env.APP_NAME }}
+          package: "."
 
-      # Evita conflictos 409 parando el sitio antes de ZipDeploy
-      - name: Stop Web App (avoid locks)
-        run: az webapp stop --name "$APP_NAME" --resource-group "$RESOURCE_GROUP" || true
+      - name: Restart app
+        run: az webapp restart --name "$APP_NAME" --resource-group "$RESOURCE_GROUP"
 
-      # ZipDeploy “clásico” vía CLI (estable) + limpieza del destino
-      - name: Zip Deploy via Azure CLI (sin OneDeploy)
-        run: |
-          echo "WARNING: Initiating deployment"
-          az webapp deploy \
-            --resource-group "$RESOURCE_GROUP" \
-            --name "$APP_NAME" \
-            --type zip \
-            --src-path app.zip \
-            --clean true \
-            --timeout 1800
-
-      # Arranca el sitio
-      - name: Start Web App
-        run: az webapp start --name "$APP_NAME" --resource-group "$RESOURCE_GROUP"
-
-      # Espera y hace warm-up básico (200/302/403/500 aceptables durante arranque)
-      - name: Warm up & show URL
-        shell: bash
+      - name: Show URL
         run: |
           HOST=$(az webapp show -n "$APP_NAME" -g "$RESOURCE_GROUP" --query defaultHostName -o tsv)
-          echo "App Service URL: https://$HOST"
-
-          echo "Warming up..."
-          for i in {1..40}; do
-            CODE=$(curl -s -o /dev/null -w "%{http_code}" "https://$HOST" || true)
-            echo "Try $i: HTTP $CODE"
-            # 200 ok, 302 redirect, 403/401 por CSRF/autoriza, 500/502 transitorios en arranque
-            if [[ "$CODE" == "200" || "$CODE" == "302" || "$CODE" == "403" || "$CODE" == "401" ]]; then
-              echo "Site responded. Done."
-              break
-            fi
-            sleep 10
-          done
-
-      # Muestra link del último log de despliegue en Kudu si algo fallara
-      - name: Deployment info (Kudu link)
-        run: |
-          KUDU="https://${{ env.APP_NAME }}.scm.azurewebsites.net/api/deployments/latest"
-          echo "If something looks off, check: $KUDU"
+          echo "https://$HOST"
