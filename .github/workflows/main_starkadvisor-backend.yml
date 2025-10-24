@@ -1,52 +1,265 @@
-- name: Prepare staging
-  run: |
-    set -e
-    # 1) Validaciones en la raíz del repo
-    test -f manage.py || { echo "❌ Falta manage.py en la RAÍZ"; exit 1; }
-    test -f requirements.txt || { echo "❌ Falta requirements.txt en la RAÍZ"; exit 1; }
-    test -d starkadvisorbackend || { echo "❌ Falta carpeta starkadvisorbackend/ en la RAÍZ"; exit 1; }
+name: CI/CD — Backend Django (Azure App Service) BLINDADO
 
-    STAGING="${{ runner.temp }}/staging"
-    ZIP_PATH="${{ runner.temp }}/app.zip"
-    rm -rf "$STAGING" && mkdir -p "$STAGING"
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - "manage.py"
+      - "requirements.txt"
+      - "starkadvisorbackend/**"
+      - ".github/workflows/backend-ci-cd.yml"
+  pull_request:
+    branches: [ main ]
+    paths:
+      - "manage.py"
+      - "requirements.txt"
+      - "starkadvisorbackend/**"
+      - ".github/workflows/backend-ci-cd.yml"
+  workflow_dispatch: {}
 
-    # 2) Copiar solo lo necesario
-    rsync -a ./ "$STAGING"/ \
-      --exclude ".git/" --exclude ".github/" --exclude "venv/" --exclude ".venv/" \
-      --exclude "__pycache__/" --exclude "*.pyc" --exclude "node_modules/" \
-      --exclude "docs/" --exclude "tests/" --exclude ".DS_Store" \
-      --exclude "chatbot/faq_model_2/"
+env:
+  PYTHON_VERSION: "3.11"
+  CACHE_VERSION: v1
 
-    cd "$STAGING"
+concurrency:
+  group: backend-${{ github.ref }}
+  cancel-in-progress: true
 
-    # 3) Re-validar en staging (evita publicar vacío)
-    test -f manage.py || { echo "❌ manage.py no llegó a staging"; exit 1; }
-    test -f requirements.txt || { echo "❌ requirements.txt no llegó a staging"; exit 1; }
-    test -d starkadvisorbackend || { echo "❌ starkadvisorbackend/ no llegó a staging"; exit 1; }
+jobs:
+  backend-validate-package-deploy:
+    name: Backend — Validate ×2, Package (no wrapper), Smoke ×2, Deploy & Verify
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
-    # 4) Crear ZIP
-    python3 - <<'PY'
-import os, zipfile, sys
-zp = os.environ["RUNNER_TEMP"] + "/app.zip"
-with zipfile.ZipFile(zp, "w", zipfile.ZIP_DEFLATED) as z:
-    for root, _, files in os.walk("."):
-        for f in files:
-            p = os.path.join(root, f)
-            z.write(p, p)
-print("ZIP listo:", zp)
-with zipfile.ZipFile(zp) as z:
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-backend-${{ env.CACHE_VERSION }}-${{ hashFiles('requirements.txt') }}
+
+      # =============== VALIDACIONES DE CÓDIGO Y DEPENDENCIAS ===============
+      - name: Install deps (pytest/flake8 included)
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest pytest-django flake8 gunicorn
+
+      - name: Hard checks — estructura y WSGI
+        run: |
+          set -e
+          test -f manage.py || { echo "❌ Falta manage.py en la RAÍZ"; exit 1; }
+          test -f requirements.txt || { echo "❌ Falta requirements.txt en la RAÍZ"; exit 1; }
+          test -d starkadvisorbackend || { echo "❌ Falta directorio starkadvisorbackend/ en la RAÍZ"; exit 1; }
+          test -f starkadvisorbackend/wsgi.py || { echo "❌ Falta starkadvisorbackend/wsgi.py"; exit 1; }
+          python - <<'PY'
+# Validar que el módulo WSGI existe y expone "application"
+import importlib
+m = importlib.import_module("starkadvisorbackend.wsgi")
+assert hasattr(m, "application"), "WSGI no expone 'application'"
+print("✅ WSGI importable y con 'application'")
+PY
+
+      - name: Quick checks (Django system)
+        env:
+          DJANGO_SETTINGS_MODULE: starkadvisorbackend.settings
+        run: |
+          # flake8 crítico (no falla por estilo menor)
+          flake8 --count --select=E9,F63,F7,F82 --show-source --statistics || true
+          # checks de deploy
+          python manage.py check --deploy --fail-level WARNING
+
+      - name: Requirements sanity
+        run: |
+          REQ=$(tr '[:upper:]' '[:lower:]' < requirements.txt)
+          echo "$REQ" | grep -q "django" || { echo "❌ requirements.txt no incluye Django"; exit 1; }
+          echo "$REQ" | grep -q "gunicorn" || echo "⚠️ Sugerencia: agrega 'gunicorn' a requirements.txt (ya se instaló para smoke)."
+
+      - name: Run tests
+        env:
+          DJANGO_SETTINGS_MODULE: starkadvisorbackend.settings
+          DATABASE_URL: ${{ secrets.BACKEND_DATABASE_URL }}
+          SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+          ALLOWED_HOSTS: ${{ secrets.DJANGO_ALLOWED_HOSTS }}
+        run: pytest -q
+
+      # =============== PREPARE STAGING (SIN CARPETA ENVOLVENTE) ===============
+      - name: Prepare staging (blindado)
+        run: |
+          set -e
+          # 1) Validaciones pre-staging
+          test -f manage.py || { echo "❌ Falta manage.py en la RAÍZ"; exit 1; }
+          test -f requirements.txt || { echo "❌ Falta requirements.txt en la RAÍZ"; exit 1; }
+          test -d starkadvisorbackend || { echo "❌ Falta starkadvisorbackend/ en la RAÍZ"; exit 1; }
+          test -f starkadvisorbackend/wsgi.py || { echo "❌ Falta wsgi.py"; exit 1; }
+
+          STAGING="${{ runner.temp }}/staging"
+          ZIP_PATH="${{ runner.temp }}/app.zip"
+          rm -rf "$STAGING" && mkdir -p "$STAGING"
+
+          # 2) Copiar solo lo necesario (sin .git/.github/tests/node_modules/etc.)
+          rsync -a ./ "$STAGING"/ \
+            --exclude ".git/" --exclude ".github/" --exclude "venv/" --exclude ".venv/" \
+            --exclude "__pycache__/" --exclude "*.pyc" --exclude "*.pyo" \
+            --exclude "node_modules/" --exclude "docs/" --exclude "tests/" \
+            --exclude ".DS_Store" --exclude "chatbot/faq_model_2/"
+
+          cd "$STAGING"
+
+          # 3) Revalidar en staging
+          test -f manage.py || { echo "❌ manage.py no llegó a staging"; exit 1; }
+          test -f requirements.txt || { echo "❌ requirements.txt no llegó a staging"; exit 1; }
+          test -d starkadvisorbackend || { echo "❌ starkadvisorbackend/ no llegó a staging"; exit 1; }
+          test -f starkadvisorbackend/wsgi.py || { echo "❌ wsgi.py no llegó a staging"; exit 1; }
+
+          # 4) Crear ZIP en RAÍZ (sin carpeta envolvente)
+          python3 - <<'PY'
+import os, zipfile, sys, pathlib
+runner_tmp = os.environ["RUNNER_TEMP"]
+zip_path = os.path.join(runner_tmp, "app.zip")
+root = pathlib.Path(".").resolve()
+with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as z:
+    for p in root.rglob("*"):
+        if p.is_file():
+            z.write(p, p.relative_to(root).as_posix())
+print("ZIP listo:", zip_path)
+
+# Revisión de contenido requerido y que NO haya "wrapper folder"
+with zipfile.ZipFile(zip_path) as z:
     names = z.namelist()
-    required = ["manage.py", "requirements.txt", "starkadvisorbackend/"]
+    # Requeridos en raíz
+    required = ["manage.py", "requirements.txt", "starkadvisorbackend/", "starkadvisorbackend/wsgi.py"]
+    def present(path):
+        return any(n == path or n.startswith(path.rstrip("/") + "/") for n in names)
     for r in required:
-        if not any(n==r or n.startswith(r) for n in names):
+        if not present(r):
             print(f"❌ Falta {r} dentro del ZIP")
             sys.exit(1)
-print("✅ ZIP contiene archivos clave")
-PY
-    echo "ZIP_PATH=$ZIP_PATH" >> $GITHUB_ENV
 
-- name: Deploy to Azure WebApp
-  uses: azure/webapps-deploy@v3
-  with:
-    app-name: starkadvisor-backend
-    package: ${{ runner.temp }}/app.zip
+    # Detectar carpeta envolvente única (p.ej., "staging/..." o "backend/...")
+    # Si TODOS los archivos empiezan con el mismo prefijo 'X/', fallar.
+    prefixes = set(n.split('/')[0] + '/' for n in names if '/' in n)
+    # Si todos tienen un prefijo común y no hay archivos en raíz, se considera wrapper
+    if len(prefixes) == 1 and not any('/' not in n for n in names):
+        print(f"❌ ZIP tiene carpeta envolvente: {list(prefixes)[0]}. Debe contener los archivos en la RAÍZ.")
+        sys.exit(1)
+
+print("✅ ZIP contiene archivos clave en la RAÍZ (sin carpeta envolvente)")
+PY
+
+          # 5) Mostrar lista de la RAÍZ del ZIP
+          python3 - <<'PY'
+import zipfile, os
+zp = os.environ["RUNNER_TEMP"] + "/app.zip"
+with zipfile.ZipFile(zp) as z:
+    roots = sorted(set([n.split('/')[0] for n in z.namelist() if n]))
+    print("Contenido raíz ZIP:", roots[:30])
+PY
+
+          echo "ZIP_PATH=$ZIP_PATH" >> $GITHUB_ENV
+
+      - name: Upload ZIP artifact (debug)
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-zip
+          path: ${{ env.ZIP_PATH }}
+          if-no-files-found: error
+          retention-days: 7
+
+      # =============== SMOKE TEST LOCAL: RUNSERVER Y GUNICORN ===============
+      - name: Smoke A — runserver (GET / 200–399)
+        env:
+          DJANGO_SETTINGS_MODULE: starkadvisorbackend.settings
+          DATABASE_URL: ${{ secrets.BACKEND_DATABASE_URL }}
+          SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+          ALLOWED_HOSTS: "127.0.0.1,localhost"
+          PYTHONUNBUFFERED: "1"
+        run: |
+          set -e
+          python manage.py migrate --noinput
+          (python manage.py runserver 127.0.0.1:8000 > "${{ runner.temp }}/django-runserver.log" 2>&1) &
+          SRV_PID=$!
+          for i in {1..40}; do
+            CODE=$(curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:8000/)
+            if [ "$CODE" -ge 200 ] && [ "$CODE" -lt 400 ]; then
+              echo "✅ GET / (runserver) OK — HTTP $CODE"
+              break
+            fi
+            sleep 1
+          done
+          CODE=$(curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:8000/)
+          if [ "$CODE" -lt 200 ] || [ "$CODE" -ge 400 ]; then
+            echo "❌ runserver no respondió OK (HTTP $CODE)"
+            echo "---- Django runserver (tail) ----"
+            tail -n 200 "${{ runner.temp }}/django-runserver.log" || true
+            kill $SRV_PID || true
+            exit 1
+          fi
+          kill $SRV_PID || true
+
+      - name: Smoke B — gunicorn WSGI (GET / 200–399)
+        env:
+          DJANGO_SETTINGS_MODULE: starkadvisorbackend.settings
+          DATABASE_URL: ${{ secrets.BACKEND_DATABASE_URL }}
+          SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+          ALLOWED_HOSTS: "127.0.0.1,localhost"
+        run: |
+          set -e
+          (gunicorn --workers 2 --timeout 60 --bind 127.0.0.1:8010 starkadvisorbackend.wsgi:application > "${{ runner.temp }}/gunicorn.log" 2>&1) &
+          GPID=$!
+          for i in {1..40}; do
+            CODE=$(curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:8010/)
+            if [ "$CODE" -ge 200 ] && [ "$CODE" -lt 400 ]; then
+              echo "✅ GET / (gunicorn) OK — HTTP $CODE"
+              break
+            fi
+            sleep 1
+          done
+          CODE=$(curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:8010/)
+          if [ "$CODE" -lt 200 ] || [ "$CODE" -ge 400 ]; then
+            echo "❌ gunicorn no respondió OK (HTTP $CODE)"
+            echo "---- Gunicorn (tail) ----"
+            tail -n 200 "${{ runner.temp }}/gunicorn.log" || true
+            kill $GPID || true
+            exit 1
+          fi
+          kill $GPID || true
+
+      # =============== DEPLOY A AZURE (ZIP SIN WRAPPER) ===============
+      - name: Deploy to Azure WebApp
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ secrets.AZURE_WEBAPP_NAME }}          # ej: starkadvisor-backend
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: ${{ env.ZIP_PATH }}
+
+      # =============== POST-DEPLOY CHECK (GET / 200–399) ===============
+      - name: Post-deploy check (GET /)
+        env:
+          PUBLIC_URL: ${{ secrets.BACKEND_BASE_URL }}         # ej: https://starkadvisor-backend.azurewebsites.net/
+        run: |
+          set -e
+          test -n "$PUBLIC_URL" || { echo "❌ Falta BACKEND_BASE_URL en secrets"; exit 1; }
+          for i in {1..36}; do
+            CODE=$(curl -s -o /dev/null -w "%{http_code}" "$PUBLIC_URL")
+            if [ "$CODE" -ge 200 ] && [ "$CODE" -lt 400 ]; then
+              echo "✅ Producción responde (HTTP $CODE) en $PUBLIC_URL"
+              # Mostrar headers útiles
+              echo "---- HEADERS ----"
+              curl -sI "$PUBLIC_URL" || true
+              exit 0
+            fi
+            echo "… esperando a que inicie ($i/36) (HTTP $CODE)"
+            sleep 5
+          done
+          echo "❌ La app no respondió correctamente en producción ($PUBLIC_URL)"
+          exit 1
