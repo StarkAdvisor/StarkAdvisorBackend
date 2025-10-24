@@ -93,7 +93,7 @@ jobs:
             echo "Runtime forzado a PYTHON|3.11"
           fi
 
-      # -------- APP SETTINGS (Run-From-Package + ENVs + PYTHONPATH + startup) --------
+      # -------- APP SETTINGS --------
       - name: App Settings (envs + startup)
         shell: bash
         run: |
@@ -122,23 +122,25 @@ jobs:
           find . -name '__pycache__' -type d -prune -exec rm -rf {} +
           rm -rf .git .github || true
 
-      # -------- ZIP --------
-      - name: Crear ZIP para OneDeploy
+      # -------- ZIP + VERIFICACIÓN (sin here-doc) --------
+      - name: Crear ZIP para OneDeploy y validar contenido
         shell: bash
         run: |
           set -euo pipefail
           zip -r app.zip . -x "*/.git/*" -x ".github/*" -x "**/__pycache__/*"
-          python - <<'PY'
+          CHECKPY="$RUNNER_TEMP/check_zip.py"
+          cat > "$CHECKPY" << 'PY'
 import sys, zipfile
-z=zipfile.ZipFile('app.zip'); names=z.namelist()
-def has(p): return any(n==p or n.startswith(p.rstrip('/')+'/') for n in names)
-need=["manage.py","starkadvisorbackend/","starkadvisorbackend/wsgi.py",".python_packages/"]
-missing=[r for r in need if not has(r)]
+z = zipfile.ZipFile('app.zip'); names = z.namelist()
+def present(p): return any(n == p or n.startswith(p.rstrip('/') + '/') for n in names)
+need = ["manage.py", "starkadvisorbackend/", "starkadvisorbackend/wsgi.py", ".python_packages/"]
+missing = [r for r in need if not present(r)]
 if missing:
-  print("WARNING: faltan en ZIP ->", ", ".join(missing))
+    print("WARNING: faltan en ZIP -> " + ", ".join(missing))
 else:
-  print("ZIP OK: archivos clave presentes")
+    print("ZIP OK: archivos clave presentes")
 PY
+          python "$CHECKPY"
 
       # -------- DEPLOY --------
       - name: Deploy a Azure (OneDeploy)
