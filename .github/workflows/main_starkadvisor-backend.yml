@@ -1,192 +1,52 @@
-name: Deploy Django Backend (OneDeploy + vendor deps)
+- name: Prepare staging
+  run: |
+    set -e
+    # 1) Validaciones en la raíz del repo
+    test -f manage.py || { echo "❌ Falta manage.py en la RAÍZ"; exit 1; }
+    test -f requirements.txt || { echo "❌ Falta requirements.txt en la RAÍZ"; exit 1; }
+    test -d starkadvisorbackend || { echo "❌ Falta carpeta starkadvisorbackend/ en la RAÍZ"; exit 1; }
 
-on:
-  push:
-    branches: [ "main" ]
-  workflow_dispatch:
+    STAGING="${{ runner.temp }}/staging"
+    ZIP_PATH="${{ runner.temp }}/app.zip"
+    rm -rf "$STAGING" && mkdir -p "$STAGING"
 
-concurrency:
-  group: backend-deploy-${{ github.ref }}
-  cancel-in-progress: true
+    # 2) Copiar solo lo necesario
+    rsync -a ./ "$STAGING"/ \
+      --exclude ".git/" --exclude ".github/" --exclude "venv/" --exclude ".venv/" \
+      --exclude "__pycache__/" --exclude "*.pyc" --exclude "node_modules/" \
+      --exclude "docs/" --exclude "tests/" --exclude ".DS_Store" \
+      --exclude "chatbot/faq_model_2/"
 
-env:
-  PYTHON_VERSION: "3.11"
-  APP_NAME: "starkadvisor-backend"
-  RESOURCE_GROUP: "rg-starkadvisor"
-  DJANGO_SETTINGS: "starkadvisorbackend.settings.production"
-  # Ajusta exclusiones si tienes carpetas pesadas que NO necesitas en producción:
-  EXCLUDE_PATTERNS: >
-    .git/
-    .github/
-    .venv/
-    venv/
-    __pycache__/
-    *.pyc
-    node_modules/
-    docs/
-    tests/
-    .DS_Store
-    chatbot/faq_model_2/   # <-- quítalo si lo necesitas en prod
+    cd "$STAGING"
 
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    timeout-minutes: 45
-    permissions:
-      id-token: write
-      contents: read
+    # 3) Re-validar en staging (evita publicar vacío)
+    test -f manage.py || { echo "❌ manage.py no llegó a staging"; exit 1; }
+    test -f requirements.txt || { echo "❌ requirements.txt no llegó a staging"; exit 1; }
+    test -d starkadvisorbackend || { echo "❌ starkadvisorbackend/ no llegó a staging"; exit 1; }
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+    # 4) Crear ZIP
+    python3 - <<'PY'
+import os, zipfile, sys
+zp = os.environ["RUNNER_TEMP"] + "/app.zip"
+with zipfile.ZipFile(zp, "w", zipfile.ZIP_DEFLATED) as z:
+    for root, _, files in os.walk("."):
+        for f in files:
+            p = os.path.join(root, f)
+            z.write(p, p)
+print("ZIP listo:", zp)
+with zipfile.ZipFile(zp) as z:
+    names = z.namelist()
+    required = ["manage.py", "requirements.txt", "starkadvisorbackend/"]
+    for r in required:
+        if not any(n==r or n.startswith(r) for n in names):
+            print(f"❌ Falta {r} dentro del ZIP")
+            sys.exit(1)
+print("✅ ZIP contiene archivos clave")
+PY
+    echo "ZIP_PATH=$ZIP_PATH" >> $GITHUB_ENV
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ env.PYTHON_VERSION }}
-
-      # ---------- Localiza manage.py y define PROJECT_DIR ----------
-      - name: Locate manage.py
-        shell: bash
-        run: |
-          set -euo pipefail
-          MANAGE_PATH="$(git ls-files | grep -E '(^|.*/)(manage\.py)$' | head -n1 || true)"
-          if [ -z "${MANAGE_PATH}" ]; then
-            echo "::error::No se encontró manage.py en el repo"
-            exit 1
-          fi
-          PROJECT_DIR="$(dirname "${MANAGE_PATH}")"
-          # Si manage.py está en raíz, dirname devuelve "."
-          [ "${PROJECT_DIR}" = "." ] && PROJECT_DIR="$(pwd)"
-          echo "PROJECT_DIR=${PROJECT_DIR}" >> "$GITHUB_ENV"
-          echo "MANAGE_PATH=${MANAGE_PATH}"   >> "$GITHUB_ENV"
-          echo "manage.py encontrado en: ${MANAGE_PATH}"
-
-      # ---------- Prepara carpeta staging con exclusiones ----------
-      - name: Build staging folder
-        shell: bash
-        run: |
-          set -euo pipefail
-          STAGING="$RUNNER_TEMP/staging"
-          mkdir -p "$STAGING"
-
-          # Copia desde la raíz del repo para mantener rutas relativas esperadas
-          # pero con exclusiones (patrones en EXCLUDE_PATTERNS).
-          # Si prefieres copiar SOLO el directorio del proyecto, cambia el origen a "${PROJECT_DIR}/".
-          while read -r pattern; do
-            [ -n "$pattern" ] && EXCLUDES+=(--exclude="$pattern")
-          done < <(echo "${EXCLUDE_PATTERNS}")
-
-          rsync -a . "$STAGING"/ "${EXCLUDES[@]}" || true
-
-          # Asegura que manage.py quedó en el ZIP final
-          if [ ! -f "$STAGING/${MANAGE_PATH}" ]; then
-            echo "::error::manage.py no quedó en staging (${STAGING}/${MANAGE_PATH})"
-            exit 1
-          fi
-
-          echo "STAGING=${STAGING}" >> "$GITHUB_ENV"
-          echo "Contenido staging listo."
-
-      # ---------- Vendoriza dependencias en .python_packages ----------
-      - name: Vendor dependencies (.python_packages)
-        shell: bash
-        run: |
-          set -euo pipefail
-          SITEPKG="$STAGING/.python_packages/lib/site-packages"
-          mkdir -p "$SITEPKG"
-
-          # Ubica requirements.txt (prioriza raíz; si no, dentro de PROJECT_DIR)
-          REQ_FILE=""
-          if [ -f "requirements.txt" ]; then
-            REQ_FILE="requirements.txt"
-          elif [ -f "${PROJECT_DIR}/requirements.txt" ]; then
-            REQ_FILE="${PROJECT_DIR}/requirements.txt"
-          fi
-
-          python -m pip install --upgrade pip wheel setuptools
-
-          if [ -n "$REQ_FILE" ]; then
-            echo "Instalando requirements desde: $REQ_FILE"
-            python -m pip install -r "$REQ_FILE" --target "$SITEPKG"
-          else
-            echo "No hay requirements.txt; instalando mínimos necesarios"
-            python -m pip install \
-              Django \
-              gunicorn \
-              dj-database-url \
-              psycopg2-binary \
-              pymongo \
-              django-cors-headers \
-              django-redis \
-              whitenoise \
-              --target "$SITEPKG"
-          fi
-
-      - name: Verificar que Django quedó vendorizado
-        shell: bash
-        run: |
-          set -euo pipefail
-          test -f "$STAGING/.python_packages/lib/site-packages/django/__init__.py" \
-            || { echo "::error::No se encontró django en .python_packages vendorizado"; exit 1; }
-          echo "Django vendorizado correctamente."
-
-      # ---------- Empaqueta (ZIP) el staging ----------
-      - name: Create app.zip
-        shell: bash
-        working-directory: ${{ env.STAGING }}
-        run: |
-          set -euo pipefail
-          zip -r9 ../app.zip . > /dev/null
-          ls -lh ../app.zip
-          echo "ZIP_PATH=${RUNNER_TEMP}/app.zip" >> "$GITHUB_ENV"
-
-      - name: Inspeccionar ZIP (contiene Django y manage.py)
-        shell: bash
-        run: |
-          set -euo pipefail
-          unzip -l "$ZIP_PATH" | egrep -m1 "\.python_packages/.*/site-packages/django/__init__\.py" \
-            || { echo "::error::El ZIP no contiene django en .python_packages"; exit 1; }
-          unzip -l "$ZIP_PATH" | egrep -m1 "manage\.py" \
-            || { echo "::error::El ZIP no contiene manage.py"; exit 1; }
-
-      # ---------- Login OIDC a Azure ----------
-      - name: Azure Login (OIDC)
-        uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_2A74A6406B2C4AE5BDE8385E609832AC }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_0A35B1E80008457D8D59EF4E62EA9F08 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_958550156BE34115B59D23AC21EE820B }}
-
-      # ---------- App Settings para extraer y NO usar Oryx build ----------
-      - name: Ensure App Settings (extract + no Oryx)
-        shell: bash
-        run: |
-          set -euo pipefail
-          az webapp config appsettings set \
-            --name "$APP_NAME" \
-            --resource-group "$RESOURCE_GROUP" \
-            --settings \
-              WEBSITE_RUN_FROM_PACKAGE=0 \
-              SCM_DO_BUILD_DURING_DEPLOYMENT=false \
-              ENABLE_ORYX_BUILD=false \
-              DISABLE_COLLECTSTATIC=true \
-              DJANGO_SETTINGS_MODULE="${DJANGO_SETTINGS}" \
-              WEBSITES_PORT=8000
-
-      # ---------- Despliegue con OneDeploy ----------
-      - name: Deploy to Azure Web App (OneDeploy + Zip)
-        uses: azure/webapps-deploy@v3
-        with:
-          app-name: ${{ env.APP_NAME }}
-          package: ${{ env.ZIP_PATH }}
-
-      - name: Restart app (soft)
-        shell: bash
-        run: az webapp restart --name "$APP_NAME" --resource-group "$RESOURCE_GROUP"
-
-      - name: Deployment info
-        shell: bash
-        run: |
-          HOST=$(az webapp show -n "$APP_NAME" -g "$RESOURCE_GROUP" --query defaultHostName -o tsv)
-          echo "App Service URL: https://${HOST}"
+- name: Deploy to Azure WebApp
+  uses: azure/webapps-deploy@v3
+  with:
+    app-name: starkadvisor-backend
+    package: ${{ runner.temp }}/app.zip
