@@ -60,3 +60,16 @@ jobs:
         run: |
           HOST=$(az webapp show -n "$APP_NAME" -g "$RESOURCE_GROUP" --query defaultHostName -o tsv)
           echo "https://$HOST"
+      - name: Ensure App Settings
+        run: |
+         az webapp config appsettings set \
+           --name "$APP_NAME" \
+            --resource-group "$RESOURCE_GROUP" \
+           --settings \
+            SCM_DO_BUILD_DURING_DEPLOYMENT=true \
+          WEBSITE_RUN_FROM_PACKAGE=0 \
+          WEBSITES_PORT=8000 \
+          DJANGO_SETTINGS_MODULE=starkadvisorbackend.settings.production \
+          DISABLE_COLLECTSTATIC=false
+
+
