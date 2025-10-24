@@ -1,4 +1,4 @@
-name: CI/CD — Backend Django (Azure App Service) BLINDADO
+    name: CI/CD — Backend Django (Azure App Service) BLINDADO + LOG STREAM DIAG
 
 on:
   push:
@@ -27,7 +27,7 @@ concurrency:
 
 jobs:
   backend-validate-package-deploy:
-    name: Backend — Validate ×2, Package (no wrapper), Smoke ×2, Deploy & Verify
+    name: Backend — Validate×2, Package (sin wrapper), Smoke×2, Deploy & Verify + KuduDiag
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -47,8 +47,8 @@ jobs:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-backend-${{ env.CACHE_VERSION }}-${{ hashFiles('requirements.txt') }}
 
-      # =============== VALIDACIONES DE CÓDIGO Y DEPENDENCIAS ===============
-      - name: Install deps (pytest/flake8 included)
+      # ===== VALIDACIONES DE CÓDIGO Y DEPENDENCIAS =====
+      - name: Install deps (pytest/flake8/gunicorn incluidos)
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
@@ -62,7 +62,6 @@ jobs:
           test -d starkadvisorbackend || { echo "❌ Falta directorio starkadvisorbackend/ en la RAÍZ"; exit 1; }
           test -f starkadvisorbackend/wsgi.py || { echo "❌ Falta starkadvisorbackend/wsgi.py"; exit 1; }
           python - <<'PY'
-# Validar que el módulo WSGI existe y expone "application"
 import importlib
 m = importlib.import_module("starkadvisorbackend.wsgi")
 assert hasattr(m, "application"), "WSGI no expone 'application'"
@@ -73,9 +72,7 @@ PY
         env:
           DJANGO_SETTINGS_MODULE: starkadvisorbackend.settings
         run: |
-          # flake8 crítico (no falla por estilo menor)
           flake8 --count --select=E9,F63,F7,F82 --show-source --statistics || true
-          # checks de deploy
           python manage.py check --deploy --fail-level WARNING
 
       - name: Requirements sanity
@@ -92,8 +89,8 @@ PY
           ALLOWED_HOSTS: ${{ secrets.DJANGO_ALLOWED_HOSTS }}
         run: pytest -q
 
-      # =============== PREPARE STAGING (SIN CARPETA ENVOLVENTE) ===============
-      - name: Prepare staging (blindado)
+      # ===== PREPARE STAGING (SIN CARPETA ENVOLVENTE) =====
+      - name: Prepare staging (blindado, con manifiesto + sitecustomize para Log Stream)
         run: |
           set -e
           # 1) Validaciones pre-staging
@@ -106,7 +103,7 @@ PY
           ZIP_PATH="${{ runner.temp }}/app.zip"
           rm -rf "$STAGING" && mkdir -p "$STAGING"
 
-          # 2) Copiar solo lo necesario (sin .git/.github/tests/node_modules/etc.)
+          # 2) Copiar solo lo necesario
           rsync -a ./ "$STAGING"/ \
             --exclude ".git/" --exclude ".github/" --exclude "venv/" --exclude ".venv/" \
             --exclude "__pycache__/" --exclude "*.pyc" --exclude "*.pyo" \
@@ -115,13 +112,57 @@ PY
 
           cd "$STAGING"
 
+          # 2.1) Inyectar sitecustomize.py (solo si no existe) -> Log Stream banner en cada arranque
+          if [ ! -f "sitecustomize.py" ]; then
+            cat > sitecustomize.py <<'PY'
+import os, sys, time, traceback, platform, importlib
+def _safe(fn, label):
+    try:
+        return fn()
+    except Exception as e:
+        return f"ERR({label}): {e}"
+
+ts = time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())
+print(f"[BOOT][{ts}Z] Python={platform.python_version()} PID={os.getpid()} CWD={os.getcwd()}", flush=True)
+print(f"[BOOT] sys.path[0..3] = {sys.path[:3]}", flush=True)
+print(f"[BOOT] exists manage.py? {'YES' if os.path.exists(os.path.join(os.getcwd(),'manage.py')) else 'NO'}", flush=True)
+try:
+    m = importlib.import_module("starkadvisorbackend.wsgi")
+    ok = hasattr(m, "application")
+    print(f"[BOOT] import starkadvisorbackend.wsgi -> {'OK' if ok else 'NO application attr'}", flush=True)
+except Exception:
+    print("[BOOT] import starkadvisorbackend.wsgi FAILED")
+    traceback.print_exc()
+
+# Modo verbose para requests básicos si Django configura logging a stdout
+os.environ.setdefault("PYTHONUNBUFFERED", "1")
+PY
+          fi
+
+          # 2.2) Manifiesto de empaquetado
+          python3 - <<'PY'
+import os, pathlib
+root = pathlib.Path(".")
+with open("__deploy_manifest__.txt", "w", encoding="utf-8") as f:
+    for p in sorted(root.rglob("*")):
+        if p.is_file():
+            f.write(str(p.as_posix())+"\n")
+print("✅ Generado __deploy_manifest__.txt")
+PY
+
           # 3) Revalidar en staging
           test -f manage.py || { echo "❌ manage.py no llegó a staging"; exit 1; }
           test -f requirements.txt || { echo "❌ requirements.txt no llegó a staging"; exit 1; }
           test -d starkadvisorbackend || { echo "❌ starkadvisorbackend/ no llegó a staging"; exit 1; }
           test -f starkadvisorbackend/wsgi.py || { echo "❌ wsgi.py no llegó a staging"; exit 1; }
+          test -f __deploy_manifest__.txt || { echo "❌ No se generó __deploy_manifest__.txt"; exit 1; }
+          test -f sitecustomize.py || { echo "❌ No se generó sitecustomize.py"; exit 1; }
 
-          # 4) Crear ZIP en RAÍZ (sin carpeta envolvente)
+          # 4) Listado útil para logs
+          echo "---- Árbol (nivel 1) staging ----"
+          find . -maxdepth 2 -type f | sed 's|^\./||' | head -n 200 || true
+
+          # 5) Crear ZIP y verificar contenido/WRAPPER
           python3 - <<'PY'
 import os, zipfile, sys, pathlib
 runner_tmp = os.environ["RUNNER_TEMP"]
@@ -132,37 +173,20 @@ with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as z:
         if p.is_file():
             z.write(p, p.relative_to(root).as_posix())
 print("ZIP listo:", zip_path)
-
-# Revisión de contenido requerido y que NO haya "wrapper folder"
 with zipfile.ZipFile(zip_path) as z:
     names = z.namelist()
-    # Requeridos en raíz
-    required = ["manage.py", "requirements.txt", "starkadvisorbackend/", "starkadvisorbackend/wsgi.py"]
+    required = ["manage.py", "requirements.txt", "starkadvisorbackend/", "starkadvisorbackend/wsgi.py", "__deploy_manifest__.txt", "sitecustomize.py"]
     def present(path):
         return any(n == path or n.startswith(path.rstrip("/") + "/") for n in names)
     for r in required:
         if not present(r):
             print(f"❌ Falta {r} dentro del ZIP")
             sys.exit(1)
-
-    # Detectar carpeta envolvente única (p.ej., "staging/..." o "backend/...")
-    # Si TODOS los archivos empiezan con el mismo prefijo 'X/', fallar.
     prefixes = set(n.split('/')[0] + '/' for n in names if '/' in n)
-    # Si todos tienen un prefijo común y no hay archivos en raíz, se considera wrapper
     if len(prefixes) == 1 and not any('/' not in n for n in names):
-        print(f"❌ ZIP tiene carpeta envolvente: {list(prefixes)[0]}. Debe contener los archivos en la RAÍZ.")
+        print(f"❌ ZIP tiene carpeta envolvente: {list(prefixes)[0]} (debe ir en RAÍZ)")
         sys.exit(1)
-
-print("✅ ZIP contiene archivos clave en la RAÍZ (sin carpeta envolvente)")
-PY
-
-          # 5) Mostrar lista de la RAÍZ del ZIP
-          python3 - <<'PY'
-import zipfile, os
-zp = os.environ["RUNNER_TEMP"] + "/app.zip"
-with zipfile.ZipFile(zp) as z:
-    roots = sorted(set([n.split('/')[0] for n in z.namelist() if n]))
-    print("Contenido raíz ZIP:", roots[:30])
+print("✅ ZIP correcto (sin wrapper) y con archivos clave en RAÍZ")
 PY
 
           echo "ZIP_PATH=$ZIP_PATH" >> $GITHUB_ENV
@@ -175,7 +199,7 @@ PY
           if-no-files-found: error
           retention-days: 7
 
-      # =============== SMOKE TEST LOCAL: RUNSERVER Y GUNICORN ===============
+      # ===== SMOKE TEST LOCAL: RUNSERVER Y GUNICORN =====
       - name: Smoke A — runserver (GET / 200–399)
         env:
           DJANGO_SETTINGS_MODULE: starkadvisorbackend.settings
@@ -206,8 +230,8 @@ PY
           fi
           kill $SRV_PID || true
 
-      - name: Smoke B — gunicorn WSGI (GET / 200–399)
-        env:
+        - name: Smoke B — gunicorn WSGI (GET / 200–399)
+          env:
           DJANGO_SETTINGS_MODULE: starkadvisorbackend.settings
           DATABASE_URL: ${{ secrets.BACKEND_DATABASE_URL }}
           SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
@@ -234,18 +258,18 @@ PY
           fi
           kill $GPID || true
 
-      # =============== DEPLOY A AZURE (ZIP SIN WRAPPER) ===============
+      # ===== DEPLOY A AZURE (ZIP SIN WRAPPER) =====
       - name: Deploy to Azure WebApp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: ${{ secrets.AZURE_WEBAPP_NAME }}          # ej: starkadvisor-backend
+          app-name: ${{ secrets.AZURE_WEBAPP_NAME }}
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           package: ${{ env.ZIP_PATH }}
 
-      # =============== POST-DEPLOY CHECK (GET / 200–399) ===============
+      # ===== POST-DEPLOY CHECK (GET / 200–399) =====
       - name: Post-deploy check (GET /)
         env:
-          PUBLIC_URL: ${{ secrets.BACKEND_BASE_URL }}         # ej: https://starkadvisor-backend.azurewebsites.net/
+          PUBLIC_URL: ${{ secrets.BACKEND_BASE_URL }}  # ej: https://<app>.azurewebsites.net/
         run: |
           set -e
           test -n "$PUBLIC_URL" || { echo "❌ Falta BACKEND_BASE_URL en secrets"; exit 1; }
@@ -253,7 +277,6 @@ PY
             CODE=$(curl -s -o /dev/null -w "%{http_code}" "$PUBLIC_URL")
             if [ "$CODE" -ge 200 ] && [ "$CODE" -lt 400 ]; then
               echo "✅ Producción responde (HTTP $CODE) en $PUBLIC_URL"
-              # Mostrar headers útiles
               echo "---- HEADERS ----"
               curl -sI "$PUBLIC_URL" || true
               exit 0
@@ -263,3 +286,70 @@ PY
           done
           echo "❌ La app no respondió correctamente en producción ($PUBLIC_URL)"
           exit 1
+
+      # ===== KUDU DIAGNOSTICS: wwwroot + deployment log + LogFiles =====
+      - name: Kudu Diagnostics (wwwroot + latest deployment log + manifest + LogFiles)
+        env:
+          PUBLISH_PROFILE_XML: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          APP_NAME: ${{ secrets.AZURE_WEBAPP_NAME }}
+        run: |
+          set -e
+          echo "$PUBLISH_PROFILE_XML" > pp.xml
+
+          # Extraer scmUri, userName, userPWD
+          python3 - <<'PY'
+import xml.etree.ElementTree as ET, sys, json
+tree = ET.parse('pp.xml')
+root = tree.getroot()
+pick = None
+for p in root.findall('.//publishProfile'):
+    if p.get('publishMethod','').lower() == 'zipdeploy':
+        pick = p; break
+if pick is None:
+    for p in root.findall('.//publishProfile'):
+        if p.get('publishMethod','').lower() == 'msdeploy':
+            pick = p; break
+if pick is None:
+    print("❌ No se encontró perfil ZipDeploy/MSDeploy en publish profile"); sys.exit(1)
+scm = pick.get('scmUri') or ''
+if not scm:
+    app = sys.argv[1] if len(sys.argv)>1 else ''
+    if not app:
+        print("❌ scmUri ausente y APP_NAME no provisto"); sys.exit(1)
+    scm = f"https://{app}.scm.azurewebsites.net"
+creds = dict(
+    scmUri=scm.rstrip('/'),
+    user=pick.get('userName'),
+    pwd=pick.get('userPWD'),
+)
+print(json.dumps(creds))
+PY "$APP_NAME" > kudu_creds.json
+
+          echo "Kudu creds:"
+          cat kudu_creds.json | sed 's|"pwd":"[^"]\+"|"pwd":"***"|'
+
+            SCM_URI=$(jq -r '.scmUri' kudu_creds.json)
+            KUSER=$(jq -r '.user' kudu_creds.json)
+            KPWD=$(jq -r '.pwd' kudu_creds.json)
+
+          echo "---- KUDU: Listando /site/wwwroot (top 200) ----"
+          curl -sS -u "$KUSER:$KPWD" "$SCM_URI/api/vfs/site/wwwroot/?recursive=true" \
+            | jq -r '.[].name' | head -n 200 || true
+
+          echo "---- KUDU: __deploy_manifest__.txt (primeras 200 líneas) ----"
+          curl -sfS -u "$KUSER:$KPWD" "$SCM_URI/api/vfs/site/wwwroot/__deploy_manifest__.txt" \
+            | head -n 200 || echo "⚠️ No se encontró __deploy_manifest__.txt en wwwroot"
+
+          echo "---- KUDU: Último deployment log ----"
+          curl -sSfS -u "$KUSER:$KPWD" "$SCM_URI/api/deployments/latest/log" \
+            | jq -r '.[] | "\(.log_time)  \(.message)"' | tail -n 200 || echo "⚠️ No hay log disponible"
+
+          echo "---- KUDU: Listando /home/LogFiles (top 200) ----"
+          curl -sS -u "$KUSER:$KPWD" "$SCM_URI/api/vfs/home/LogFiles/?recursive=true" \
+            | jq -r '.[].name' | head -n 200 || true
+
+          # Intentar sacar lo más común de Linux App Service (puede variar por plan)
+          for f in "default_docker.log" "docker.log" "appsvc/Logs/info.log" "kudu/trace" ; do
+            echo "---- KUDU: tail de $f (si existe) ----"
+            curl -sfS -u "$KUSER:$KPWD" "$SCM_URI/api/vfs/home/LogFiles/$f" | tail -n 200 || true
+          done
