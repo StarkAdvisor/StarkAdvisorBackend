@@ -1,4 +1,4 @@
-name: Deploy Django Backend (ZipDeploy + OIDC)
+name: Deploy Django Backend (OIDC + OneDeploy)
 
 on:
   push:
@@ -10,9 +10,9 @@ concurrency:
   cancel-in-progress: true
 
 env:
+  PYTHON_VERSION: "3.11"
   APP_NAME: "starkadvisor-backend"
   RESOURCE_GROUP: "rg-starkadvisor"
-  PYTHON_VERSION: "3.11"
 
 jobs:
   deploy:
@@ -22,9 +22,11 @@ jobs:
       contents: read
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
+      - name: Setup Python (optional)
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
@@ -41,35 +43,26 @@ jobs:
             --name "$APP_NAME" \
             --resource-group "$RESOURCE_GROUP" \
             --settings \
-              DJANGO_SETTINGS_MODULE=starkadvisorbackend.settings.production \
-              WEBSITES_PORT=8000 \
               SCM_DO_BUILD_DURING_DEPLOYMENT=true \
               WEBSITE_RUN_FROM_PACKAGE=0 \
-              DISABLE_COLLECTSTATIC=true
+              WEBSITES_PORT=8000 \
+              PYTHON_VERSION=3.11 \
+              DJANGO_SETTINGS_MODULE=starkadvisorbackend.settings.production \
+              DISABLE_COLLECTSTATIC=false
 
-      - name: Stop Web App (avoid locks)
-        run: az webapp stop -g "$RESOURCE_GROUP" -n "$APP_NAME"
+      - name: Small delay to avoid SCM restart conflict
+        run: sleep 20
 
-      - name: Create ZIP from repo root
-        run: |
-          rm -f app.zip
-          zip -r app.zip . \
-            -x ".git/*" ".github/*" ".vscode/*" "__pycache__/*" "*.pyc" "*.pyo" ".venv/*" "venv/*"
-          ls -lh app.zip
+      - name: Deploy to Azure Web App (OneDeploy + Zip)
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ env.APP_NAME }}
+          package: "."
 
-      - name: Zip Deploy (extract to wwwroot)
-        run: |
-          az webapp deploy \
-            --resource-group "$RESOURCE_GROUP" \
-            --name "$APP_NAME" \
-            --type zip \
-            --src-path app.zip \
-            --clean true
+      - name: Restart app (soft)
+        run: az webapp restart --name "$APP_NAME" --resource-group "$RESOURCE_GROUP"
 
-      - name: Start Web App
-        run: az webapp start -g "$RESOURCE_GROUP" -n "$APP_NAME"
-
-      - name: Show URL
+      - name: Deployment info
         run: |
           HOST=$(az webapp show -n "$APP_NAME" -g "$RESOURCE_GROUP" --query defaultHostName -o tsv)
-          echo "https://$HOST"
+          echo "App Service URL: https://$HOST"
