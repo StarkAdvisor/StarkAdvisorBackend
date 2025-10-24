@@ -1,4 +1,4 @@
-    name: CI/CD — Backend Django (Azure App Service) BLINDADO + LOG STREAM DIAG
+name: CI/CD — Backend Django (Azure App Service) BLINDADO + LOG STREAM DIAG
 
 on:
   push:
@@ -230,8 +230,8 @@ PY
           fi
           kill $SRV_PID || true
 
-        - name: Smoke B — gunicorn WSGI (GET / 200–399)
-          env:
+      - name: Smoke B — gunicorn WSGI (GET / 200–399)
+        env:
           DJANGO_SETTINGS_MODULE: starkadvisorbackend.settings
           DATABASE_URL: ${{ secrets.BACKEND_DATABASE_URL }}
           SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
@@ -328,9 +328,9 @@ PY "$APP_NAME" > kudu_creds.json
           echo "Kudu creds:"
           cat kudu_creds.json | sed 's|"pwd":"[^"]\+"|"pwd":"***"|'
 
-            SCM_URI=$(jq -r '.scmUri' kudu_creds.json)
-            KUSER=$(jq -r '.user' kudu_creds.json)
-            KPWD=$(jq -r '.pwd' kudu_creds.json)
+          SCM_URI=$(jq -r '.scmUri' kudu_creds.json)
+          KUSER=$(jq -r '.user' kudu_creds.json)
+          KPWD=$(jq -r '.pwd' kudu_creds.json)
 
           echo "---- KUDU: Listando /site/wwwroot (top 200) ----"
           curl -sS -u "$KUSER:$KPWD" "$SCM_URI/api/vfs/site/wwwroot/?recursive=true" \
